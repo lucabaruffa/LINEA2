@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>VALORI LINEA 5</comment>
+<entry key="numero_batterie_scartate">0</entry>
+<entry key="conteggio_finale">0</entry>
+</properties>
