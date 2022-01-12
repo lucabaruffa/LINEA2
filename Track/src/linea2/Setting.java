@@ -136,7 +136,7 @@ public class Setting {
 	
 	public static List<greenCode> listaGreenCode = new ArrayList<>();
 	public static String LINEA = "Linea 2";
-	public static int DBGREENCODE = 5020;
+	public static int DBGREENCODE = 5021; //5020;
 	
 	/**
 	 * @return the data_ultimo_aggiornamento
@@ -416,6 +416,7 @@ public class Setting {
 		    props.setProperty("usernamedb", USERNAMEDB);
 		    props.setProperty("passworddb", PASSWORDDB);
 		    props.setProperty("numerostazioniattive", NUMERO_STAZIONI_ATTIVE);
+		    props.setProperty("dbgreencode", ""+DBGREENCODE);
 		    
 		    arrayDB[0] = Integer.parseInt(DB);
 		    arrayDB[1] = Integer.parseInt(DB2);
@@ -466,6 +467,8 @@ public class Setting {
 		    USERNAMEDB = props.getProperty("usernamedb");
 		    PASSWORDDB = props.getProperty("passworddb");
 		    NUMERO_STAZIONI_ATTIVE = props.getProperty("numerostazioniattive");
+		    
+		    DBGREENCODE = Integer.parseInt(props.getProperty("dbgreencode"));
 		    
 		    arrayDB[0] = Integer.parseInt(DB);
 		    arrayDB[1] = Integer.parseInt(DB2);

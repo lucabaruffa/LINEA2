@@ -37,6 +37,7 @@ public class WinSetGreencode extends JFrame {
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	private static DBCheckGriglia dbgriglia;
 	private static LoggerFile log = new LoggerFile();
+	private JTextField txtNomeBatteria;
 	
 	/**
 	 * Launch the application.
@@ -77,9 +78,9 @@ public class WinSetGreencode extends JFrame {
 		setResizable(false);
 		setTitle("SELEZIONA BATTERIA LINEA 2");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 641, 424);
+		setBounds(100, 100, 858, 374);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 245, 238));
+		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -87,7 +88,7 @@ public class WinSetGreencode extends JFrame {
 		JComboBox piastradaprodurre = new JComboBox();
 		piastradaprodurre.setModel(new DefaultComboBoxModel(new String[] {""}));
 		piastradaprodurre.setFont(new Font("Arial", Font.BOLD, 30));
-		piastradaprodurre.setBounds(49, 130, 543,82);
+		piastradaprodurre.setBounds(49, 130, 755,82);
 		contentPane.add(piastradaprodurre);
 		
 		
@@ -105,7 +106,7 @@ public class WinSetGreencode extends JFrame {
         
         for (int i = 0; i < Setting.listaGreenCode.size(); i++) {
             //System.out.println(Setting.listaGreenCode.get(i));
-            piastradaprodurre.addItem(Setting.listaGreenCode.get(i).getGreencode());
+            piastradaprodurre.addItem(Setting.listaGreenCode.get(i).getGreencode()+" -- " + Setting.listaGreenCode.get(i).getNome() );
         }
 		
 		
@@ -114,22 +115,27 @@ public class WinSetGreencode extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				
-				if (!dbcommand.writeGreenCode(Setting.listaGreenCode.get(piastradaprodurre.getSelectedIndex())))
+				if (!dbcommand.writeGreenCode(Setting.listaGreenCode.get(piastradaprodurre.getSelectedIndex()-1)))
 					
 				{
 					JOptionPane.showMessageDialog(contentPane, "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
+					txtpiastra.setText("errore");
+					txtNomeBatteria.setText("errore");
 				}else {
-					JOptionPane.showMessageDialog(contentPane, "Piastra impostata correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
-					txtpiastra.setText(""+piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()));
+					JOptionPane.showMessageDialog(contentPane, "Codice inviato correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
+					String cod = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[0];
+					String nom = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[1];
+					txtpiastra.setText(cod);
+					txtNomeBatteria.setText(nom);
 				}
 			}
 		});
 		btnAvvio.setBackground(new Color(152, 251, 152));
 		btnAvvio.setFont(new Font("Arial", Font.BOLD, 18));
-		btnAvvio.setBounds(49, 223, 400, 59);
+		btnAvvio.setBounds(49, 223, 587, 59);
 		contentPane.add(btnAvvio);
 		
-		JButton btnAnnulla = new JButton("ANNULLA");
+		JButton btnAnnulla = new JButton("CHIUDI");
 		btnAnnulla.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -138,42 +144,47 @@ public class WinSetGreencode extends JFrame {
 		});
 		btnAnnulla.setFont(new Font("Arial", Font.BOLD, 18));
 		btnAnnulla.setBackground(new Color(255, 182, 193));
-		btnAnnulla.setBounds(459, 223, 133, 59);
+		btnAnnulla.setBounds(671, 223, 133, 59);
 		contentPane.add(btnAnnulla);
+		
+		txtNomeBatteria = new JTextField();
+		txtNomeBatteria.setText((String) null);
+		txtNomeBatteria.setForeground(Color.RED);
+		txtNomeBatteria.setFont(new Font("Arial", Font.BOLD, 20));
+		txtNomeBatteria.setEditable(false);
+		txtNomeBatteria.setColumns(10);
+		txtNomeBatteria.setBounds(292, 51, 512, 46);
+		contentPane.add(txtNomeBatteria);
 		
 		txtpiastra = new JTextField();
 		txtpiastra.setForeground(new Color(255, 0, 0));
 		txtpiastra.setEditable(false);
-		txtpiastra.setFont(new Font("Arial", Font.BOLD, 14));
-		txtpiastra.setBounds(49, 51, 543, 35);
+		txtpiastra.setFont(new Font("Arial", Font.BOLD, 20));
+		txtpiastra.setBounds(49, 51, 233, 46);
 		contentPane.add(txtpiastra);
 		txtpiastra.setColumns(10);
 		
 		try {
 			txtpiastra.setText(dbcommand.leggiGreenCode().getGreencode());
+			txtNomeBatteria.setText(dbcommand.leggiGreenCode().getNome());
 		}catch(Exception j) {
 			log.write("WinSetGrennCode. Errore impostazioni greencode letto");
 			System.out.println("WinSetGrennCode. Errore impostazioni greencode letto");
 		}
 			
 		
-		JLabel lblNewLabel = new JLabel("BATTERIA IN PRODUZIONE");
-		lblNewLabel.setForeground(SystemColor.controlDkShadow);
+		JLabel lblNewLabel = new JLabel("CODICE ATTUALMENTE IMPOSTATO");
+		lblNewLabel.setForeground(Color.BLACK);
 		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 12));
-		lblNewLabel.setBounds(49, 21, 182, 29);
+		lblNewLabel.setBounds(49, 21, 346, 29);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblPiastraDaProdurre = new JLabel("BATTERIA DA PRODURRE");
-		lblPiastraDaProdurre.setForeground(SystemColor.controlDkShadow);
+		JLabel lblPiastraDaProdurre = new JLabel("CODICE DA IMPOSTARE");
+		lblPiastraDaProdurre.setForeground(Color.BLACK);
 		lblPiastraDaProdurre.setFont(new Font("Arial", Font.BOLD, 12));
-		lblPiastraDaProdurre.setBounds(49, 97, 182, 29);
+		lblPiastraDaProdurre.setBounds(49, 103, 288, 23);
 		contentPane.add(lblPiastraDaProdurre);
+		
+		
 	}
-	
-	
-	
-	
-	
-	
-	
 }//fine classe

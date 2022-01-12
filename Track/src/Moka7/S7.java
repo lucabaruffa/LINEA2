@@ -219,7 +219,7 @@ public class S7 {
         Buffer[Pos+1] = (byte) (Word & 0x00FF);
     }  
     
-    //funzione implementata il 11/01/2021
+    //funzione implementata il 11/01/2021 BARUFFA LUCA
     public static void SetcCharAt(byte[] Buffer, int Pos, short Value)
     {
     	//new String(Value).getBytes("UTF-8");
@@ -227,7 +227,20 @@ public class S7 {
        
         //Buffer[Pos]   = (byte) (Word >> 8);
         Buffer[Pos] =  (byte)Value;//ByteToBCD(Value);//(byte) (Word & 0x00FF);
-    }  
+    }
+    
+  //funzione implementata il 12/01/2022 BARUFFA LUCA
+    public static void SetString(byte[] Buffer, int Pos, String Value)
+    {
+    	
+        //Buffer[Pos] =  (byte)Value;//ByteToBCD(Value);//(byte) (Word & 0x00FF);
+    	char[] bufferTmp = Value.toCharArray();
+    	byte[] b = new byte[bufferTmp.length];
+    	 for (int i = 0; i < b.length; i++) {
+    		 Buffer[Pos+i] = (byte) bufferTmp[i];
+    	 }
+    	
+    }
     
     public static void SetShortAt(byte[] Buffer, int Pos, int Value)
     {

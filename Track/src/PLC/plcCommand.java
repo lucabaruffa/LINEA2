@@ -183,7 +183,7 @@ public class plcCommand    {
     public void DBWrite(int db_w)
     {
     	
-    	int Result = Client.WriteArea(S7.S7AreaDB, DB, 0, DataToMove, Buffer);
+    	int Result = Client.WriteArea(S7.S7AreaDB, db_w, 0, DataToMove, Buffer);
         if (Result==0)
         {
         	//log.write("DB "+DB+" succesfully written ");
@@ -334,40 +334,39 @@ public class plcCommand    {
 		   		  
 			int indirizzo_start = 0;
 			
-			System.out.println("Tento la scittura green:" + green.getGreencode()+"   -- nome:" + green.getNome());
+			System.out.println("337: Tento la scittura green:" + green.getGreencode()+"   -- nome:" + green.getNome());
 	   			   			   		   
 	   		//S7.SetDateAt(Buffer, indirizzo_start , date);
-	   		   
-	   		int db = Setting.DB_POSTAZIONE_CONTROLLO1;
-	  	
+	   		
 	   		String code = green.getGreencode();
 	   		String nome = green.getNome();
-	   		//byte[] buf = new byte[26];//code.getBytes();
-	   		//log.write("readerplc line1277-> mi accingo a scrivere il risultato nel db. Batteria:" + code);
-	   		//code = "123456789101";
 	   		
-	   		for (int i = 0; i < code.length(); i++) {
-	        	
-	            if (code.charAt(i) <= ' ') {
-	               break;
-	            }else {
-	              
-		            // S7.SetShortAt(Buffer, indirizzo_start, Integer.parseInt(String.valueOf(code.charAt(i))));
-		            // S7.SetcCharAt(Buffer, indirizzo_start, (String.valueOf(code.charAt(i))));
-		            S7.SetcCharAt(Buffer, indirizzo_start, Short.parseShort(String.valueOf(code.charAt(i))));
-		            //S7.SetcCharAt(Buffer, Pos, Value);
-		           
-		            indirizzo_start +=1;	
-	            
-	            }//fine else
+	   		
+	   		
+	   		
+	   		for (int i = code.length() ; i < 10; i++) {
+	   			code +="0";
 	        }////fine for
 	   		
+	   		for (int i = nome.length() ; i < 30; i++) {
+	   			nome +=" ";
+	        }////fine for
+	   		
+	   		S7.SetString(Buffer, indirizzo_start, code);
+            System.out.println("361: Tento di scrivere sul plc :" + new String(Buffer));
+            
+            indirizzo_start = indirizzo_start + 10;
+	   		
+            
+            S7.SetString(Buffer, indirizzo_start, nome);
+            System.out.println("373: Tento di scrivere sul plc :" + new String(Buffer));
 	   		
 	   		try {
 	   			DBWrite(DB); //inizio, dimensioni
 	   			return true;
 	   		}catch(Exception h) {
-	   			log.write("plcCommand -> Errore scrittura batteria sul plc. DB="+db+" : ERR=" + h.toString());
+	   			log.write("plcCommand -> Errore scrittura batteria sul plc. DB="+DB+" : ERR=" + h.toString());
+	   			System.out.println("plcCommand -> Errore scrittura batteria sul plc. DB="+DB+" : ERR=" + h.toString());
 	   		}
 	   		
 	   		return false;
