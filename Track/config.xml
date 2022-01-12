@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>CONFIGURAZIONE LINEA 2</comment>
+<entry key="rack">0</entry>
+<entry key="numerostazioniattive">10</entry>
+<entry key="tipoconnessione">OP</entry>
+<entry key="slot">1</entry>
+<entry key="db10">140</entry>
+<entry key="db3">133</entry>
+<entry key="ipdb">etpserver.fiamm.dom</entry>
+<entry key="db2">132</entry>
+<entry key="db5">135</entry>
+<entry key="db4">134</entry>
+<entry key="db7">137</entry>
+<entry key="db6">136</entry>
+<entry key="db9">139</entry>
+<entry key="db8">138</entry>
+<entry key="ipplc">100.100.2.1</entry>
+<entry key="passworddb">matrox02</entry>
+<entry key="db">131</entry>
+<entry key="usernamedb">luca</entry>
+<entry key="BTX12_min_acido">782</entry>
+<entry key="BTX12_max_acido">818</entry>
+<entry key="BTX14_min_acido">915</entry>
+<entry key="BTX14_max_acido">951</entry>
+</properties>
