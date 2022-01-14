@@ -60,9 +60,10 @@ public class Setting {
 	//EMAIL
 	public static String EMAIL_QUALITA = "agostino.caldaroni@fiamm.com";
 	public static String EMAIL_CAPOTURNO = "capoturnoupi2@fiamm.com";
-	public static String EMAIL_TUTTI = "LUCA.BARUFFA@FIAMM.COM";
+	public static String EMAIL_TUTTI = "agostino.caldaroni@fiamm.com;capoturnoupi2@fiamm.com;LUCA.BARUFFA@FIAMM.COM";
 	public static String EMAIL_SISTEMISTA = "LUCA.BARUFFA@fiamm.com";
 	public static String EMAIL_ELETTRICISTA = "OSVALDO.LELLI@fiamm.com;LUCA.PAVONI@FIAMM.COM";
+	public static String EMAIL_ALLERTA = "Domenico.Cutillo@fiamm.com;Gianluca.Pupparo@fiamm.com;Cristian.Desiato@fiamm.com;Maurizio.Marinetti@fiamm.com;Agostino.Caldaroni@fiamm.com;antonio.roncone@fiamm.com;Ermanno.DeMeis@fiamm.com";
 	
 		
 	//SEZIONE ERRORI
@@ -137,6 +138,7 @@ public class Setting {
 	public static List<greenCode> listaGreenCode = new ArrayList<>();
 	public static String LINEA = "Linea 2";
 	public static int DBGREENCODE = 5021; //5020;
+	public static JTextField txtTipologiaBatteria;
 	
 	/**
 	 * @return the data_ultimo_aggiornamento

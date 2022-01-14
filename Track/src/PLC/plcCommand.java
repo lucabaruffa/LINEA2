@@ -39,7 +39,7 @@ public class plcCommand    {
 	public int Rack = 0; 
 	public int Slot = 1; 
     public final S7Client Client = new S7Client();
-    public int DataToMove=40; // contiene la dimensione del DB connesso
+    public int DataToMove=48; // contiene la dimensione del DB connesso
     private int DB = -1; // db
     private int CurrentStatus = S7.S7CpuStatusUnknown;
     private int sleep = Setting.TIMER_SLEEP_READERPLC;  //tempo di ciclo
@@ -79,8 +79,6 @@ public class plcCommand    {
 			
 			long startTime = System.nanoTime();
 			
-			
-			//leggiArrayBatterie();
 			ShowStatus();
 				
 			long endTime = System.nanoTime();
@@ -262,10 +260,48 @@ public class plcCommand    {
 			} 
 	        
 	      */
+	        //tento di aggiornare txt home.
 	        
 	        log.write("plcReader -> GREEN : " + green +"  -- nome: " + nome);
 	       
 	        return green;
+	        	
+	        
+	    	
+	    }//fine leggi Array
+	 
+	 
+	 public String leggiGreenCodeHome() {
+	    	
+		 	String ritorno="";
+		 
+		    int offset_DBAREA = 0;	
+	  	    DBRead(0);
+	        	
+	  	  log.write("plcCommand -> Tento lettura dal plc del greencode impostato. ");
+	  	    
+	        String codice = S7.GetStringAt(Buffer, offset_DBAREA ,10).trim();
+	        offset_DBAREA += 10;
+	        
+	        String nome = S7.GetStringAt(Buffer, offset_DBAREA ,30).trim();
+	        
+	        ritorno = codice +" " +  nome;
+	        
+	       	
+	        //timestamp = (S7.GetDateAt(Buffer, offset_DBAREA )).toString();
+	        	
+	       /*	
+	        try {
+				data.setTime(sdf.parse(timestamp));
+				//log.write("leggo la data :" + timestamp);
+			} catch (ParseException e1) {
+				log.write("readerPLC - Errore parsing data 331 : " + e1.toString());
+			} 
+	        
+	      */
+	        //tento di aggiornare txt home.
+	       
+	        return ritorno;
 	        	
 	        
 	    	

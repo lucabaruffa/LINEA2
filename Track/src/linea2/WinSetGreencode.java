@@ -121,13 +121,17 @@ public class WinSetGreencode extends JFrame {
 					JOptionPane.showMessageDialog(contentPane, "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 					txtpiastra.setText("errore");
 					txtNomeBatteria.setText("errore");
+					//String cod = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[0];
+					//String nom = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[1];
+					Setting.txtTipologiaBatteria.setText("Errore invio codice marcatore");
 				}else {
 					JOptionPane.showMessageDialog(contentPane, "Codice inviato correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
 					String cod = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[0];
 					String nom = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[1];
 					txtpiastra.setText(cod);
 					txtNomeBatteria.setText(nom);
-				}
+					Setting.txtTipologiaBatteria.setText(cod + " / " + nom);
+				}//fine else
 			}
 		});
 		btnAvvio.setBackground(new Color(152, 251, 152));
@@ -165,8 +169,9 @@ public class WinSetGreencode extends JFrame {
 		txtpiastra.setColumns(10);
 		
 		try {
-			txtpiastra.setText(dbcommand.leggiGreenCode().getGreencode());
-			txtNomeBatteria.setText(dbcommand.leggiGreenCode().getNome());
+			greenCode green = dbcommand.leggiGreenCode();
+			txtpiastra.setText(green.getGreencode());
+			txtNomeBatteria.setText(green.getNome());
 		}catch(Exception j) {
 			log.write("WinSetGrennCode. Errore impostazioni greencode letto");
 			System.out.println("WinSetGrennCode. Errore impostazioni greencode letto");

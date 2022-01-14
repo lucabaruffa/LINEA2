@@ -73,6 +73,7 @@ import DB.DBCommand;
 import DB.SenderDB;
 import Moka7.S7;
 import PLC.ConfiguratorePLc;
+import PLC.plcCommand;
 import View.Scarti;
 import View.View_Impostazioni_PLC;
 
@@ -91,7 +92,11 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.awt.Window.Type;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+
 import java.awt.FlowLayout;
 import javax.swing.JToggleButton;
 
@@ -267,6 +272,12 @@ public class main  {
 	private BufferedImage wPic;
 	private BufferedImage icona_pulsante_controllo;
 	private BufferedImage icona_pulsante_controllo_off;
+	private BufferedImage icona_pulsante_cambio_codice;
+	private BufferedImage icona_pulsante_lettori;
+	private BufferedImage icona_pulsante_viewer;
+	private JTextField txtTipoBatteria;
+	
+	
 	
 
 	public static void main(String[] args) {
@@ -379,6 +390,9 @@ public class main  {
 		try {
 			icona_pulsante_controllo = ImageIO.read(this.getClass().getResource("/resource/btn_on.jpg"));
 			icona_pulsante_controllo_off = ImageIO.read(this.getClass().getResource("/resource/btn_off.jpg"));
+			icona_pulsante_cambio_codice = ImageIO.read(this.getClass().getResource("/resource/icon_laser.png"));
+			icona_pulsante_lettori = ImageIO.read(this.getClass().getResource("/resource/scanner.png"));
+			icona_pulsante_viewer = ImageIO.read(this.getClass().getResource("/resource/occhio.png"));
 		} catch (IOException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -394,7 +408,6 @@ public class main  {
 				 //fine runnable2
 				
 				//AVVIO runnable2
-
 		Thread t3 = new Thread(runnable3);	
 		t3.start();
 		*/
@@ -2116,10 +2129,10 @@ public class main  {
 		
 		
 		try {
-			wPic = ImageIO.read(this.getClass().getResource("/resource/banner.jpg"));
+			wPic = ImageIO.read(this.getClass().getResource("/resource/evidon1.png"));
 			banner = new JLabel(new ImageIcon(wPic));
 			banner.setHorizontalAlignment(SwingConstants.LEFT);
-			banner.setBounds(10, 0, 1521, 72);
+			banner.setBounds(0, -11, 407, 94);
 			frmPlc.getContentPane().add(banner);
 			
 			search = new JTextField();
@@ -2185,6 +2198,18 @@ public class main  {
 		timestatoLinea10.setBounds(10, 688, 165, 20);
 		panel_1.add(timestatoLinea10);
 		
+		
+		txtTipoBatteria = new JTextField();
+		txtTipoBatteria.setBorder(BorderFactory.createEmptyBorder());
+		txtTipoBatteria.setBackground(SystemColor.inactiveCaptionBorder);
+		txtTipoBatteria.setHorizontalAlignment(SwingConstants.CENTER);
+		txtTipoBatteria.setForeground(Color.RED);
+		txtTipoBatteria.setFont(new Font("Arial", Font.BOLD, 30));
+		txtTipoBatteria.setEditable(false);
+		txtTipoBatteria.setBounds(405, 0, 1286, 84);
+		frmPlc.getContentPane().add(txtTipoBatteria);
+		txtTipoBatteria.setColumns(10);
+		setting.txtTipologiaBatteria = txtTipoBatteria;
 		
 		Date date = new Date(System.currentTimeMillis());
 		SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd");
@@ -2299,7 +2324,7 @@ public class main  {
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.inactiveCaptionBorder);
-		panel_3.setBounds(210, 83, 146, 384);
+		panel_3.setBounds(210, 83, 152, 384);
 		frmPlc.getContentPane().add(panel_3);
 		panel_3.setLayout(null);
 		
@@ -2385,7 +2410,7 @@ public class main  {
 		o_data.setText("Mer 25/11/2020");
 		o_data.setFont(new Font("Arial", Font.ITALIC, 14));
 		o_data.setBackground(SystemColor.inactiveCaptionBorder);
-		o_data.setBounds(1541, 0, 150, 31);
+		o_data.setBounds(1701, 0, 200, 31);
 		frmPlc.getContentPane().add(o_data);
 		o_data.setColumns(10);
 		
@@ -2395,7 +2420,7 @@ public class main  {
 		o_ora.setHorizontalAlignment(SwingConstants.CENTER);
 		o_ora.setText("--:--");
 		o_ora.setBackground(SystemColor.inactiveCaptionBorder);
-		o_ora.setBounds(1541, 28, 150, 52);
+		o_ora.setBounds(1701, 28, 200, 52);
 		frmPlc.getContentPane().add(o_ora);
 		o_ora.setColumns(10);
 		
@@ -2492,6 +2517,7 @@ public class main  {
 		setting.setLabelBatterieScartate(numeroBatterieScarto);
 		
 		lblConfiguratorePlc = new JLabel("CONFIGURATORE PLC");
+		
 		lblConfiguratorePlc.setHorizontalAlignment(SwingConstants.LEFT);
 		lblConfiguratorePlc.setBounds(10, 907, 143, 14);
 		frmPlc.getContentPane().add(lblConfiguratorePlc);
@@ -2500,22 +2526,54 @@ public class main  {
 		stato_configuratore_plc.setEditable(false);
 		stato_configuratore_plc.setColumns(10);
 		stato_configuratore_plc.setBounds(10, 921, 183, 20);
+		
+		//
+		
 		frmPlc.getContentPane().add(stato_configuratore_plc);
 		
 		
-		JButton btnNewButton_3_2_2 = new JButton("CAMBIO BATTERIA");
-		btnNewButton_3_2_2.addMouseListener(new MouseAdapter() {
+		JButton btnCambioCodice = new JButton("CAMBIO CODICE");
+		btnCambioCodice.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				WinSetGreencode frame = new WinSetGreencode();
 			}
 		});
-		btnNewButton_3_2_2.setFont(new Font("Segoe UI", Font.BOLD, 11));
-		btnNewButton_3_2_2.setBackground(new Color(102, 204, 0));
-		btnNewButton_3_2_2.setBounds(1701, 582, 200, 108);
-		frmPlc.getContentPane().add(btnNewButton_3_2_2);
+		btnCambioCodice.setFont(new Font("Segoe UI", Font.BOLD, 11));
+		btnCambioCodice.setBackground(SystemColor.activeCaption);
+		btnCambioCodice.setBounds(1701, 130, 200, 84);
+		btnCambioCodice.setIcon(new ImageIcon(icona_pulsante_cambio_codice));
+		frmPlc.getContentPane().add(btnCambioCodice);
 		
-			
+		JButton btnImpostazioniPlc = new JButton("VIEWER");
+		btnImpostazioniPlc.setIcon(new ImageIcon(icona_pulsante_viewer));
+		btnImpostazioniPlc.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				Scarti viewer = new Scarti("INIT");
+			}
+		});
+		btnImpostazioniPlc.setFont(new Font("Segoe UI", Font.BOLD, 11));
+		btnImpostazioniPlc.setBackground(SystemColor.activeCaption);
+		btnImpostazioniPlc.setBounds(1701, 325, 200, 84);
+		frmPlc.getContentPane().add(btnImpostazioniPlc);	
+		
+				
+		JButton btnViewer = new JButton("SETUP LETTORI");
+		btnViewer.setIcon(new ImageIcon(icona_pulsante_lettori));
+		btnViewer.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				WinConfigurazioneLinea frame = new WinConfigurazioneLinea(monitor);
+				frame.setVisible(true);
+			}
+		});
+		btnViewer.setFont(new Font("Segoe UI", Font.BOLD, 11));
+		btnViewer.setBackground(SystemColor.activeCaption);
+		btnViewer.setBounds(1701, 225, 200, 84);
+		frmPlc.getContentPane().add(btnViewer);	
+		
+		
 			
 			JButton btnNewButton_3 = new JButton("CHIAMATA AL CAPOTURNO");
 			btnNewButton_3.addMouseListener(new MouseAdapter() {
@@ -2526,8 +2584,8 @@ public class main  {
 				}
 			});
 			btnNewButton_3.setFont(new Font("Segoe UI", Font.BOLD, 11));
-			btnNewButton_3.setBackground(new Color(102, 205, 170));
-			btnNewButton_3.setBounds(1701, 13, 200, 114);
+			btnNewButton_3.setBackground(new Color(0, 191, 255));
+			btnNewButton_3.setBounds(1701, 522, 200, 60);
 			frmPlc.getContentPane().add(btnNewButton_3);
 			
 			JButton btnNewButton_3_1 = new JButton("CHIAMATA AL RESP. QUALITA'");
@@ -2540,7 +2598,7 @@ public class main  {
 			});
 			btnNewButton_3_1.setFont(new Font("Segoe UI", Font.BOLD, 11));
 			btnNewButton_3_1.setBackground(new Color(0, 191, 255));
-			btnNewButton_3_1.setBounds(1701, 138, 200, 114);
+			btnNewButton_3_1.setBounds(1701, 593, 200, 60);
 			frmPlc.getContentPane().add(btnNewButton_3_1);
 			
 			btnNewButton_3_2 = new JButton("ASSISTENZA ELETTRICA/PLC");
@@ -2552,8 +2610,8 @@ public class main  {
 				}
 			});
 			btnNewButton_3_2.setFont(new Font("Segoe UI", Font.BOLD, 11));
-			btnNewButton_3_2.setBackground(new Color(255, 215, 0));
-			btnNewButton_3_2.setBounds(1701, 263, 200, 72);
+			btnNewButton_3_2.setBackground(new Color(0, 191, 255));
+			btnNewButton_3_2.setBounds(1701, 664, 200, 60);
 			frmPlc.getContentPane().add(btnNewButton_3_2);
 			
 			
@@ -2562,11 +2620,10 @@ public class main  {
 			btn_abilitazione_10.setBorderPainted(false);
 			btn_abilitazione_10.setBounds(1711, 862, 169, 84);
 			btn_abilitazione_10.setIcon(new ImageIcon(icona_pulsante_controllo));
-			//btn_abilitazione_10.setDisabledIcon(new ImageIcon(icona_pulsante_controllo_off));
 			btn_abilitazione_10.setSelected(true);
-			//btn_abilitazione_10.setFont(new Font("Tahoma", Font.PLAIN, 8));
 			
 			
+			/*
 			btn_abilitazione_10.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
 					if (btn_abilitazione_10.isSelected()) {
@@ -2583,6 +2640,8 @@ public class main  {
 			        	
 				}
 			});
+			*/
+			
 			btn_abilitazione_10.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -2609,19 +2668,6 @@ public class main  {
 			//btn_abilitazione_10.setSelectedIcon(new ImageIcon("/resource/img_control.jpg"));
 			frmPlc.getContentPane().add(btn_abilitazione_10);
 			
-			
-			JButton btnNewButton_3_2_1 = new JButton("TEST");
-			btnNewButton_3_2_1.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					new DBCommand(true).invia_segnalazione("CONTROLLO LINEA 2","TEST!",Setting.EMAIL_SISTEMISTA);
-				}
-			});
-			btnNewButton_3_2_1.setFont(new Font("Segoe UI", Font.BOLD, 11));
-			btnNewButton_3_2_1.setBackground(Color.LIGHT_GRAY);
-			btnNewButton_3_2_1.setBounds(1701, 346, 200, 52);
-			frmPlc.getContentPane().add(btnNewButton_3_2_1);
-			
 			JLabel lblNewLabel_4 = new JLabel("CONTROLLO FINALE");
 			lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel_4.setFont(new Font("Arial", Font.BOLD, 14));
@@ -2630,10 +2676,7 @@ public class main  {
 			
 			try {
 				
-				
-				
 				frame.caricaDatiConfigurazionePostazioneInterblocco(btn_abilitazione_10);
-				
 				
 				
 				
@@ -2645,6 +2688,15 @@ public class main  {
 			mntmNewMenuItem.setEnabled(false); //il pulsante 'connetti' viene disabilitato
 			
 			start();
+			
+				try {
+					txtTipoBatteria.setText(new plcCommand().leggiGreenCodeHome());
+					
+					
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			
 			//new DBCommand(true).invia_segnalazione("CONTROLLO LINEA 3","PROGRAMMA DI CONTROLLO AVVIATO!",Setting.EMAIL_TUTTI);
 	
@@ -2856,7 +2908,6 @@ private void start() {
 			
 		//MOMENATANEAMENTE DISABILITATO
 		/*	
-
 			configuratore_plc = new ConfiguratorePLc(stato_configuratore_plc);
 			try {
 				configuratore_plc.inizializza();
@@ -2939,5 +2990,3 @@ class Activator{
 
 
 }//fine class Activator
-
-

@@ -670,19 +670,11 @@ public void salvaDatiConfigurazionePostazioneInterblocco(JToggleButton btn_scart
 	
 	dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].spare1 = 0;
 	dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].spare2 = 0;
-	//------------------------------------------------------------
-	
+		
 	configuratore.setListaAtomoConfigurazione(dateList.clone());
 	
 	log.write("WinConfigurazione - Fine salvataggio ");
-	/*
-	try {
-		//caricaDatiConfigurazionePostazioneInterblocco(btn_scarto);
-	} catch (Exception e) {
-		log.write("WinConfigurazione - ERRORE LETTURA DOPO SCRITTURA salvaDatiInterblocco\n");
-		e.printStackTrace();
-	}
-	*/	
+	
 	JOptionPane.showMessageDialog(getContentPane(), "CONTROLLO MODIFICATO!","ATTENZIONE",JOptionPane.WARNING_MESSAGE);
 
 
