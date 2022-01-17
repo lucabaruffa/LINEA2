@@ -2545,7 +2545,7 @@ public class main  {
 		btnCambioCodice.setIcon(new ImageIcon(icona_pulsante_cambio_codice));
 		frmPlc.getContentPane().add(btnCambioCodice);
 		
-		JButton btnImpostazioniPlc = new JButton("VIEWER");
+		JButton btnImpostazioniPlc = new JButton("VIEWER        ");
 		btnImpostazioniPlc.setIcon(new ImageIcon(icona_pulsante_viewer));
 		btnImpostazioniPlc.addMouseListener(new MouseAdapter() {
 			@Override
