@@ -2204,7 +2204,7 @@ public class main  {
 		txtTipoBatteria.setBackground(SystemColor.inactiveCaptionBorder);
 		txtTipoBatteria.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTipoBatteria.setForeground(Color.RED);
-		txtTipoBatteria.setFont(new Font("Arial", Font.BOLD, 30));
+		txtTipoBatteria.setFont(new Font("Arial", Font.BOLD, 48));
 		txtTipoBatteria.setEditable(false);
 		txtTipoBatteria.setBounds(405, 0, 1286, 84);
 		frmPlc.getContentPane().add(txtTipoBatteria);
