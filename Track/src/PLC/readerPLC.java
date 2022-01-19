@@ -119,7 +119,7 @@ public class readerPLC implements Runnable   {
 		indicatore = ind;
 		array = arrayBat;
 		
-		check = new CheckControl(false);
+		check = new CheckControl();
 		
 		try {
 			dax.setTime((sdf.parse(tempo_ultima_batteria)));
@@ -130,7 +130,7 @@ public class readerPLC implements Runnable   {
     	
 		
 		try {
-			setting = new Setting();
+			setting = new Setting(false); //non reinizializzo setting
 		} catch (Exception e) {
 			log.write("ERRORE CARICAMENTO CONFIGURAZIONE NEL MODULO readerPLC\n");
 			e.printStackTrace();
@@ -440,7 +440,7 @@ public class readerPLC implements Runnable   {
 				    	        				//log.write("Reader PLc -> postazione 10 arrivo batteria :" + cod_batteria);
 								    	        				try {
 								    	        					tempo_ultima_batteria = timestamp;
-								    	        					log.write("Reader PLc line444-> - timestamp =" + timestamp);
+								    	        					//log.write("Reader PLc line444-> - timestamp =" + timestamp);
 								    	        					
 								    	        					scriviRisultatoScartoPostazione(batteria);
 								    	        					

@@ -3,7 +3,7 @@
 <properties>
 <comment>CONFIGURAZIONE LINEA 2</comment>
 <entry key="rack">0</entry>
-<entry key="numerostazioniattive">10</entry>
+<entry key="numerostazioniattive">8</entry>
 <entry key="tipoconnessione">OP</entry>
 <entry key="slot">1</entry>
 <entry key="db10">140</entry>
@@ -24,5 +24,5 @@
 <entry key="BTX12_max_acido">818</entry>
 <entry key="BTX14_min_acido">915</entry>
 <entry key="BTX14_max_acido">951</entry>
-<entry key="dbgreencode">5021</entry>
+<entry key="dbgreencode">5020</entry>
 </properties>

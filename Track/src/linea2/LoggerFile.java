@@ -31,13 +31,15 @@ public class LoggerFile {
 		        if (filedir.mkdirs()) {
 		            System.out.println("Directory is created!");
 		        } else {
-		            System.out.println("Failed to create directory!");
+		            //System.out.println("Failed to create directory!");
 		        }
 			
 			
 			File file = new File(path);
-			if (file.exists())
-				System.out.println("Il file " + path + " esiste");
+			if (file.exists()) {
+				//System.out.println("Il file " + path + " esiste");
+			}
+				
 			else if (file.createNewFile())
 				System.out.println("Il file " + path + " è stato creato");
 			else
@@ -151,7 +153,7 @@ public static void readBatterieBloccate(JTextArea monitor) {
 	 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 
 }//fine read

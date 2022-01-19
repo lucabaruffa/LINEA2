@@ -65,7 +65,7 @@ public class Indicatore {
 						public void run() {
 							batteria.setBackground(coloreTransizione);
 							try {
-								Thread.sleep(300);
+								Thread.sleep(500);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
@@ -96,7 +96,7 @@ public class Indicatore {
 						public void run() {
 							batteriaZero.setBackground(coloreTransizione);
 							try {
-								Thread.sleep(300);
+								Thread.sleep(500);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
@@ -131,7 +131,7 @@ public class Indicatore {
 						public void run() {
 							conteggio.setBackground(coloreTransizione);
 							try {
-								Thread.sleep(300);
+								Thread.sleep(500);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}

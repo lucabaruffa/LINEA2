@@ -113,7 +113,7 @@ public class Setting {
 	//timeout query
 	public static int timeout_query = 5000; //ms oltre il quale la query genere timeout
 	
-	public static int time_update_sender_db = 1000; //ms . tempo di refresh di senderDB
+	public static int time_update_sender_db = 3000; //ms . tempo di refresh di senderDB
 	
 	private static JTextField areaErrore;
 	private static JButton codice_batteria_scartata ;
@@ -137,8 +137,9 @@ public class Setting {
 	
 	public static List<greenCode> listaGreenCode = new ArrayList<>();
 	public static String LINEA = "Linea 2";
-	public static int DBGREENCODE = 5021; //5020;
+	public static int DBGREENCODE = 5020; //5020;
 	public static JTextField txtTipologiaBatteria;
+	public static long startTime=0;
 	
 	/**
 	 * @return the data_ultimo_aggiornamento
@@ -158,21 +159,28 @@ public class Setting {
 
 	public Setting() throws Exception
 	{
-		caricaConfigurazione();
+		//long adesso = System.nanoTime();
+		//if (((adesso - startTime)/1000000000) > 10) {
+			caricaConfigurazione();
+			startTime = System.nanoTime();
+			System.out.println("Setting AVVIO");
+		//}else {
+			//System.out.println("Loader Setting. Sono passati meno di 10 secondi. NON RICARICO");
+			
+		//}
 		
 	}//setting
 	
 	
 	public Setting(boolean tmp) throws Exception
 	{
+		System.out.println("Setting CON parametro");
 		//carico da qui se devo prelevare informazioni quando la configurazione è già stata caricata
 		
 	}//setting
 	
 	
 	public void WriteProperties(String var1, String value1,String var2, String value2) {
-		
-		
         try {
         	
         	File configFile = new File("value.xml");

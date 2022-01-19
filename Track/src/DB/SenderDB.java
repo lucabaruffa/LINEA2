@@ -55,7 +55,7 @@ public class SenderDB implements Runnable {
 		
 	
 		try {
-			setting = new Setting();
+			setting = new Setting(false);
 		} catch (Exception e) {
 			log.write("ERRORE CARICAMENTO CONFIGURAZIONE. Line 49");
 			e.printStackTrace();

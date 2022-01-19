@@ -31,8 +31,6 @@ public class WinConfigurazioneLinea extends JFrame {
 	private JToggleButton btn_scarto_5;
 	private JToggleButton btn_scarto_6;
 	private JToggleButton btn_scarto_7;
-	private JToggleButton btn_scarto_8;
-	private JToggleButton btn_scarto_9;
 	private JToggleButton btn_scarto_10;
 	
 	private JToggleButton btn_lettore_1;
@@ -42,8 +40,6 @@ public class WinConfigurazioneLinea extends JFrame {
 	private JToggleButton btn_lettore_5;
 	private JToggleButton btn_lettore_6;
 	private JToggleButton btn_lettore_7;
-	private JToggleButton btn_lettore_8;
-	private JToggleButton btn_lettore_9;
 	private JToggleButton btn_lettore_10;
 	
 	private AtomoConfigurazioneLinea[] dateList = new AtomoConfigurazioneLinea[50];
@@ -56,14 +52,16 @@ public class WinConfigurazioneLinea extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	
 	public WinConfigurazioneLinea() {
 		
 	}
 	/*
 	 * Create the frame.
 	 */
+
 	public WinConfigurazioneLinea(JTextArea m) {
-		setBounds(70, 70, 899, 568);
+		setBounds(70, 70, 899, 530);
 		setTitle("IMPOSTAZIONI LINEA");
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
@@ -87,12 +85,6 @@ public class WinConfigurazioneLinea extends JFrame {
 		lblPostazione_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblPostazione_1.setBounds(35, 195, 86, 14);
 		getContentPane().add(lblPostazione_1);
-		
-		JLabel lblPostazione_2 = new JLabel("BILANCIA 1");
-		lblPostazione_2.setForeground(new Color(128, 0, 0));
-		lblPostazione_2.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPostazione_2.setBounds(507, 295, 86, 14);
-		getContentPane().add(lblPostazione_2);
 		
 		btn_scarto_1 = new JToggleButton("SCARTO DISATTIVATO");
 		btn_scarto_1.addChangeListener(new ChangeListener() {
@@ -122,16 +114,10 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_1.setBounds(217, 36, 172, 32);
 		getContentPane().add(btn_lettore_1);
 		
-		JLabel lblPostazione_2_1 = new JLabel("BILANCIA 2");
-		lblPostazione_2_1.setForeground(new Color(128, 0, 0));
-		lblPostazione_2_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPostazione_2_1.setBounds(35, 386, 86, 14);
-		getContentPane().add(lblPostazione_2_1);
-		
 		JLabel lblPostazione_2_2 = new JLabel("VERIFICA");
 		lblPostazione_2_2.setForeground(new Color(128, 0, 0));
 		lblPostazione_2_2.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPostazione_2_2.setBounds(507, 386, 100, 14);
+		lblPostazione_2_2.setBounds(507, 295, 100, 14);
 		getContentPane().add(lblPostazione_2_2);
 		
 		JLabel lblPostazione_2_3 = new JLabel("P. TENUTA 2");
@@ -320,60 +306,6 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_7.setBounds(217, 320, 172, 32);
 		getContentPane().add(btn_lettore_7);
 		
-		btn_scarto_8 = new JToggleButton("SCARTO DISATTIVATO");
-		btn_scarto_8.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (btn_scarto_8.isSelected())  
-					btn_scarto_8.setText("SCARTO ATTIVO");  
-		        else  
-		        	btn_scarto_8.setText("SCARTO DISATTIVATO"); 
-			}
-		});
-		btn_scarto_8.setBackground(Color.LIGHT_GRAY);
-		btn_scarto_8.setBounds(507, 320, 172, 32);
-		getContentPane().add(btn_scarto_8);
-		
-		btn_lettore_8 = new JToggleButton("LETTORE ATTIVO");
-		btn_lettore_8.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (btn_lettore_8.isSelected())  
-					btn_lettore_8.setText("LETTORE ATTIVO");  
-		        else  
-		        	btn_lettore_8.setText("LETTORE DISATTIVATO");
-			}
-		});
-		btn_lettore_8.setSelected(true);
-		btn_lettore_8.setBackground(Color.LIGHT_GRAY);
-		btn_lettore_8.setBounds(689, 320, 172, 32);
-		getContentPane().add(btn_lettore_8);
-		
-		btn_scarto_9 = new JToggleButton("SCARTO DISATTIVATO");
-		btn_scarto_9.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (btn_scarto_9.isSelected())  
-					btn_scarto_9.setText("SCARTO ATTIVO");  
-		        else  
-		        	btn_scarto_9.setText("SCARTO DISATTIVATO"); 
-			}
-		});
-		btn_scarto_9.setBackground(Color.LIGHT_GRAY);
-		btn_scarto_9.setBounds(35, 411, 172, 32);
-		getContentPane().add(btn_scarto_9);
-		
-		btn_lettore_9 = new JToggleButton("LETTORE ATTIVO");
-		btn_lettore_9.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (btn_lettore_9.isSelected())  
-					btn_lettore_9.setText("LETTORE ATTIVO");  
-		        else  
-		        	btn_lettore_9.setText("LETTORE DISATTIVATO");
-			}
-		});
-		btn_lettore_9.setSelected(true);
-		btn_lettore_9.setBackground(Color.LIGHT_GRAY);
-		btn_lettore_9.setBounds(217, 411, 172, 32);
-		getContentPane().add(btn_lettore_9);
-		
 		btn_scarto_10 = new JToggleButton("SCARTO DISATTIVATO");
 		btn_scarto_10.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -384,7 +316,7 @@ public class WinConfigurazioneLinea extends JFrame {
 			}
 		});
 		btn_scarto_10.setBackground(Color.LIGHT_GRAY);
-		btn_scarto_10.setBounds(507, 411, 172, 32);
+		btn_scarto_10.setBounds(507, 320, 172, 32);
 		getContentPane().add(btn_scarto_10);
 		
 		btn_lettore_10 = new JToggleButton("LETTORE ATTIVO");
@@ -398,7 +330,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		});
 		btn_lettore_10.setSelected(true);
 		btn_lettore_10.setBackground(Color.LIGHT_GRAY);
-		btn_lettore_10.setBounds(689, 411, 172, 32);
+		btn_lettore_10.setBounds(689, 320, 172, 32);
 		getContentPane().add(btn_lettore_10);
 		
 		JButton btn_salva = new JButton("SALVA CONFIGURAZIONE");
@@ -409,14 +341,14 @@ public class WinConfigurazioneLinea extends JFrame {
 			}
 		});
 		btn_salva.setBackground(SystemColor.inactiveCaptionBorder);
-		btn_salva.setBounds(351, 486, 189, 32);
+		btn_salva.setBounds(351, 427, 189, 32);
 		getContentPane().add(btn_salva);
 		
 		statoconfigurazione = new JTextField();
 		statoconfigurazione.setForeground(new Color(165, 42, 42));
 		statoconfigurazione.setFont(new Font("Tahoma", Font.ITALIC, 10));
 		statoconfigurazione.setHorizontalAlignment(SwingConstants.RIGHT);
-		statoconfigurazione.setBounds(656, 492, 205, 20);
+		statoconfigurazione.setBounds(656, 433, 205, 20);
 		getContentPane().add(statoconfigurazione);
 		statoconfigurazione.setColumns(10);
 		
@@ -476,41 +408,48 @@ public class WinConfigurazioneLinea extends JFrame {
 			if(dateList[4].scartoabilitato>0) btn_scarto_5.setSelected(true);
 			else  btn_scarto_5.setSelected(false);
 			//------------------------------------------------------------
-			if(dateList[5].statoscanner>0) btn_lettore_6.setSelected(true);
-			else btn_lettore_6.setSelected(false);
-			
-			if(dateList[5].scartoabilitato>0) btn_scarto_6.setSelected(true);
-			else  btn_scarto_6.setSelected(false);
+			try {
+				if(dateList[5].statoscanner>0) btn_lettore_6.setSelected(true);
+				else btn_lettore_6.setSelected(false);
+				
+				if(dateList[5].scartoabilitato>0) btn_scarto_6.setSelected(true);
+				else  btn_scarto_6.setSelected(false);
+			} catch (Exception e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 			//------------------------------------------------------------
-			if(dateList[6].statoscanner>0) btn_lettore_7.setSelected(true);
-			else btn_lettore_7.setSelected(false);
-			
-			if(dateList[6].scartoabilitato>0) btn_scarto_7.setSelected(true);
-			else  btn_scarto_7.setSelected(false);
+			try {
+				if(dateList[6].statoscanner>0) btn_lettore_7.setSelected(true);
+				else btn_lettore_7.setSelected(false);
+				
+				if(dateList[6].scartoabilitato>0) btn_scarto_7.setSelected(true);
+				else  btn_scarto_7.setSelected(false);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			//------------------------------------------------------------
-			if(dateList[7].statoscanner>0) btn_lettore_8.setSelected(true);
-			else btn_lettore_8.setSelected(false);
-			
-			if(dateList[7].scartoabilitato>0) btn_scarto_8.setSelected(true);
-			else  btn_scarto_8.setSelected(false);
-			//------------------------------------------------------------
-			if(dateList[8].statoscanner>0) btn_lettore_9.setSelected(true);
-			else btn_lettore_9.setSelected(false);
-			
-			if(dateList[8].scartoabilitato>0) btn_scarto_9.setSelected(true);
-			else  btn_scarto_9.setSelected(false);
 			
 			//QUESTO PULSANTE FA ECCEZIONE. POSTAZIONE DI CONTROLLO
-			//------------------------------------------------------------
-			if(dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].statoscanner>0) btn_lettore_10.setSelected(true);
-			else btn_lettore_10.setSelected(false);
-			
-			if(dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].scartoabilitato>0) btn_scarto_10.setSelected(true);
-			else  btn_scarto_10.setSelected(false);
+			try {
+				
+				//------------------------------------------------------------
+				if (dateList[Setting.STAZIONE_DI_CONTROLLO_2 - 1].statoscanner > 0)
+					btn_lettore_10.setSelected(true);
+				else
+					btn_lettore_10.setSelected(false);
+				if (dateList[Setting.STAZIONE_DI_CONTROLLO_2 - 1].scartoabilitato > 0)
+					btn_scarto_10.setSelected(true);
+				else
+					btn_scarto_10.setSelected(false);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 			
 		}catch(Exception h) {
 			statoconfigurazione.setText("errore lista");
-			log.write("WinConfigurazione - Errore carica dati " + h.toString());
+			log.write("442 WinConfigurazione - Errore carica dati " + h.toString());
 		}
 		
 		log.write("WinConfigurazione - FINE caricamento configurazione ");
@@ -597,48 +536,27 @@ public void salvaDatiConfigurazione() {
 			}
 			
 			//------------------------------------------------------------
-			try {
-				if(btn_lettore_8.isSelected()) dateList[7].statoscanner=256;
-				else dateList[7].statoscanner=0;
-
-				if(btn_scarto_8.isSelected()) dateList[7].scartoabilitato=256;
-				else dateList[7].scartoabilitato=0;
-				
-				dateList[7].spare1 = 0;
-				dateList[7].spare2 = 0;
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			
 			//------------------------------------------------------------
 			
-			try {
-				if(btn_lettore_9.isSelected()) dateList[8].statoscanner=256;
-				else dateList[8].statoscanner=0;
-			
-			
-				if(btn_scarto_9.isSelected()) dateList[8].scartoabilitato=256;
-				else dateList[8].scartoabilitato=0;
-				
-				dateList[8].spare1 = 0;
-				dateList[8].spare2 = 0;
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
 			
 			//QUESTO PULSANTE FA ECCEZIONE. POSTAZIONE DI CONTROLLO
 			//------------------------------------------------------------
-			if(btn_lettore_10.isSelected()) dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].statoscanner=256;
-			else dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].statoscanner=0;
-		
-			if(btn_scarto_10.isSelected()) dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].scartoabilitato=256;
-			else dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].scartoabilitato=0;
-			
-			dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].spare1 = 0;
-			dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].spare2 = 0;
-			//------------------------------------------------------------
+			try {
+				if(btn_lettore_10.isSelected()) dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].statoscanner=256;
+				else dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].statoscanner=0;
+
+				if(btn_scarto_10.isSelected()) dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].scartoabilitato=256;
+				else dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].scartoabilitato=0;
+				
+				dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].spare1 = 0;
+				dateList[Setting.STAZIONE_DI_CONTROLLO_2-1].spare2 = 0;
+				//------------------------------------------------------------
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			
 			configuratore.setListaAtomoConfigurazione(dateList.clone());
@@ -692,17 +610,22 @@ public void caricaDatiConfigurazionePostazioneInterblocco(JToggleButton btn_scar
 	
 		AtomoConfigurazioneLinea atomo = dateList[Setting.STAZIONE_DI_CONTROLLO_2-1];
 	
-		if(atomo.scartoabilitato>0) btn_scarto.setSelected(true);
-		else btn_scarto.setSelected(false);
-	
-		if (btn_scarto.isSelected()) {
-			//btn_scarto.setText("CONTROLLO ATTIVO"); 
-			btn_scarto.setBackground(Setting.verde);
-		}			
-        else {
-        	//btn_scarto.setText("CONTROLLO DISATTIVATO");
-        	btn_scarto.setBackground(Setting.grigio);
-        }
+		try {
+			if(atomo.scartoabilitato>0) btn_scarto.setSelected(true);
+			else btn_scarto.setSelected(false);
+			
+				if (btn_scarto.isSelected()) {
+					//btn_scarto.setText("CONTROLLO ATTIVO"); 
+					btn_scarto.setBackground(Setting.verde);
+				}			
+		        else {
+		        	//btn_scarto.setText("CONTROLLO DISATTIVATO");
+		        	btn_scarto.setBackground(Setting.grigio);
+		        }
+		}
+		catch(Exception g) {
+			log.write("618 WinConfigurazione - ERRORE configurazione postazione controllo\n");	
+		}
 		
 		
 		log.write("WinConfigurazione - FINE CARICAMENTO DATI INTERBLOCCO\n");	
