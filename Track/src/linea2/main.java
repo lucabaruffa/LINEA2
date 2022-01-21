@@ -138,7 +138,7 @@ public class main  {
 	private JTextField stato7;
 	private JTextField batteria7;
 	
-	private ElencoIndicatori elenco_indicatori = new ElencoIndicatori();
+	//private ElencoIndicatori elenco_indicatori = new ElencoIndicatori();
 	private SenderDB senderDB;	
 	private ArrayBatterie arrayArrayBatterie = new ArrayBatterie();
 	private JTextField conteggio1;
@@ -905,6 +905,21 @@ public class main  {
 		});
 		mnNewMenu_4.add(mntmNewMenuItem_6);
 		
+		JMenu mnNewMenu_5 = new JMenu("Debug");
+		menuBar.add(mnNewMenu_5);
+		
+		JMenuItem mntmNewMenuItem_9 = new JMenuItem("Debug");
+		mntmNewMenuItem_9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				WinDebug frame = new WinDebug();
+				frame.setVisible(true);
+			}
+		});
+		mnNewMenu_5.add(mntmNewMenuItem_9);
+		
+		
+		
 		JMenu mnNewMenu_3 = new JMenu("Log");
 		menuBar.add(mnNewMenu_3);
 		
@@ -1135,19 +1150,6 @@ public class main  {
 		TableColumn tm8 = table.getColumnModel().getColumn(8);
 		tm8.setCellRenderer(new ColoredTableCellRenderer());
 		tm8.setPreferredWidth(50);
-		
-		/*
-		TableColumn tm9 = table.getColumnModel().getColumn(9);
-		tm9.setCellRenderer(new ColoredTableCellRenderer());
-		tm9.setPreferredWidth(50);
-		
-		
-		TableColumn tm10 = table.getColumnModel().getColumn(10);
-		tm10.setCellRenderer(new ColoredTableCellRenderer());
-		tm10.setPreferredWidth(50);
-		
-		*/
-		
 		
 		
 		btemporanea1 = new JTextField();
@@ -1855,11 +1857,7 @@ public class main  {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					if(!search.getText().equals("")) {
-			               // remove selected row from the model
-			               //model.removeRow(table.getSelectedRow());
-						   //String data = table.getValueAt(table.getSelectedRow(), 1).toString();
-						   
-						   //JOptionPane.showMessageDialog(null, "Selezionata: " + batteria_selezionata.getText());
+			               
 			               WinStory frame = new WinStory(search.getText());
 						   frame.setVisible(true);
 			               
@@ -2088,8 +2086,6 @@ public class main  {
 		panel_3.add(tipo_batteria);
 		
 		
-		//setting.se
-		
 		o_data = new JTextField();
 		o_data.setEditable(false);
 		o_data.setHorizontalAlignment(SwingConstants.CENTER);
@@ -2122,22 +2118,17 @@ public class main  {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		time_avvio.setText("Avvio: " + formatter.format(date1));
 		
-		try {
-			confl = new ConfiguratoreLinea();
-		} catch (Exception e1) {
-			log.write("\nErrore main, ConfiguratoreLinea\n");
-			e1.printStackTrace();
-		}
 		
 		
-		elenco_indicatori.setIndicatore(0, tempo1, stato1, batteria1, statoplc, statodb, conteggio1,btemporanea1,risultato1,statoLinea1,timestatoLinea1,conteggiorip1,scarto1);  //indicatori postazione 1	
-		elenco_indicatori.setIndicatore(1, tempo2, stato2, batteria2, statoplc, statodb, conteggio2,btemporanea2,risultato2,statoLinea2,timestatoLinea2,conteggiorip2,scarto2);  //indicatori postazione 2
-		elenco_indicatori.setIndicatore(2, tempo3, stato3, batteria3, statoplc, statodb, conteggio3,btemporanea3,risultato3,statoLinea3,timestatoLinea3,conteggiorip3,scarto3);  //indicatori postazione 3
-		elenco_indicatori.setIndicatore(3, tempo4, stato4, batteria4, statoplc, statodb, conteggio4,btemporanea4,risultato4,statoLinea4,timestatoLinea4,conteggiorip4,scarto4);  //indicatori postazione 4
-		elenco_indicatori.setIndicatore(4, tempo5, stato5, batteria5, statoplc, statodb, conteggio5,btemporanea5,risultato5,statoLinea5,timestatoLinea5,conteggiorip5,scarto5);  //indicatori postazione 5
-		elenco_indicatori.setIndicatore(5, tempo6, stato6, batteria6, statoplc, statodb, conteggio6,btemporanea6,risultato6,statoLinea6,timestatoLinea6,conteggiorip6,scarto6);  //indicatori postazione 6
-		elenco_indicatori.setIndicatore(6, tempo7, stato7, batteria7, statoplc, statodb, conteggio7,btemporanea7,risultato7,statoLinea7,timestatoLinea7,conteggiorip7,scarto7);
-		elenco_indicatori.setIndicatore(Setting.STAZIONE_DI_CONTROLLO_2, tempo10, stato10, batteria10, statoplc, statodb, conteggio10,btemporanea10,risultato10,statoLinea10,timestatoLinea10,conteggiorip10,scarto10);
+		
+		setting.elenco_indicatori.setIndicatore(0, tempo1, stato1, batteria1, statoplc, statodb, conteggio1,btemporanea1,risultato1,statoLinea1,timestatoLinea1,conteggiorip1,scarto1);  //indicatori postazione 1	
+		setting.elenco_indicatori.setIndicatore(1, tempo2, stato2, batteria2, statoplc, statodb, conteggio2,btemporanea2,risultato2,statoLinea2,timestatoLinea2,conteggiorip2,scarto2);  //indicatori postazione 2
+		setting.elenco_indicatori.setIndicatore(2, tempo3, stato3, batteria3, statoplc, statodb, conteggio3,btemporanea3,risultato3,statoLinea3,timestatoLinea3,conteggiorip3,scarto3);  //indicatori postazione 3
+		setting.elenco_indicatori.setIndicatore(3, tempo4, stato4, batteria4, statoplc, statodb, conteggio4,btemporanea4,risultato4,statoLinea4,timestatoLinea4,conteggiorip4,scarto4);  //indicatori postazione 4
+		setting.elenco_indicatori.setIndicatore(4, tempo5, stato5, batteria5, statoplc, statodb, conteggio5,btemporanea5,risultato5,statoLinea5,timestatoLinea5,conteggiorip5,scarto5);  //indicatori postazione 5
+		setting.elenco_indicatori.setIndicatore(5, tempo6, stato6, batteria6, statoplc, statodb, conteggio6,btemporanea6,risultato6,statoLinea6,timestatoLinea6,conteggiorip6,scarto6);  //indicatori postazione 6
+		setting.elenco_indicatori.setIndicatore(6, tempo7, stato7, batteria7, statoplc, statodb, conteggio7,btemporanea7,risultato7,statoLinea7,timestatoLinea7,conteggiorip7,scarto7);
+		setting.elenco_indicatori.setIndicatore(Setting.STAZIONE_DI_CONTROLLO_2, tempo10, stato10, batteria10, statoplc, statodb, conteggio10,btemporanea10,risultato10,statoLinea10,timestatoLinea10,conteggiorip10,scarto10);
 						
 		areaErrore = new JTextField();
 		areaErrore.addMouseListener(new MouseAdapter() {
@@ -2308,24 +2299,6 @@ public class main  {
 			btn_abilitazione_10.setSelected(true);
 			
 			
-			/*
-			btn_abilitazione_10.addChangeListener(new ChangeListener() {
-				public void stateChanged(ChangeEvent e) {
-					if (btn_abilitazione_10.isSelected()) {
-						//btn_abilitazione_10.setText("CONTROLLO ABILITATO");  
-						
-						//new DBCommand(true).invia_segnalazione("CONTROLLO FINALE ABILITATO POST.10");
-					}
-						
-			        else {
-			        	//btn_abilitazione_10.setText("CONTROLLO DISATTIVATO"); 
-			        	
-			        	//new DBCommand(true).invia_segnalazione("CONTROLLO FINALE DISATTIVATO POST.10");
-			        }
-			        	
-				}
-			});
-			*/
 			
 			btn_abilitazione_10.addMouseListener(new MouseAdapter() {
 				@Override
@@ -2402,27 +2375,39 @@ public class main  {
 								 o_data.setText(days[day_of_week-1]+ " "+formatter.format(date1));
 								 o_ora.setText(formatter_ora.format(date1));
 								
-								
+								 Date date = new Date(System.currentTimeMillis());
+								 
 								 
 								 int ora = LocalDateTime.now().getHour();
 								 //  log.write("ora:" + ora);
-								 if ((ora>=6) && (ora<14) ) turno.setText("TURNO 1");
-								 if ((ora>=14) && (ora<22) ) turno.setText("TURNO 2");
-								 if ((ora>=22) && (ora<6) ) turno.setText("TURNO 3");
+								 if ((ora>=6) && (ora<14) ) {
+									 turno.setText("TURNO 1");
+									 SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd 06:00");
+									 String dax = ier.format(date);
+									 inizio_conteggio.setText(dax);
+									 
+								 }
+								 if ((ora>=14) && (ora<22) ) {
+									 turno.setText("TURNO 2");
+									 SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd 14:00");
+									 String dax = ier.format(date);
+									 inizio_conteggio.setText(dax);
+								 }
+								 if ((ora>=22) && (ora<6) ) {
+									 turno.setText("TURNO 3");
+									 SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd 22:00");
+									 String dax = ier.format(date);
+									 inizio_conteggio.setText(dax);
+								 }
 								 
 								
-								 if ((ora==22) && riazzera_contatori) {
-									 	Date date = new Date(System.currentTimeMillis());
-										SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd 22:00");
-										String dax = ier.format(date);
+								 if ((ora==22)||(ora==6)||(ora==14) && riazzera_contatori) {
 										
 										//SVUOTO BATTERY STORY
 										arrayBatteryStory.svuota();
-										
-										inizio_conteggio.setText(dax);
 										riazzera_contatori = false;
 									}
-								if ((ora==23)) {
+								 if ((ora==23)||(ora==15)||(ora==7)) {
 										riazzera_contatori = true;
 								}
 								 
@@ -2549,8 +2534,16 @@ public class main  {
 	 
 private void start() {
 	
+	try {
+		System.out.println("Carico ConfiguratoreLinea");
+		confl = new ConfiguratoreLinea();
+	} catch (Exception e1) {
+		log.write("\nErrore main, ConfiguratoreLinea\n");
+		e1.printStackTrace();
+	}
  
 	try {
+		System.out.println("Carico CaricaDatiFromDB");
 		CaricaDatiFromDB fromDB = new CaricaDatiFromDB();
  		fromDB.getDataFromDB();
 	} catch (Exception e1) {
@@ -2559,6 +2552,7 @@ private void start() {
 	}	
 		
 	try {
+		System.out.println("Elaboro dati");
  		ElaboraDati();
 	} catch (Exception e1) {
 		log.write("ERRORE AVVIO MAIN ELABORADATI: " + e1.toString());
@@ -2566,11 +2560,12 @@ private void start() {
 	}
 
 
+		
 		Runnable runnable2 =
 		() ->  {	
 				try {
-					linea5 = new Linea(bufferBatterie, elenco_indicatori, areaErrore);
-					Thread.sleep(600);				
+					linea5 = new Linea(bufferBatterie, setting.elenco_indicatori, areaErrore);
+					Thread.sleep(500);				
 					senderDB = new SenderDB(monitor, bufferBatterie , statoplc, statodb , arrayArrayBatterie);			
 				} catch (Exception e1) {
 					log.write("ERRORE AVVIO MAIN AVVIOLINEE: " + e1.toString());
@@ -2601,13 +2596,14 @@ private void start() {
 		*/
 		
 		try {
+			System.out.println("Leggo greenCode");
 			txtTipoBatteria.setText(new plcCommand().leggiGreenCodeHome());	
 		} catch (Exception e1) {
 			txtTipoBatteria.setText("Errore lettura codice marcatore");
 			e1.printStackTrace();
 		}
 			
-			
+			System.out.println("Carico CheckControlCVS");
 			CheckControlCVS CC_CVS=new CheckControlCVS();
 		    scheduler.scheduleAtFixedRate(CC_CVS, 1, Setting.timeCheckControlCVS, TimeUnit.MINUTES); //ogni 3 minuti
 			

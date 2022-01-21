@@ -140,6 +140,7 @@ public class Setting {
 	public static int DBGREENCODE = 5020; //5020;
 	public static JTextField txtTipologiaBatteria;
 	public static long startTime=0;
+	public static ElencoIndicatori elenco_indicatori = new ElencoIndicatori();
 	
 	/**
 	 * @return the data_ultimo_aggiornamento
@@ -180,7 +181,7 @@ public class Setting {
 	}//setting
 	
 	
-	public void WriteProperties(String var1, String value1,String var2, String value2) {
+	public void WriteProperties(String var1, String value1,String var2, String value2,int postazione) {
         try {
         	
         	File configFile = new File("value.xml");
@@ -201,10 +202,30 @@ public class Setting {
 		}
 	}//fine writeProperties
 	
-	public String ReadProperties(String var1) {
+	public void WriteProperties(String var1, String value1, int postazione) {
+        try {
+        	
+        	File configFile = new File("value"+postazione+".xml");
+    		OutputStream output = new FileOutputStream(configFile);
+    		Properties prop = new Properties();
+    		prop.setProperty(var1, value1);
+			prop.storeToXML(output, "LINEA 2 P" + postazione);
+
+			output.close();
+			
+			
+			System.out.println("SCRITTURA OK Properties. var1=" + var1 + "  valore="+ value1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Errore scrittura PROPERTIES");
+			e.printStackTrace();
+		}
+	}//fine writeProperties
+	
+	public String ReadProperties(String var1, int postazione) {
 		
 		
-		File configFile = new File("value.xml");
+		File configFile = new File("value"+postazione+".xml");
 		 
 		try {
 			InputStream inputStream = new FileInputStream(configFile);
@@ -226,8 +247,8 @@ public class Setting {
 					output = new FileOutputStream(configFile);
 					Properties prop = new Properties();
 		    		prop.setProperty("conteggio_finale", "0");
-		    		prop.setProperty("numero_batterie_scartate", "0");
-					prop.storeToXML(output, "VALORI LINEA 2");
+		    		prop.setProperty("numero_batterie_riprocessate_postazione"+postazione, "0");
+					prop.storeToXML(output, "LINEA 2 P");
 
 					output.close();
 				} catch (Exception e5) {

@@ -59,7 +59,7 @@ public class plcCommand    {
 	public plcCommand() {
 		
 		try {
-			setting = new Setting(true);
+			setting = new Setting();
 		} catch (Exception e) {
 			log.write("ERRORE CARICAMENTO CONFIGURAZIONE NEL MODULO plcCommand\n");
 			e.printStackTrace();

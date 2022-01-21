@@ -130,7 +130,7 @@ public class readerPLC implements Runnable   {
     	
 		
 		try {
-			setting = new Setting(false); //non reinizializzo setting
+			setting = new Setting(); //non reinizializzo setting
 		} catch (Exception e) {
 			log.write("ERRORE CARICAMENTO CONFIGURAZIONE NEL MODULO readerPLC\n");
 			e.printStackTrace();
@@ -160,14 +160,17 @@ public class readerPLC implements Runnable   {
 		//tento di caricare le informazione dell'ultima stazione
 		try {
 			if (nomeStazione==Setting.STAZIONE_DI_CONTROLLO_2){
-				conteggio = Integer.parseInt(setting.ReadProperties("conteggio_finale"));
-				numero_batterie_scartate = Integer.parseInt(setting.ReadProperties("numero_batterie_scartate"));
-				
+				conteggio = Integer.parseInt(setting.ReadProperties("conteggio_finale",nome));
+				numero_batterie_scartate = Integer.parseInt(setting.ReadProperties("numero_batterie_scartate",nome));
 				log.write("\nCARICAMENTO PROPERTIES readerPLC. conteggio="+conteggio+" - Scartate="+numero_batterie_scartate+"\n");
-				
 				indicatore.setConteggio(""+conteggio);
 				indicatore.scarto.setText(""+numero_batterie_scartate);
+			}else {
+				//conteggio = Integer.parseInt(setting.ReadProperties("conteggio_postazione"+nome));
+				indicatore.riprocessato.setText((setting.ReadProperties("numero_batterie_riprocessate_postazione"+nome,nome)));
+				numero_batterie_riprocessate = Integer.valueOf(setting.ReadProperties("numero_batterie_riprocessate_postazione"+nome,nome));
 			}
+			
 		}catch(Exception j) {
 			log.write("Errore reader PLC, impostazioni properties: "+j.toString() +" - REINIZIALIZZO PROPERTIES");
 			//setting.WriteProperties("conteggio_finale", "0","numero_batterie_scartate", "0");
@@ -585,8 +588,8 @@ public class readerPLC implements Runnable   {
 								                		if (nomeStazione==6) indicatore.risultato.setText(""+ data1 + " ["+(data1-data2)+" mbar] " + data2);
 								                		
 								                		if (nomeStazione==7) indicatore.risultato.setText(v1 + " [mm] " + v2);
-								                		if (nomeStazione==8) indicatore.risultato.setText(data1 + " [g] " );
-								                		if (nomeStazione==9) indicatore.risultato.setText(data1 + " [g] ");
+								                		//if (nomeStazione==8) indicatore.risultato.setText(data1 + " [g] " );
+								                		//if (nomeStazione==9) indicatore.risultato.setText(data1 + " [g] ");
 								                		
 								                		
 								                		
@@ -624,21 +627,21 @@ public class readerPLC implements Runnable   {
 	        
 	        //log.write("ora:" + ora);
 	        
-			if ((ora==22) && riazzera_contatori) {
+			if ((ora==22)||(ora==6)||(ora==14) && riazzera_contatori) {
 				numero_batterie_riprocessate = 0;
 				numero_batterie_scartate = 0;
 				conteggio = 0;
 				riazzera_contatori = false;
 				
 				try {
-					setting.WriteProperties("conteggio_finale", "0","numero_batterie_scartate", "0");
-					//setting.WriteProperties("numero_batterie_scartate", "0");
+					setting.WriteProperties("conteggio_finale", "0","numero_batterie_scartate", "0",nomeStazione);
+					setting.WriteProperties("numero_batterie_riprocessate_postazione"+nomeStazione, "0",nomeStazione);
 					
 				}catch(Exception h) {
 					
 				}
 			}
-			if ((ora==23)) {
+			if ((ora==23)||(ora==15)||(ora==7)) {
 				riazzera_contatori = true;
 			}
 			
@@ -907,6 +910,14 @@ public class readerPLC implements Runnable   {
 			    numero_batterie_riprocessate +=1;
 				//conteggio +=1;
 				indicatore.setConteggio(""+conteggio);
+				indicatore.riprocessato.setText(""+numero_batterie_riprocessate);
+				try {
+					setting.WriteProperties("numero_batterie_riprocessate_postazione"+nomeStazione, ""+numero_batterie_riprocessate,nomeStazione);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				ris = true;
 		   break;
 		   // eventuali altri case
@@ -1239,7 +1250,7 @@ public class readerPLC implements Runnable   {
 				//salvo permanentemente questi valori per tenerli in memoria in caso di chiusura
 				
 				try {
-					setting.WriteProperties("conteggio_finale", ""+conteggio,"numero_batterie_scartate", ""+numero_batterie_scartate);
+					setting.WriteProperties("conteggio_finale", ""+conteggio,"numero_batterie_scartate", ""+numero_batterie_scartate,nomeStazione);
 					
 				}catch(Exception kk) {
 					log.write("readerPLC line1235 -> errore scrivirisultato . err: "+ kk.toString());
@@ -1480,7 +1491,7 @@ public class readerPLC implements Runnable   {
 				//salvo permanentemente questi valori per tenerli in memoria in caso di chiusura
 				
 				try {
-					setting.WriteProperties("conteggio_finale", ""+conteggio,"numero_batterie_scartate", ""+numero_batterie_scartate);
+					setting.WriteProperties("conteggio_finale", ""+conteggio,"numero_batterie_scartate", ""+numero_batterie_scartate,nomeStazione);
 					//setting.WriteProperties("numero_batterie_scartate", ""+numero_batterie_scartate);
 				}catch(Exception kk) {
 					log.write("readerPLC line1475 -> errore scrivirisultato . err: "+ kk.toString());

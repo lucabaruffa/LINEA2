@@ -58,7 +58,7 @@ public class DBConnectionPool {
     
     public DBConnectionPool() {
     	try {
-			setting = new Setting();
+			setting = new Setting(true);
 		} catch (Exception e) {
 			log.write("ERRORE CARICAMENTO CONFIGURAZIONE. Line 52. Modulo:DBConnectionPool");
 			

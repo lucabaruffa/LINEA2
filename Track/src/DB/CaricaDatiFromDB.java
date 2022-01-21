@@ -8,7 +8,10 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import linea2.ArrayBatteryStory;
@@ -36,7 +39,7 @@ public class CaricaDatiFromDB {
 		public CaricaDatiFromDB() {
 			
 			try {
-				setting = new Setting(true);
+				setting = new Setting();
 			} catch (Exception e) {
 				log.write("ERRORE CARICAMENTO CONFIGURAZIONE  - MODULO: CaricaDatiFromdb");
 				e.printStackTrace();
@@ -87,18 +90,49 @@ public class CaricaDatiFromDB {
 			try {
 				
 				
-				SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd");
+				//SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd");
 				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
 				SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 22:00:00");
 				Date date = new Date(System.currentTimeMillis());
 				
-				String dax = ier.format(date);
-				LocalDate da  = LocalDate.parse(dax);
-				LocalDate ieri = da.minusDays(1); 
+				//String dax = ier.format(date);
+				//LocalDate da  = LocalDate.parse(dax);
+				//LocalDate ieri = da.minusDays(1); 
 				
 				
-				dax = ieri+" 22:00:00";//getMyDate(""+ieri+" 10:00:00", "dd/MM/yyyy HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
-				System.out.println("ieri:" + dax);
+				//dax = ieri+" 22:00:00";//getMyDate(""+ieri+" 10:00:00", "dd/MM/yyyy HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
+				//System.out.println("ieri:" + dax);
+				
+				
+				int ora = LocalDateTime.now().getHour();
+				 String dax = "";
+				 
+				 if ((ora>=6) && (ora<14) ) {
+					
+					 SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd 06:00");
+					 dax = ier.format(date);
+					
+					 
+				 }
+				 if ((ora>=14) && (ora<22) ) {
+					 
+					 SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd 14:00");
+					 dax = ier.format(date);
+					 
+				 }
+				 if ((ora>=22) && (ora<6) ) {
+					 SimpleDateFormat ier = new SimpleDateFormat("yyyy-MM-dd 22:00");
+					 if (ora>=22) { 
+						 dax = ier.format(date);
+					 }
+					 	
+					 if (ora<6) {
+						 date = addDays(date, 1);
+						 dax = ier.format(date);
+					 }
+					 
+				 }
+				 
 				
 				
 				for(int z=0;z<10;z++) {
@@ -163,6 +197,16 @@ public class CaricaDatiFromDB {
 		  
 		
 		}//FINE METODO
+		
+		
+		
+		public static Date addDays(Date date, int days) {
+			GregorianCalendar cal = new GregorianCalendar();
+			cal.setTime(date);
+			cal.add(Calendar.DATE, days);
+					
+			return cal.getTime();
+		}
 		
 	
 		public static String getMyDate(String myDate, String requiredFormat, String mycurrentFormat) {

@@ -114,6 +114,15 @@ public class Indicatore {
 			
 		}//fine setbatteria
 		
+		
+	public String getBatteriaZero() {
+			return batteriaZero.getText();
+		}
+	
+	public String getBatteria() {
+		return batteria.getText();
+	}
+		
 		public void setStato(String t) {
 			
 				stato.setText(t);
@@ -145,11 +154,36 @@ public class Indicatore {
 			}//fine if
 		
 		}
-		/*
-		public void setMonitor(JTextArea moni) {
-			monitor = moni;
-		}
-		*/
+		
+		
+		public void setBatteriaZeroDebug(String t, JTextField f) {	
+			Color colore = f.getBackground();
+			String valore = f.getText();
+			f.setText(t);
+			
+			if (!valore.equals(t)) {
+				Runnable target = new Runnable() {
+						@Override
+						public void run() {
+							f.setBackground(coloreTransizione);
+							try {
+								Thread.sleep(300);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							f.setBackground(bianco);
+							//batteria.setText("IN ATTESA");
+							
+						}
+						};
+					
+					new Thread(target).start();
+					
+			}//fine if
+			
+			
+			
+		}//fine setbatteria
 		
 		
 	}//fine classe indicarore

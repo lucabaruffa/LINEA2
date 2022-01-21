@@ -47,7 +47,7 @@ public class DBCommand{
 	public DBCommand() {
 		
 		try {
-			setting = new Setting();
+			setting = new Setting(true);
 		} catch (Exception e) {
 			log.write("ERRORE CARICAMENTO CONFIGURAZIONE IN CHECK");
 			e.printStackTrace();
