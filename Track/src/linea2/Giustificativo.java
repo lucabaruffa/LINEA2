@@ -56,7 +56,7 @@ public class Giustificativo extends JDialog implements Runnable {
 	 * Create the dialog.
 	 */
 	public Giustificativo() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Giustificativo.class.getResource("/resource/alert1.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Giustificativo.class.getResource("/resource/alert4.png")));
 		setResizable(false);
 		
 		//Setting.winGiustificativo = this;
@@ -97,6 +97,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		txtFermo.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("LA LINEA E' IN STATO DI FERMO");
+		lblNewLabel.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/alert4.png")));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 23));
 		lblNewLabel.setForeground(Color.RED);

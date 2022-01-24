@@ -74,7 +74,7 @@ public class giustificativoDB {
 		
 		  ResultSet rs;	            
 				try {   
-				      rs = stmt_mysql.executeQuery("SELECT * FROM stop_linea2 where motivo_fermo='DA GIUSTIFICARE' order by tempo desc limit 1");
+				      rs = stmt_mysql.executeQuery("SELECT * FROM stop_linea2 where motivo_fermo='DA GIUSTIFICARE' AND  motivo_fermo<>'PAUSA PRANZO'  order by tempo desc limit 1");
 				      if (rs.next()){
 							 
 				    	  ID = rs.getInt("ID"); //ultima_postazione processata
@@ -86,6 +86,9 @@ public class giustificativoDB {
 				    	  Setting.minuti_fermo_linea = minutidifferenza;
 				    	  
 						}//fine if
+				      else{
+				    	  Setting.minuti_fermo_linea = 0;
+				      }
 						
 						rs.close();
 					            
