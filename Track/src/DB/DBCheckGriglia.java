@@ -1,11 +1,14 @@
 package DB;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimerTask;
 import linea2.Setting;
 import linea2.greenCode;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 
 
 
@@ -39,58 +42,6 @@ public class DBCheckGriglia extends TimerTask{
 	
 		
 	
-
-public void getTipoGriglia() {
-	
-	String tipo_griglia ="";
-	String orario ="";
-  
-	  try {
-		c_mysql = pool.getConnection();
-		stmt_mysql = c_mysql.createStatement();
-	 
-	  } catch (Exception e) {
-         System.out.println("Errore connessione al database");
-         return;
-         // log.write("Errore statement :"+e.getMessage()+"   Modulo:Segnalazione");
-      }//FINE CATCH
-
-	
-	  ResultSet rs;	            
-			try {   
-			      rs = stmt_mysql.executeQuery("SELECT * FROM tipo_griglia order by tempo desc limit 1");
-			      while (rs.next()){
-						
-			    	  tipo_griglia = rs.getString("descrizione"); //ultima_postazione processata
-			    	  orario = rs.getString("tempo");
-						
-					}//fine while
-					
-					rs.close();
-				            
-			 }catch(Exception h) {
-				   	 //log.write("ERRORE PRELIEVO TIPOGRIGLIA.   Errore:"+ h.toString());	
-				    tipo_griglia = "ERROR";
-				    System.out.println("errore prelievo griglia " + h.toString());
-				   	 
-			   }          
-			 finally {
-					  pool.returnConnection(c_mysql);
-			  }
-			
-			System.out.println("TIPOLOGIA GRIGLIA PRELEVATA ="+tipo_griglia);	         
-			
-			//Setting.TIPO_GRIGLIA = tipo_griglia;
-			
-				try {
-					//Setting.txtTipogriglia.setText(tipo_griglia);
-					//Setting.txtAggiornamentoGriglia.setText(orario);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				}
-	
-}//fine invia
 
 
 public void getElencoGreenCode() {
@@ -139,7 +90,7 @@ public void getElencoGreenCode() {
 @Override
 public void run() {
 	// TODO Auto-generated method stub
-	getTipoGriglia();
+	//getTipoGriglia();
 }
 
 

@@ -26,7 +26,6 @@ import View.Scarti;
 import linea2.ArrayBatteriePostazione;
 import linea2.Batteria;
 import linea2.ConfiguratoreLinea;
-import linea2.ControlloRiempimentoAcido;
 import linea2.Indicatore;
 import linea2.LoggerFile;
 import linea2.Setting;
@@ -79,7 +78,8 @@ public class readerPLC implements Runnable   {
 	private JTextField areaErrore;
 	private String stato_batteria_postazione_bilancia2 = "1";
 	
-	private ControlloRiempimentoAcido controllopesoacido = new ControlloRiempimentoAcido();
+	//private ControlloRiempimentoAcido controllopesoacido = new ControlloRiempimentoAcido();
+	
 	
 	public readerPLC() {
 		//monitor.append("costruttore");
@@ -172,7 +172,7 @@ public class readerPLC implements Runnable   {
 			}
 			
 		}catch(Exception j) {
-			log.write("Errore reader PLC, impostazioni properties: "+j.toString() +" - REINIZIALIZZO PROPERTIES");
+			log.write("Errore reader PLC, impostazioni properties: "+j.toString() +" - REINIZIALIZZO PROPERTIES per postazione: " + nome);
 			//setting.WriteProperties("conteggio_finale", "0","numero_batterie_scartate", "0");
 			
 		}
@@ -800,14 +800,6 @@ public class readerPLC implements Runnable   {
 		    							try {	
 		    								tmp = check.controlloDbBatteria(batteria); //controllo normale con diversi tipi di segnalazione
 		    								
-		    								//per le bilancie devo verificare differenza peso --- 27/10/2021
-		    								if ((Integer.parseInt(batteria.getPostazione())==8))	
-		    									tmp = controllopesoacido.inserisci(batteria.getCodiceBatteria(), batteria.getDato1(), 1);
-		    								if ((Integer.parseInt(batteria.getPostazione())==9))	
-		    									tmp = controllopesoacido.inserisci(batteria.getCodiceBatteria(), batteria.getDato1(), 2);
-		    									//log.write("Reader PLC. Postazione 2. Ritorno = "+tmp);
-		    								
-		    								
 		    							}catch(Exception h) {
 		    	    						log.write("Reader PLC. Stazione :"+nomeStazione +" - check.control >0: Cod.batteria:"+batteria.getCodiceBatteria()+ " - !primalettura Errore:" + h.toString());
 		    		    				}
@@ -819,14 +811,7 @@ public class readerPLC implements Runnable   {
 	    							try {
 	    								tmp = check.controlloDbBatteriaDoppione(batteria); //cerco solo doppioni. cerco se è presento o meno nel db
 	    								//per le bilancie devo verificare differenza peso --- 27/10/2021
-	    								if ((Integer.parseInt(batteria.getPostazione())==8)) {
-	    									tmp = controllopesoacido.inserisci(batteria.getCodiceBatteria(), batteria.getDato1(), 1);
-	    								}
-	    									
-	    								if ((Integer.parseInt(batteria.getPostazione())==9)) {
-	    									tmp = controllopesoacido.inserisci(batteria.getCodiceBatteria(), batteria.getDato1(), 2);
-	    								}
-	    									
+	    									    									
 	    									//log.write("Reader PLC. Postazione 2. Ritorno = "+tmp);
 	    								
 	    								//log.write("Reader PLC. Valore controllo  

@@ -141,6 +141,9 @@ public class Setting {
 	public static JTextField txtTipologiaBatteria;
 	public static long startTime=0;
 	public static ElencoIndicatori elenco_indicatori = new ElencoIndicatori();
+	//public static Giustificativo winGiustificativo;
+	public static long minuti_fermo_linea=0; //numero minuti di lineaferma
+	public static int timeCheckControlGiustificativo = 2; //giustifificativo si aggiorna ogni 2 minuti;
 	
 	/**
 	 * @return the data_ultimo_aggiornamento

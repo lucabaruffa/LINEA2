@@ -165,5 +165,35 @@ public boolean invia_segnalazione(String oggetto,String messaggio,String destina
 	return true;
 }//fine invia
 
+public boolean invia_segnalazione(String oggetto,int ID) {
+	
+	
+	  
+	  try {
+		c_mysql = pool.getConnection();
+		stmt_mysql = c_mysql.createStatement();
+	 
+	  } catch (Exception e) {
+       
+       System.out.println("Errore statement :"+e.getMessage()+"   Modulo:DBCommand");
+    }//FINE CATCH
+
+	
+				            
+			try {   
+			      stmt_mysql.executeUpdate("UPDATE stop_linea2 SET motivo_fermo='"+oggetto+"' WHERE id="+ID);
+				  System.out.println("fatto aggiornamento");          
+			 }catch(Exception h) {
+				 System.out.println("ERRORE :"+ h.toString());	 
+				   	 return false;
+			   }          
+			 finally {
+					  pool.returnConnection(c_mysql);
+			  }
+				         
+				
+	return true;
+}//fine invia
+
 
 }//fine classe

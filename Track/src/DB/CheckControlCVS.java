@@ -37,8 +37,10 @@ import linea2.ArrayBatteriePostazione;
 import linea2.ArrayBatteryStory;
 import linea2.Batteria;
 import linea2.CalcoloFermi;
+import linea2.Giustificativo;
 import linea2.LoggerFile;
 import linea2.Setting;
+
 
 //faccio un controllo sulle batterie presente nel file CSV. 
 //faccio un ulteriore controllo sul fermo della linea (per impostare fermo)
@@ -57,6 +59,8 @@ public class CheckControlCVS extends TimerTask{
 	private static String dir = Setting.dir;
 	
 	private static LoggerFile log = new LoggerFile();
+	
+	
 	
 	public CheckControlCVS() {
 		
@@ -216,24 +220,57 @@ public class CheckControlCVS extends TimerTask{
 			    if (diff>Setting.tempoMaxLineaFerma) {
 			    	
 			    	String motivo_fermo= CalcoloFermi.calcolaMotivoFermo(diff);// calcolaMotivoFermo(diff);
+			    	
+			    	
+			    	
+			    	
 			    	//controllo se esiste ilrecord. Lo aggiorno in caso positivo, altrimenti lo inserisco
 			    	ResultSet rs = stmt_mysql.executeQuery("SELECT * FROM stop_linea2 where start='"+tempo_fermo+"' AND linea=2 limit 1");
 			    	if (rs.next()){
 			    		int ID = rs.getInt("ID");
 			    		stmt_mysql.executeUpdate("UPDATE stop_linea2 SET stop = '"+dax2+"', minuti_differenza="+diff+", motivo_fermo='"+motivo_fermo+"' WHERE ID="+ID+";");
 			    		rs.close();
+			    		/*
+			    		try {
+							if ( Setting.winGiustificativo==null)
+								 Setting.winGiustificativo = new Giustificativo();
+							Setting.winGiustificativo.setFermo("Linea ferma da " + diff + " minuti.",ID);
+							Setting.winGiustificativo.setVisible(true);
+						} catch (Exception e) {
+							log.write("CheckControll CSV. Linea ferma. Errore apertura successivi popup");
+						}
+						*/
+			    		
 			    	}//fine if rs
 			    	else {
 			    		rs.close();
 			    		stmt_mysql.executeUpdate("INSERT INTO stop_linea2 (linea,start,stop,minuti_differenza,motivo_fermo) VALUES (2,'"+tempo_fermo+"','"+dax2+"',"+diff+",'"+motivo_fermo+"');");
-			    	}
+			    		/*
+			    		 rs = stmt_mysql.executeQuery("SELECT * FROM stop_linea2 where start='"+tempo_fermo+"' AND linea=2 limit 1");
+			    		
+				    	if (rs.next()){
+				    		int ID = rs.getInt("ID");
+				    		
+				    		 try {
+								if ( Setting.winGiustificativo==null)
+									 Setting.winGiustificativo = new Giustificativo();
+								Setting.winGiustificativo.setFermo("Linea ferma da " + diff + " minuti.",ID);
+								Setting.winGiustificativo.setVisible(true);
+							} catch (Exception e) {
+								log.write("CheckControll CSV. Linea ferma. Errore apertura primo popup ");
+							}
+							
+				    	}
+				    	*/
+			    	}//fine else
 			    	
 			    	log.write("CheckControll CSV. Linea ferma da più di " + diff + " minuti. Lo segnalo con motivo =" + motivo_fermo);
+			    	
+			    	
+			    	
 			    	//stmt_mysql.executeUpdate("INSERT INTO stop_linea5 (linea,start,stop,minuti_differenza) VALUES (5,'"+tempo_fermo+"','"+dax2+"',"+diff+") ON DUPLICATE KEY UPDATE stop = '"+dax2+"', minuti_differenza="+diff+";");
 			    }//fine if segnalazione
-			    else {
-			    	
-			    }//fine else
+			   
 				
 			}catch(Exception j) {
 				log.write("CheckControll CSV. errore segnalazione linea in stop. Err:" + j.toString());

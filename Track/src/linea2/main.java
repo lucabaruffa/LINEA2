@@ -2608,7 +2608,14 @@ private void start() {
 		    scheduler.scheduleAtFixedRate(CC_CVS, 1, Setting.timeCheckControlCVS, TimeUnit.MINUTES); //ogni 3 minuti
 			
 			
-
+		    Giustificativo giustificativo =new Giustificativo();
+		    scheduler.scheduleAtFixedRate(giustificativo, 1, Setting.timeCheckControlGiustificativo, TimeUnit.MINUTES); //ogni 3 minuti
+		    //WinGiustifica wingiustifica = new WinGiustifica();//.getInstance();
+	    	//wingiustifica.visualizza();
+		    //Setting.winGiustificativo = new Giustificativo();
+		    //Setting.winGiustificativo.setVisible(false);
+	    	
+		    
 	
 }//fine metodo start
 }//fine classe main

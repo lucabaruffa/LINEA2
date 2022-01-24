@@ -124,6 +124,7 @@ public class WinSetGreencode extends JFrame {
 					//String cod = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[0];
 					//String nom = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[1];
 					Setting.txtTipologiaBatteria.setText("Errore invio codice marcatore");
+					log.write("\nGREENCODE ERRORE CAMBIO CODICE");
 				}else {
 					JOptionPane.showMessageDialog(contentPane, "Codice inviato correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
 					String cod = (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split(" -- ")[0];
@@ -131,6 +132,7 @@ public class WinSetGreencode extends JFrame {
 					txtpiastra.setText(cod);
 					txtNomeBatteria.setText(nom);
 					Setting.txtTipologiaBatteria.setText(cod + " / " + nom);
+					log.write("\nGREENCODE MODIFICATO CORRETTAMENTE: " + cod + " / " + nom);
 				}//fine else
 			}
 		});
