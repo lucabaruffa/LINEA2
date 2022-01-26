@@ -257,7 +257,9 @@ public class main  {
 	private BufferedImage icona_pulsante_viewer;
 	private JTextField txtTipoBatteria;
 	
-	
+	public void Visible(boolean visualizzare){
+		frmPlc.setVisible(visualizzare);
+	}
 	
 
 	public static void main(String[] args) {
@@ -297,7 +299,7 @@ public class main  {
 				
 		initialize();
 		
-		
+		//setVisible(true);
 	
 		//1t menuitem for popupmenu
 	    MenuItem action = new MenuItem("Apri");
@@ -378,6 +380,9 @@ public class main  {
 			e2.printStackTrace();
 		}
 		
+		
+		frmPlc = new JFrame();
+		
 		/*
 		Runnable runnable3 =
 				() ->  {	
@@ -399,10 +404,10 @@ public class main  {
 			log.write("Errore in main in avvio setting. Errore:" + e4.toString());
 		}
 		
-		frmPlc = new JFrame();
 		
 		
-		
+		//frmPlc.setVisible(true);
+		//setVisible(true);
 		
 		frmPlc.setIconImage(Toolkit.getDefaultToolkit().getImage(main.class.getResource("/resource/icon.png")));
 		

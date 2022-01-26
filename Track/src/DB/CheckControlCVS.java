@@ -228,7 +228,7 @@ public class CheckControlCVS extends TimerTask{
 			    	ResultSet rs = stmt_mysql.executeQuery("SELECT * FROM stop_linea2 where start='"+tempo_fermo+"' AND linea=2 limit 1");
 			    	if (rs.next()){
 			    		int ID = rs.getInt("ID");
-			    		stmt_mysql.executeUpdate("UPDATE stop_linea2 SET stop = '"+dax2+"', minuti_differenza="+diff+", motivo_fermo='"+motivo_fermo+"' WHERE ID="+ID+";");
+			    		stmt_mysql.executeUpdate("UPDATE stop_linea2 SET stop = '"+dax2+"', minuti_differenza="+diff+" WHERE ID="+ID+";");
 			    		rs.close();
 			    		/*
 			    		try {

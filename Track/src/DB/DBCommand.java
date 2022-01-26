@@ -172,7 +172,7 @@ public boolean invia_segnalazione(String oggetto,int ID) {
 	  try {
 		c_mysql = pool.getConnection();
 		stmt_mysql = c_mysql.createStatement();
-	 
+		log.write("Fatto giustificativo su ID=" + ID);
 	  } catch (Exception e) {
        
        System.out.println("Errore statement :"+e.getMessage()+"   Modulo:DBCommand");
@@ -182,7 +182,8 @@ public boolean invia_segnalazione(String oggetto,int ID) {
 				            
 			try {   
 			      stmt_mysql.executeUpdate("UPDATE stop_linea2 SET motivo_fermo='"+oggetto+"' WHERE id="+ID);
-				  System.out.println("fatto aggiornamento");          
+			      log.write("Fatto giustificativo su ID=" + ID);    
+				  System.out.println("fatto aggiornamento su ID=" + ID);          
 			 }catch(Exception h) {
 				 System.out.println("ERRORE :"+ h.toString());	 
 				   	 return false;

@@ -26,7 +26,6 @@ import View.Scarti;
 import linea2.ArrayBatteriePostazione;
 import linea2.Batteria;
 import linea2.ConfiguratoreLinea;
-import linea2.ControlloRiempimentoAcido;
 import linea2.Indicatore;
 import linea2.LoggerFile;
 import linea2.Setting;

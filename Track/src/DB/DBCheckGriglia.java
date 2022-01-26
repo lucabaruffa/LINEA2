@@ -1,5 +1,6 @@
 package DB;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimerTask;
@@ -82,6 +83,67 @@ public void getElencoGreenCode() {
 	  finally {
 			  pool.returnConnection(c_mysql);
 	  }
+			
+	
+}//fine invia
+
+
+
+public ArrayList<String>[] getGiustificativi() {
+	
+	ArrayList<String> giustificativo1 = new ArrayList<>();
+	ArrayList<String> giustificativo2 = new ArrayList<>();
+	ArrayList<String> giustificativo3 = new ArrayList<>();
+	ArrayList<String> giustificativo4 = new ArrayList<>();
+	ArrayList<String> giustificativo5 = new ArrayList<>();
+	
+	ArrayList<String>[] ritorno = new ArrayList[5];
+	
+	  
+	  try {
+		c_mysql = pool.getConnection();
+		stmt_mysql = c_mysql.createStatement();
+	 
+	  } catch (Exception e) {
+       
+       // log.write("Errore statement :"+e.getMessage()+"   Modulo:Segnalazione");
+    }//FINE CATCH
+
+	
+	  ResultSet rs;	            
+	  try {
+		 
+		rs = stmt_mysql.executeQuery("Select * from giustificativi  order by giustificativo1,giustificativo2,giustificativo3,giustificativo4,giustificativo5 asc");
+        
+			while (rs.next()) {
+				String g1 = rs.getString("giustificativo1");
+				String g2 = rs.getString("giustificativo2");
+				String g3 = rs.getString("giustificativo3");
+				String g4 = rs.getString("giustificativo4");
+				String g5 = rs.getString("giustificativo5");
+				
+				if (!(g1==null)) giustificativo1.add(g1);
+				if (!(g2==null)) giustificativo2.add(g2);
+				if (!(g3==null)) giustificativo3.add(g3);
+				if (!(g4==null)) giustificativo4.add(g4);
+				if (!(g5==null)) giustificativo5.add(g5);
+				 
+			}
+		} catch (Exception ex) {
+			System.out.println("Errore getGiustificativi:" + ex.toString());
+			
+    	}        
+	  finally {
+			  pool.returnConnection(c_mysql);
+	  }
+	  
+	  ritorno[0] = giustificativo1;
+	  ritorno[1] = giustificativo2;
+	  ritorno[2] = giustificativo3;
+	  ritorno[3] = giustificativo4;
+	  ritorno[4] = giustificativo5;
+	  
+	  return ritorno;
 			
 	
 }//fine invia

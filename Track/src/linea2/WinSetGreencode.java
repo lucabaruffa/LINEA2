@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 public class WinSetGreencode extends JFrame {
 
@@ -76,11 +77,11 @@ public class WinSetGreencode extends JFrame {
 							
 		
 		setResizable(false);
-		setTitle("SELEZIONA BATTERIA LINEA 2");
+		setTitle("CAMBIO CODICE");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 858, 374);
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.activeCaption);
+		contentPane.setBackground(SystemColor.inactiveCaptionBorder);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -111,6 +112,7 @@ public class WinSetGreencode extends JFrame {
 		
 		
 		JButton btnAvvio = new JButton("INVIA AL MARCATORE");
+		btnAvvio.setIcon(new ImageIcon(WinSetGreencode.class.getResource("/resource/101.png")));
 		btnAvvio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -136,12 +138,13 @@ public class WinSetGreencode extends JFrame {
 				}//fine else
 			}
 		});
-		btnAvvio.setBackground(new Color(152, 251, 152));
+		btnAvvio.setBackground(new Color(0, 250, 154));
 		btnAvvio.setFont(new Font("Arial", Font.BOLD, 18));
 		btnAvvio.setBounds(49, 223, 587, 59);
 		contentPane.add(btnAvvio);
 		
 		JButton btnAnnulla = new JButton("CHIUDI");
+		btnAnnulla.setIcon(new ImageIcon(WinSetGreencode.class.getResource("/resource/icona_annulla.png")));
 		btnAnnulla.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -180,10 +183,10 @@ public class WinSetGreencode extends JFrame {
 		}
 			
 		
-		JLabel lblNewLabel = new JLabel("CODICE ATTUALMENTE IMPOSTATO");
+		JLabel lblNewLabel = new JLabel("CODICE IMPOSTATO");
 		lblNewLabel.setForeground(Color.BLACK);
 		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 12));
-		lblNewLabel.setBounds(49, 21, 346, 29);
+		lblNewLabel.setBounds(49, 21, 233, 29);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblPiastraDaProdurre = new JLabel("CODICE DA IMPOSTARE");
@@ -191,6 +194,12 @@ public class WinSetGreencode extends JFrame {
 		lblPiastraDaProdurre.setFont(new Font("Arial", Font.BOLD, 12));
 		lblPiastraDaProdurre.setBounds(49, 103, 288, 23);
 		contentPane.add(lblPiastraDaProdurre);
+		
+		JLabel lblNomeCodiceImpostato = new JLabel("NOME IMPOSTATO");
+		lblNomeCodiceImpostato.setForeground(Color.BLACK);
+		lblNomeCodiceImpostato.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNomeCodiceImpostato.setBounds(292, 21, 233, 29);
+		contentPane.add(lblNomeCodiceImpostato);
 		
 		
 	}
