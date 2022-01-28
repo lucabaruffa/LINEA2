@@ -56,10 +56,8 @@ public class WinConfigurazioneLinea extends JFrame {
 	public WinConfigurazioneLinea() {
 		
 	}
-	/*
-	 * Create the frame.
-	 */
-
+	
+	 
 	public WinConfigurazioneLinea(JTextArea m) {
 		setBounds(70, 70, 899, 530);
 		setTitle("IMPOSTAZIONI LINEA");
@@ -86,7 +84,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		lblPostazione_1.setBounds(35, 195, 86, 14);
 		getContentPane().add(lblPostazione_1);
 		
-		btn_scarto_1 = new JToggleButton("SCARTO DISATTIVATO");
+		btn_scarto_1 = new JToggleButton("POSTAZIONE DISATTIVATA");
 		btn_scarto_1.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_1.isSelected())  
@@ -144,7 +142,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		lblPostazione_2_6.setBounds(512, 11, 86, 14);
 		getContentPane().add(lblPostazione_2_6);
 		
-		btn_scarto_2 = new JToggleButton("SCARTO DISATTIVATO");
+		btn_scarto_2 = new JToggleButton("POSTAZIONE DISATTIVATA");
 		btn_scarto_2.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_2.isSelected())  
@@ -171,7 +169,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_2.setBounds(689, 36, 172, 32);
 		getContentPane().add(btn_lettore_2);
 		
-		btn_scarto_3 = new JToggleButton("SCARTO DISATTIVATO");
+		btn_scarto_3 = new JToggleButton("POSTAZIONE DISATTIVATA");
 		btn_scarto_3.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_3.isSelected())  
@@ -198,7 +196,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_3.setBounds(217, 122, 172, 32);
 		getContentPane().add(btn_lettore_3);
 		
-		btn_scarto_4 = new JToggleButton("SCARTO DISATTIVATO");
+		btn_scarto_4 = new JToggleButton("POSTAZIONE DISATTIVATA");
 		btn_scarto_4.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_4.isSelected())  
@@ -225,7 +223,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_4.setBounds(689, 122, 172, 32);
 		getContentPane().add(btn_lettore_4);
 		
-		btn_scarto_5 = new JToggleButton("SCARTO DISATTIVATO");
+		btn_scarto_5 = new JToggleButton("POSTAZIONE DISATTIVATA");
 		btn_scarto_5.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_5.isSelected())  
@@ -252,7 +250,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_5.setBounds(217, 220, 172, 32);
 		getContentPane().add(btn_lettore_5);
 		
-		btn_scarto_6 = new JToggleButton("SCARTO DISATTIVATO");
+		btn_scarto_6 = new JToggleButton("POSTAZIONE DISATTIVATA");
 		btn_scarto_6.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_6.isSelected())  
@@ -279,7 +277,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_6.setBounds(689, 220, 172, 32);
 		getContentPane().add(btn_lettore_6);
 		
-		btn_scarto_7 = new JToggleButton("SCARTO DISATTIVATO");
+		btn_scarto_7 = new JToggleButton("POSTAZIONE DISATTIVATA");
 		btn_scarto_7.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_7.isSelected())  
@@ -306,7 +304,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_7.setBounds(217, 320, 172, 32);
 		getContentPane().add(btn_lettore_7);
 		
-		btn_scarto_10 = new JToggleButton("SCARTO DISATTIVATO");
+		btn_scarto_10 = new JToggleButton("POSTAZIONE DISATTIVATA");
 		btn_scarto_10.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_10.isSelected())  

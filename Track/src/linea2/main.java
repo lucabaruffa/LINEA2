@@ -189,13 +189,6 @@ public class main  {
 	private JLabel banner;
 	private JTextField search;
 	private JMenuItem mntmNewMenuItem_5;
-	private JTextField conteggiorip1;
-	private JTextField conteggiorip2;
-	private JTextField conteggiorip3;
-	private JTextField conteggiorip4;
-	private JTextField conteggiorip5;
-	private JTextField conteggiorip6;
-	private JTextField conteggiorip7;
 	private JTextField scarto1;
 	private JTextField scarto2;
 	private JTextField scarto3;
@@ -224,7 +217,6 @@ public class main  {
 	private JTextField risultato10;
 	private JTextField tempo10;
 	private JTextField conteggio10;
-	private JTextField conteggiorip10;
 	private JTextField scarto10;
 	private JTextField statoLinea10;
 	private JTextField timestatoLinea10;
@@ -235,7 +227,6 @@ public class main  {
 	public Image image;
 	private JTextField areaErrore;
 	private WinConfigurazioneLinea frame;
-	private JTextField tipo_batteria;
 	private Setting setting;
 	private JMenuItem mntmNewMenuItem;
 	private static loader dialog;
@@ -256,6 +247,20 @@ public class main  {
 	private BufferedImage icona_pulsante_lettori;
 	private BufferedImage icona_pulsante_viewer;
 	private JTextField txtTipoBatteria;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
+	private JTextField textField_7;
+	private JTextField textField_8;
+	private JTextField textField_9;
+	private JTextField textField_10;
+	private JTextField textField_11;
+	private JTextField textField_12;
+	private JTextField textField_13;
 	
 	public void Visible(boolean visualizzare){
 		frmPlc.setVisible(visualizzare);
@@ -1493,45 +1498,184 @@ public class main  {
 		
 		panel_2 = new JPanel();
 		panel_2.setBackground(SystemColor.inactiveCaptionBorder);
-		tabbedPane.addTab("ABILITAZIONE", null, panel_2, null);
+		tabbedPane.addTab("PLC", null, panel_2, null);
 		tabbedPane.setEnabledAt(1, true);
 		panel_2.setLayout(null);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(10, 11, 170, 116);
-		panel_2.add(panel_4);
-		panel_4.setLayout(null);
+		JLabel lblNewLabel_1_2 = new JLabel("1 - CONTROLLO CORTI 1");
+		lblNewLabel_1_2.setForeground(new Color(0, 128, 128));
+		lblNewLabel_1_2.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNewLabel_1_2.setBounds(10, 21, 165, 14);
+		panel_2.add(lblNewLabel_1_2);
 		
-		JToggleButton tglbtnScartoAttivo = new JToggleButton("SCARTO ATTIVO");
-		tglbtnScartoAttivo.setBounds(10, 36, 150, 23);
-		panel_4.add(tglbtnScartoAttivo);
+		JLabel lblNewLabel_1_1_6 = new JLabel("2 - PUNTATRICE 1");
+		lblNewLabel_1_1_6.setForeground(new Color(0, 128, 128));
+		lblNewLabel_1_1_6.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNewLabel_1_1_6.setBounds(10, 92, 165, 14);
+		panel_2.add(lblNewLabel_1_1_6);
 		
-		JLabel lblNewLabel_2 = new JLabel("POSTAZIONE 7");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(10, 11, 133, 14);
-		panel_4.add(lblNewLabel_2);
+		textField = new JTextField();
+		textField.setText("STOP");
+		textField.setHorizontalAlignment(SwingConstants.CENTER);
+		textField.setForeground(Color.BLACK);
+		textField.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textField.setEditable(false);
+		textField.setColumns(10);
+		textField.setBackground(new Color(255, 192, 203));
+		textField.setBounds(10, 39, 165, 20);
+		panel_2.add(textField);
 		
-		JToggleButton tglbtnLettoreAttivo = new JToggleButton("LETTORE ATTIVO");
-		tglbtnLettoreAttivo.setBounds(10, 70, 150, 23);
-		panel_4.add(tglbtnLettoreAttivo);
+		textField_1 = new JTextField();
+		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_1.setEditable(false);
+		textField_1.setColumns(10);
+		textField_1.setBackground(SystemColor.menu);
+		textField_1.setBounds(10, 61, 165, 20);
+		panel_2.add(textField_1);
 		
-		JPanel panel_4_1 = new JPanel();
-		panel_4_1.setLayout(null);
-		panel_4_1.setBounds(10, 174, 170, 116);
-		panel_2.add(panel_4_1);
+		textField_2 = new JTextField();
+		textField_2.setText("STOP");
+		textField_2.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_2.setForeground(Color.BLACK);
+		textField_2.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textField_2.setEditable(false);
+		textField_2.setColumns(10);
+		textField_2.setBackground(new Color(255, 192, 203));
+		textField_2.setBounds(10, 110, 165, 20);
+		panel_2.add(textField_2);
 		
-		JToggleButton tglbtnScartoAttivo_1 = new JToggleButton("SCARTO ATTIVO");
-		tglbtnScartoAttivo_1.setBounds(10, 36, 150, 23);
-		panel_4_1.add(tglbtnScartoAttivo_1);
+		textField_3 = new JTextField();
+		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_3.setEditable(false);
+		textField_3.setColumns(10);
+		textField_3.setBackground(SystemColor.menu);
+		textField_3.setBounds(10, 132, 165, 20);
+		panel_2.add(textField_3);
 		
-		JLabel lblNewLabel_2_1 = new JLabel("POSTAZIONE 10");
-		lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2_1.setBounds(10, 11, 150, 14);
-		panel_4_1.add(lblNewLabel_2_1);
+		JLabel lblNewLabel_1_1_1_1 = new JLabel("3 - PUNTATRICE 2");
+		lblNewLabel_1_1_1_1.setForeground(new Color(0, 128, 128));
+		lblNewLabel_1_1_1_1.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNewLabel_1_1_1_1.setBounds(10, 163, 165, 14);
+		panel_2.add(lblNewLabel_1_1_1_1);
 		
-		JToggleButton tglbtnLettoreAttivo_1 = new JToggleButton("LETTORE ATTIVO");
-		tglbtnLettoreAttivo_1.setBounds(10, 70, 150, 23);
-		panel_4_1.add(tglbtnLettoreAttivo_1);
+		textField_4 = new JTextField();
+		textField_4.setText("STOP");
+		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_4.setForeground(Color.BLACK);
+		textField_4.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textField_4.setEditable(false);
+		textField_4.setColumns(10);
+		textField_4.setBackground(new Color(255, 192, 203));
+		textField_4.setBounds(10, 181, 165, 20);
+		panel_2.add(textField_4);
+		
+		textField_5 = new JTextField();
+		textField_5.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_5.setEditable(false);
+		textField_5.setColumns(10);
+		textField_5.setBackground(SystemColor.menu);
+		textField_5.setBounds(10, 203, 165, 20);
+		panel_2.add(textField_5);
+		
+		JLabel lblNewLabel_1_1_2_1 = new JLabel("4 - CONTROLLO CORTI 2");
+		lblNewLabel_1_1_2_1.setForeground(new Color(0, 128, 128));
+		lblNewLabel_1_1_2_1.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNewLabel_1_1_2_1.setBounds(10, 235, 165, 14);
+		panel_2.add(lblNewLabel_1_1_2_1);
+		
+		textField_6 = new JTextField();
+		textField_6.setText("STOP");
+		textField_6.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_6.setForeground(Color.BLACK);
+		textField_6.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textField_6.setEditable(false);
+		textField_6.setColumns(10);
+		textField_6.setBackground(new Color(255, 192, 203));
+		textField_6.setBounds(10, 253, 165, 20);
+		panel_2.add(textField_6);
+		
+		textField_7 = new JTextField();
+		textField_7.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_7.setEditable(false);
+		textField_7.setColumns(10);
+		textField_7.setBackground(SystemColor.menu);
+		textField_7.setBounds(10, 275, 165, 20);
+		panel_2.add(textField_7);
+		
+		JLabel lblNewLabel_1_1_3_1 = new JLabel("5 - PROVA TENUTA 1");
+		lblNewLabel_1_1_3_1.setForeground(new Color(0, 128, 128));
+		lblNewLabel_1_1_3_1.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNewLabel_1_1_3_1.setBounds(10, 306, 165, 14);
+		panel_2.add(lblNewLabel_1_1_3_1);
+		
+		textField_8 = new JTextField();
+		textField_8.setText("STOP");
+		textField_8.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_8.setForeground(Color.BLACK);
+		textField_8.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textField_8.setEditable(false);
+		textField_8.setColumns(10);
+		textField_8.setBackground(new Color(255, 192, 203));
+		textField_8.setBounds(10, 324, 165, 20);
+		panel_2.add(textField_8);
+		
+		textField_9 = new JTextField();
+		textField_9.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_9.setEditable(false);
+		textField_9.setColumns(10);
+		textField_9.setBackground(SystemColor.menu);
+		textField_9.setBounds(10, 346, 165, 20);
+		panel_2.add(textField_9);
+		
+		JLabel lblNewLabel_1_1_4_1 = new JLabel("6 - PROVA TENUTA 2");
+		lblNewLabel_1_1_4_1.setForeground(new Color(0, 128, 128));
+		lblNewLabel_1_1_4_1.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNewLabel_1_1_4_1.setBounds(10, 377, 165, 14);
+		panel_2.add(lblNewLabel_1_1_4_1);
+		
+		textField_10 = new JTextField();
+		textField_10.setText("STOP");
+		textField_10.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_10.setForeground(Color.BLACK);
+		textField_10.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textField_10.setEditable(false);
+		textField_10.setColumns(10);
+		textField_10.setBackground(new Color(255, 192, 203));
+		textField_10.setBounds(10, 395, 165, 20);
+		panel_2.add(textField_10);
+		
+		textField_11 = new JTextField();
+		textField_11.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_11.setEditable(false);
+		textField_11.setColumns(10);
+		textField_11.setBackground(SystemColor.menu);
+		textField_11.setBounds(10, 417, 165, 20);
+		panel_2.add(textField_11);
+		
+		JLabel lblNewLabel_1_1_5_1 = new JLabel("7 - ALTEZZA POLARI");
+		lblNewLabel_1_1_5_1.setForeground(new Color(0, 128, 128));
+		lblNewLabel_1_1_5_1.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNewLabel_1_1_5_1.setBounds(10, 448, 165, 14);
+		panel_2.add(lblNewLabel_1_1_5_1);
+		
+		textField_12 = new JTextField();
+		textField_12.setText("STOP");
+		textField_12.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_12.setForeground(Color.BLACK);
+		textField_12.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textField_12.setEditable(false);
+		textField_12.setColumns(10);
+		textField_12.setBackground(new Color(255, 192, 203));
+		textField_12.setBounds(10, 466, 165, 20);
+		panel_2.add(textField_12);
+		
+		textField_13 = new JTextField();
+		textField_13.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_13.setEditable(false);
+		textField_13.setColumns(10);
+		textField_13.setBackground(SystemColor.menu);
+		textField_13.setBounds(10, 488, 165, 20);
+		panel_2.add(textField_13);
 		arrayBatteryStory = new ArrayBatteryStory();
 		
 		
@@ -1586,77 +1730,6 @@ public class main  {
 		lblPostazione_5_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblPostazione_5_1.setBounds(784, 11, 119, 19);
 		panel.add(lblPostazione_5_1);
-		
-		conteggiorip1 = new JTextField();
-		conteggiorip1.setHorizontalAlignment(SwingConstants.CENTER);
-		conteggiorip1.setForeground(Color.DARK_GRAY);
-		conteggiorip1.setFont(new Font("Arial", Font.BOLD, 12));
-		conteggiorip1.setEditable(false);
-		conteggiorip1.setColumns(10);
-		conteggiorip1.setBackground(new Color(255, 245, 238));
-		conteggiorip1.setBounds(10, 301, 119, 18);
-		panel.add(conteggiorip1);
-		
-		conteggiorip2 = new JTextField();
-		conteggiorip2.setHorizontalAlignment(SwingConstants.CENTER);
-		conteggiorip2.setForeground(Color.DARK_GRAY);
-		conteggiorip2.setFont(new Font("Arial", Font.BOLD, 12));
-		conteggiorip2.setEditable(false);
-		conteggiorip2.setColumns(10);
-		conteggiorip2.setBackground(new Color(255, 245, 238));
-		conteggiorip2.setBounds(139, 301, 119, 18);
-		panel.add(conteggiorip2);
-		
-		conteggiorip3 = new JTextField();
-		conteggiorip3.setHorizontalAlignment(SwingConstants.CENTER);
-		conteggiorip3.setForeground(Color.DARK_GRAY);
-		conteggiorip3.setFont(new Font("Arial", Font.BOLD, 12));
-		conteggiorip3.setEditable(false);
-		conteggiorip3.setColumns(10);
-		conteggiorip3.setBackground(new Color(255, 245, 238));
-		conteggiorip3.setBounds(268, 301, 119, 18);
-		panel.add(conteggiorip3);
-		
-		conteggiorip4 = new JTextField();
-		conteggiorip4.setHorizontalAlignment(SwingConstants.CENTER);
-		conteggiorip4.setForeground(Color.DARK_GRAY);
-		conteggiorip4.setFont(new Font("Arial", Font.BOLD, 12));
-		conteggiorip4.setEditable(false);
-		conteggiorip4.setColumns(10);
-		conteggiorip4.setBackground(new Color(255, 245, 238));
-		conteggiorip4.setBounds(397, 301, 119, 18);
-		panel.add(conteggiorip4);
-		
-		conteggiorip5 = new JTextField();
-		conteggiorip5.setHorizontalAlignment(SwingConstants.CENTER);
-		conteggiorip5.setForeground(Color.DARK_GRAY);
-		conteggiorip5.setFont(new Font("Arial", Font.BOLD, 12));
-		conteggiorip5.setEditable(false);
-		conteggiorip5.setColumns(10);
-		conteggiorip5.setBackground(new Color(255, 245, 238));
-		conteggiorip5.setBounds(526, 301, 119, 18);
-		panel.add(conteggiorip5);
-		
-		conteggiorip6 = new JTextField();
-		conteggiorip6.setHorizontalAlignment(SwingConstants.CENTER);
-		conteggiorip6.setForeground(Color.DARK_GRAY);
-		conteggiorip6.setFont(new Font("Arial", Font.BOLD, 12));
-		conteggiorip6.setEditable(false);
-		conteggiorip6.setColumns(10);
-		conteggiorip6.setBackground(new Color(255, 245, 238));
-		conteggiorip6.setBounds(655, 301, 119, 18);
-		panel.add(conteggiorip6);
-		
-		conteggiorip7 = new JTextField();
-		
-		conteggiorip7.setHorizontalAlignment(SwingConstants.CENTER);
-		conteggiorip7.setForeground(Color.DARK_GRAY);
-		conteggiorip7.setFont(new Font("Arial", Font.BOLD, 12));
-		conteggiorip7.setEditable(false);
-		conteggiorip7.setColumns(10);
-		conteggiorip7.setBackground(new Color(255, 245, 238));
-		conteggiorip7.setBounds(784, 301, 119, 18);
-		panel.add(conteggiorip7);
 		
 		scarto1 = new JTextField();
 		scarto1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -1813,17 +1886,6 @@ public class main  {
 		conteggio10.setBounds(1036, 253, 205, 43);
 		panel.add(conteggio10);
 		
-		conteggiorip10 = new JTextField();
-		conteggiorip10.setVisible(false);
-		conteggiorip10.setHorizontalAlignment(SwingConstants.CENTER);
-		conteggiorip10.setForeground(Color.DARK_GRAY);
-		conteggiorip10.setFont(new Font("Arial", Font.BOLD, 12));
-		conteggiorip10.setEditable(false);
-		conteggiorip10.setColumns(10);
-		conteggiorip10.setBackground(new Color(255, 204, 153));
-		conteggiorip10.setBounds(1216, 300, 25, 7);
-		panel.add(conteggiorip10);
-		
 		JLabel lblScartateko_8_1 = new JLabel("SCARTATE");
 		lblScartateko_8_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblScartateko_8_1.setFont(new Font("Tahoma", Font.BOLD, 9));
@@ -1927,45 +1989,10 @@ public class main  {
 		LocalDate ieri = da.minusDays(1); 
 		dax = ieri+" 22:00:00";
 		
-		JLabel lblRiprocessate = new JLabel("RIPROCESSATE");
-		lblRiprocessate.setFont(new Font("Tahoma", Font.BOLD, 9));
-		lblRiprocessate.setBounds(10, 286, 119, 14);
-		panel.add(lblRiprocessate);
-		
 		JLabel lblScartateko = new JLabel("SCARTATE/KO");
 		lblScartateko.setFont(new Font("Tahoma", Font.BOLD, 9));
 		lblScartateko.setBounds(10, 327, 119, 14);
 		panel.add(lblScartateko);
-		
-		JLabel lblRiprocessate_1 = new JLabel("RIPROCESSATE");
-		lblRiprocessate_1.setFont(new Font("Tahoma", Font.BOLD, 9));
-		lblRiprocessate_1.setBounds(139, 286, 119, 14);
-		panel.add(lblRiprocessate_1);
-		
-		JLabel lblRiprocessate_2 = new JLabel("RIPROCESSATE");
-		lblRiprocessate_2.setFont(new Font("Tahoma", Font.BOLD, 9));
-		lblRiprocessate_2.setBounds(268, 286, 119, 14);
-		panel.add(lblRiprocessate_2);
-		
-		JLabel lblRiprocessate_3 = new JLabel("RIPROCESSATE");
-		lblRiprocessate_3.setFont(new Font("Tahoma", Font.BOLD, 9));
-		lblRiprocessate_3.setBounds(397, 286, 119, 14);
-		panel.add(lblRiprocessate_3);
-		
-		JLabel lblRiprocessate_4 = new JLabel("RIPROCESSATE");
-		lblRiprocessate_4.setFont(new Font("Tahoma", Font.BOLD, 9));
-		lblRiprocessate_4.setBounds(526, 286, 119, 14);
-		panel.add(lblRiprocessate_4);
-		
-		JLabel lblRiprocessate_5 = new JLabel("RIPROCESSATE");
-		lblRiprocessate_5.setFont(new Font("Tahoma", Font.BOLD, 9));
-		lblRiprocessate_5.setBounds(655, 286, 119, 14);
-		panel.add(lblRiprocessate_5);
-		
-		JLabel lblRiprocessate_6 = new JLabel("RIPROCESSATE");
-		lblRiprocessate_6.setFont(new Font("Tahoma", Font.BOLD, 9));
-		lblRiprocessate_6.setBounds(784, 286, 119, 14);
-		panel.add(lblRiprocessate_6);
 		
 		JLabel lblScartateko_1 = new JLabel("SCARTATE/KO");
 		lblScartateko_1.setFont(new Font("Tahoma", Font.BOLD, 9));
@@ -2017,14 +2044,8 @@ public class main  {
 		frmPlc.getContentPane().add(panel_3);
 		panel_3.setLayout(null);
 		
-		JLabel lblNewLabel_3 = new JLabel("TIPO BATTERIA");
-		lblNewLabel_3.setBounds(10, 11, 177, 26);
-		panel_3.add(lblNewLabel_3);
-		lblNewLabel_3.setFont(new Font("Arial", Font.BOLD, 14));
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		
 		numeroBatterieBuone = new JTextField();
-		numeroBatterieBuone.setBounds(10, 153, 177, 56);
+		numeroBatterieBuone.setBounds(10, 32, 177, 56);
 		panel_3.add(numeroBatterieBuone);
 		numeroBatterieBuone.setEditable(false);
 		numeroBatterieBuone.setBackground(Color.WHITE);
@@ -2035,7 +2056,7 @@ public class main  {
 		numeroBatterieBuone.setColumns(10);
 		
 		numeroBatterieScarto = new JTextField();
-		numeroBatterieScarto.setBounds(10, 245, 177, 56);
+		numeroBatterieScarto.setBounds(10, 124, 177, 56);
 		panel_3.add(numeroBatterieScarto);
 		numeroBatterieScarto.setText("-- %");
 		numeroBatterieScarto.setHorizontalAlignment(SwingConstants.CENTER);
@@ -2046,7 +2067,7 @@ public class main  {
 		numeroBatterieScarto.setBackground(Color.WHITE);
 		
 		JLabel lblNewLabel_3_1 = new JLabel("SCARTO");
-		lblNewLabel_3_1.setBounds(10, 218, 177, 26);
+		lblNewLabel_3_1.setBounds(10, 97, 177, 26);
 		panel_3.add(lblNewLabel_3_1);
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1.setFont(new Font("Arial", Font.BOLD, 14));
@@ -2076,19 +2097,8 @@ public class main  {
 		JLabel lblNewLabel_3_2 = new JLabel("BATTERIE OK");
 		lblNewLabel_3_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_2.setFont(new Font("Arial", Font.BOLD, 14));
-		lblNewLabel_3_2.setBounds(10, 132, 177, 18);
+		lblNewLabel_3_2.setBounds(10, 11, 177, 18);
 		panel_3.add(lblNewLabel_3_2);
-		
-		tipo_batteria = new JTextField();
-		tipo_batteria.setText("---");
-		tipo_batteria.setHorizontalAlignment(SwingConstants.CENTER);
-		tipo_batteria.setForeground(Color.BLACK);
-		tipo_batteria.setFont(new Font("Arial", Font.BOLD, 24));
-		tipo_batteria.setEditable(false);
-		tipo_batteria.setColumns(10);
-		tipo_batteria.setBackground(Color.WHITE);
-		tipo_batteria.setBounds(10, 37, 177, 56);
-		panel_3.add(tipo_batteria);
 		
 		
 		o_data = new JTextField();
@@ -2126,14 +2136,14 @@ public class main  {
 		
 		
 		
-		setting.elenco_indicatori.setIndicatore(0, tempo1, stato1, batteria1, statoplc, statodb, conteggio1,btemporanea1,risultato1,statoLinea1,timestatoLinea1,conteggiorip1,scarto1);  //indicatori postazione 1	
-		setting.elenco_indicatori.setIndicatore(1, tempo2, stato2, batteria2, statoplc, statodb, conteggio2,btemporanea2,risultato2,statoLinea2,timestatoLinea2,conteggiorip2,scarto2);  //indicatori postazione 2
-		setting.elenco_indicatori.setIndicatore(2, tempo3, stato3, batteria3, statoplc, statodb, conteggio3,btemporanea3,risultato3,statoLinea3,timestatoLinea3,conteggiorip3,scarto3);  //indicatori postazione 3
-		setting.elenco_indicatori.setIndicatore(3, tempo4, stato4, batteria4, statoplc, statodb, conteggio4,btemporanea4,risultato4,statoLinea4,timestatoLinea4,conteggiorip4,scarto4);  //indicatori postazione 4
-		setting.elenco_indicatori.setIndicatore(4, tempo5, stato5, batteria5, statoplc, statodb, conteggio5,btemporanea5,risultato5,statoLinea5,timestatoLinea5,conteggiorip5,scarto5);  //indicatori postazione 5
-		setting.elenco_indicatori.setIndicatore(5, tempo6, stato6, batteria6, statoplc, statodb, conteggio6,btemporanea6,risultato6,statoLinea6,timestatoLinea6,conteggiorip6,scarto6);  //indicatori postazione 6
-		setting.elenco_indicatori.setIndicatore(6, tempo7, stato7, batteria7, statoplc, statodb, conteggio7,btemporanea7,risultato7,statoLinea7,timestatoLinea7,conteggiorip7,scarto7);
-		setting.elenco_indicatori.setIndicatore(Setting.STAZIONE_DI_CONTROLLO_2, tempo10, stato10, batteria10, statoplc, statodb, conteggio10,btemporanea10,risultato10,statoLinea10,timestatoLinea10,conteggiorip10,scarto10);
+		setting.elenco_indicatori.setIndicatore(0, tempo1, stato1, batteria1, statoplc, statodb, conteggio1,btemporanea1,risultato1,statoLinea1,timestatoLinea1,scarto1);  //indicatori postazione 1	
+		setting.elenco_indicatori.setIndicatore(1, tempo2, stato2, batteria2, statoplc, statodb, conteggio2,btemporanea2,risultato2,statoLinea2,timestatoLinea2,scarto2);  //indicatori postazione 2
+		setting.elenco_indicatori.setIndicatore(2, tempo3, stato3, batteria3, statoplc, statodb, conteggio3,btemporanea3,risultato3,statoLinea3,timestatoLinea3,scarto3);  //indicatori postazione 3
+		setting.elenco_indicatori.setIndicatore(3, tempo4, stato4, batteria4, statoplc, statodb, conteggio4,btemporanea4,risultato4,statoLinea4,timestatoLinea4,scarto4);  //indicatori postazione 4
+		setting.elenco_indicatori.setIndicatore(4, tempo5, stato5, batteria5, statoplc, statodb, conteggio5,btemporanea5,risultato5,statoLinea5,timestatoLinea5,scarto5);  //indicatori postazione 5
+		setting.elenco_indicatori.setIndicatore(5, tempo6, stato6, batteria6, statoplc, statodb, conteggio6,btemporanea6,risultato6,statoLinea6,timestatoLinea6,scarto6);  //indicatori postazione 6
+		setting.elenco_indicatori.setIndicatore(6, tempo7, stato7, batteria7, statoplc, statodb, conteggio7,btemporanea7,risultato7,statoLinea7,timestatoLinea7,scarto7);
+		setting.elenco_indicatori.setIndicatore(Setting.STAZIONE_DI_CONTROLLO_2, tempo10, stato10, batteria10, statoplc, statodb, conteggio10,btemporanea10,risultato10,statoLinea10,timestatoLinea10,scarto10);
 						
 		areaErrore = new JTextField();
 		areaErrore.addMouseListener(new MouseAdapter() {
@@ -2188,10 +2198,6 @@ public class main  {
 			btn_abilitazione_10.setBackground(Setting.grigio);
 			btn_abilitazione_10.setText("PULSANTE INATTIVO");
 		}
-		
-		//setting.getCodiceBatteriaScartata().setBackground(Setting.grigio);
-		
-		setting.setTipologiaBatterie(tipo_batteria);
 		
 		setting.setLabelBatterieBuone(numeroBatterieBuone);
 		setting.setLabelBatterieScartate(numeroBatterieScarto);

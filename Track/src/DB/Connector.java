@@ -114,7 +114,7 @@ public class Connector implements Runnable{
 				}
 				
 				
-				rs = stmt_mysql.executeQuery("SELECT * FROM linea5 where postazione = 10 AND data>'"+dax+"' order by data asc");	
+				rs = stmt_mysql.executeQuery("SELECT * FROM "+Setting.TABLE_LINEA+" where postazione = 10 AND data>'"+dax+"' order by data asc");	
 				
 				int numero_occorrenze = 0;
 				while (rs.next()){

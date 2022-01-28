@@ -141,7 +141,7 @@ public class CaricaDatiFromDB {
 				}
 				
 				
-				rs = stmt_mysql.executeQuery("SELECT distinct codice, postazione,stato_test,data,valore1,valore2 FROM linea2 where data>='"+dax+"' AND postazione <10 order by data asc");	
+				rs = stmt_mysql.executeQuery("SELECT distinct codice, postazione,stato_test,data,valore1,valore2 FROM "+Setting.TABLE_LINEA+" where data>='"+dax+"' AND postazione <10 order by data asc");	
 				
 				int numero_occorrenze = 0;
 				while (rs.next()){

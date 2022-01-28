@@ -194,7 +194,7 @@ public class WinStory extends JFrame {
 			dax = ieri+" 22:00:00";//getMyDate(""+ieri+" 10:00:00", "dd/MM/yyyy HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
 			
 			
-			rs = stmt_mysql.executeQuery("SELECT * FROM linea2 where codice='"+codice_batteria+"' order by data asc");	
+			rs = stmt_mysql.executeQuery("SELECT * FROM "+Setting.TABLE_LINEA+" where codice='"+codice_batteria+"' order by data asc");	
 			
 			
 			while (rs.next()){

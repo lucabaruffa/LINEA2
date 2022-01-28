@@ -160,7 +160,7 @@ public class CheckControlCVS extends TimerTask{
 								         try {   
 								           //HO DICHIARATO NEL DATABASE UNIQUE(CODICE,POSTAZIONE,DATA)
 								           //IN MODO DA EVITARE DUPLICAZIONI
-								        	 stmt_mysql.executeUpdate("INSERT INTO linea2 (codice,postazione,stato_test,data,valore1,valore2,dettaglio) VALUES " +
+								        	 stmt_mysql.executeUpdate("INSERT INTO "+Setting.TABLE_LINEA+" (codice,postazione,stato_test,data,valore1,valore2,dettaglio) VALUES " +
 								           		  				   " ('"+codice+"',"+nomestazione+","+stato+",'"+dat+"',"+valore1+","+valore2+",'"+dettaglio_errore+"') ");
 								        	//DOPO INSERIMENTO NEL DB CANCELLO LA BATTERIA IN CODA
 								            //arraybatteria.cancellaBatteria(batteria);
@@ -225,10 +225,10 @@ public class CheckControlCVS extends TimerTask{
 			    	
 			    	
 			    	//controllo se esiste ilrecord. Lo aggiorno in caso positivo, altrimenti lo inserisco
-			    	ResultSet rs = stmt_mysql.executeQuery("SELECT * FROM stop_linea2 where start='"+tempo_fermo+"' AND linea=2 limit 1");
+			    	ResultSet rs = stmt_mysql.executeQuery("SELECT * FROM "+Setting.DB_TABLE_STOP_LINEA+" where start='"+tempo_fermo+"' AND linea="+Setting.DB_BATTERIE_NUM_LINEA+" limit 1");
 			    	if (rs.next()){
 			    		int ID = rs.getInt("ID");
-			    		stmt_mysql.executeUpdate("UPDATE stop_linea2 SET stop = '"+dax2+"', minuti_differenza="+diff+" WHERE ID="+ID+";");
+			    		stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET stop = '"+dax2+"', minuti_differenza="+diff+" WHERE ID="+ID+";");
 			    		rs.close();
 			    		/*
 			    		try {
@@ -244,7 +244,7 @@ public class CheckControlCVS extends TimerTask{
 			    	}//fine if rs
 			    	else {
 			    		rs.close();
-			    		stmt_mysql.executeUpdate("INSERT INTO stop_linea2 (linea,start,stop,minuti_differenza,motivo_fermo) VALUES (2,'"+tempo_fermo+"','"+dax2+"',"+diff+",'"+motivo_fermo+"');");
+			    		stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_STOP_LINEA+" (linea,start,stop,minuti_differenza,motivo_fermo) VALUES ("+Setting.DB_BATTERIE_NUM_LINEA+",'"+tempo_fermo+"','"+dax2+"',"+diff+",'"+motivo_fermo+"');");
 			    		/*
 			    		 rs = stmt_mysql.executeQuery("SELECT * FROM stop_linea2 where start='"+tempo_fermo+"' AND linea=2 limit 1");
 			    		

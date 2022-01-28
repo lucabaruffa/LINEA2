@@ -16,7 +16,7 @@ public class Indicatore {
 		//public static JTextArea monitor;
 		public JTextField statoLinea;
 		public JTextField tempostatoLinea;
-		public JTextField riprocessato;
+		//public JTextField riprocessato;
 		public JTextField scarto;
 		
 		public Color rosso = new Color(255, 135, 128);
@@ -30,7 +30,7 @@ public class Indicatore {
 			
 		}
 		
-		public Indicatore(JTextField t , JTextField s , JTextField b, JTextField splc,JTextField sdb,JTextField con,JTextField batteriaZ,JTextField risult,JTextField statolin,JTextField tempostato,JTextField riproces,JTextField scart) {
+		public Indicatore(JTextField t , JTextField s , JTextField b, JTextField splc,JTextField sdb,JTextField con,JTextField batteriaZ,JTextField risult,JTextField statolin,JTextField tempostato,JTextField scart) {
 			tempo = t;
 			stato = s;
 			batteria = b;
@@ -41,7 +41,7 @@ public class Indicatore {
 			risultato = risult;
 			statoLinea = statolin;
 			tempostatoLinea = tempostato;
-			riprocessato=riproces;
+			//riprocessato=riproces;
 			scarto=scart;
 		}//fine costruttore
 		

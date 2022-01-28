@@ -136,7 +136,7 @@ public class Setting {
 	public static int BTX14_max_acido= 951;
 	
 	public static List<greenCode> listaGreenCode = new ArrayList<>();
-	public static String LINEA = "Linea 2";
+	
 	public static int DBGREENCODE = 5020; //5020;
 	public static JTextField txtTipologiaBatteria;
 	public static long startTime=0;
@@ -144,6 +144,16 @@ public class Setting {
 	//public static Giustificativo winGiustificativo;
 	public static long minuti_fermo_linea=0; //numero minuti di lineaferma
 	public static int timeCheckControlGiustificativo = 2; //giustifificativo si aggiorna ogni 2 minuti;
+	
+	
+	//sezione BATABASE
+	public static String LINEA = "Linea 2";
+	public static String LINEA_GIUSTIFICATIVI = "Linea2";
+	public static String TABLE_LINEA = "linea2";
+	public static String DB_TABLE_BATTERIE_LINEA = "batterie_linea2";
+	public static String DB_TABLE_FERMI_LINEA = "fermi_linea2";
+	public static String DB_TABLE_STOP_LINEA = "stop_linea2";
+	public static int DB_BATTERIE_NUM_LINEA = 2;
 	
 	/**
 	 * @return the data_ultimo_aggiornamento

@@ -151,7 +151,7 @@ public boolean invia_segnalazione(String oggetto,String messaggio,String destina
 				            
 			try {   
 			      stmt_mysql.executeUpdate("INSERT INTO segnalazioni (oggetto,operatore,testo,linea,email) VALUES " +
-				           		  				   " ('"+oggetto+"','SISTEMA','"+messaggio+"', 'LINEA2','"+destinatari+"')");
+				           		  				   " ('"+oggetto+"','SISTEMA','"+messaggio+"', '"+Setting.LINEA_GIUSTIFICATIVI+"','"+destinatari+"')");
 				            
 			 }catch(Exception h) {
 				   	 log.write("ERRORE INSERIMENTO db SEGNALAZIONE.   Errore:"+ h.toString());	 
@@ -181,7 +181,7 @@ public boolean invia_segnalazione(String oggetto,int ID) {
 	
 				            
 			try {   
-			      stmt_mysql.executeUpdate("UPDATE stop_linea2 SET motivo_fermo='"+oggetto+"' WHERE id="+ID);
+			      stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET motivo_fermo='"+oggetto+"' WHERE id="+ID);
 			      log.write("Fatto giustificativo su ID=" + ID);    
 				  System.out.println("fatto aggiornamento su ID=" + ID);          
 			 }catch(Exception h) {

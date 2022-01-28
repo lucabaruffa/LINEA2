@@ -166,7 +166,7 @@ public void trasmetti() throws UnknownHostException, IOException  {
 						        	
 						        	//if (nomestazione.equals("2")) log.write("SenderDB. Stato batteria pos2  = " + stato);
 						        	
-						        	 stmt_mysql.executeUpdate("INSERT INTO linea2 (codice,postazione,stato_test,data,valore1,valore2,dettaglio) VALUES " +
+						        	 stmt_mysql.executeUpdate("INSERT INTO "+Setting.TABLE_LINEA+" (codice,postazione,stato_test,data,valore1,valore2,dettaglio) VALUES " +
 						           		  				   " ('"+codice+"',"+nomestazione+","+stato+",'"+dat+"',"+valore1+","+valore2+",'"+dettaglio_errore+"') ");
 						        	//DOPO INSERIMENTO NEL DB CANCELLO LA BATTERIA IN CODA
 						            arraybatteria.cancellaBatteria(batteria);

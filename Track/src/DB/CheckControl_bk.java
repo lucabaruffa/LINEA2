@@ -33,7 +33,7 @@ import linea2.LoggerFile;
 import linea2.Setting;
 
 
-public class CheckControl{
+public class CheckControl_bk{
 	
 	//private Indicatore indicatore = new Indicatore();
 	public 	Connection c_mysql;
@@ -45,7 +45,7 @@ public class CheckControl{
 	
 	private static LoggerFile log = new LoggerFile();
 	
-	public CheckControl() {
+	public CheckControl_bk() {
 		
 		try {
 			setting = new Setting();
@@ -62,7 +62,7 @@ public class CheckControl{
 		
 	}//fine costruttore
 	
-	public CheckControl(boolean tempo) {
+	public CheckControl_bk(boolean tempo) {
 		
 		
 		arrayBatteryStory = new ArrayBatteryStory();
@@ -162,170 +162,128 @@ public class CheckControl{
 	//controllo per le batterie che NON sono nella posizione 0 del BUFFER del PLC.
 	//dovrebbe EFFETTUARE TUTTI I CONTROLLI POSSIBILI
 	//non viene mai chiamata dalla postazione di controllo finale
-	//AGGIORNAMENTO 27_01_2022. NON CONTROLLO PIU' NEL DB
 public int controlloDbBatteria(Batteria batteria) throws Exception {
 		
-		//String codice = "";
-		//String postazione = "";
+		String codice = "";
+		String postazione = "";
 		
 	
-			//codice = batteria.getCodiceBatteria();
-			//postazione = batteria.getPostazione();
-			//int risposta = -1;  
-			
-			arrayBatteryStory.aggiungiBatteria(batteria);
-			//se esito ko, ritorno senza fare ulteriori controlli
-			if (batteria.getStatoBatteria().equals("0")) {
-					return setting.ESITO_KO_ISTANTANEO;
-			}else {
-					return setting.BATTERIA_OK;
-			}
+			codice = batteria.getCodiceBatteria();
+			postazione = batteria.getPostazione();
+			int risposta = -1;  
 			
 		
+			try {
+				c_mysql = pool.getConnection();
+				stmt_mysql = c_mysql.createStatement(); 
+				stmt_mysql.setQueryTimeout(timeout_query);
+				//log.write("CheckControl. BATTERIA: "+codice+ " POSTAZIONE:" + postazione + "  CHIEDO CONNESSIONE");
+			  } catch (Exception e) {  
+				log.write("CheckControl. ERRORE CREAZIONE CONNESSIONE CHECK \n");
+		      	//System.err.println(e.toString());
+		      	arrayBatteryStory.aggiungiBatteria(batteria);
+		      	if (c_mysql != null) {
+	                pool.returnConnection(c_mysql);
+	            }
+		      	return setting.ERRORE_INDEFINITO;
+		           
+		      }
+		  
+			  
+			  
+				//evito che le batterie saltino la postazione
+				int numero_postazione = 0;  
+			   
+				numero_postazione = Integer.parseInt(postazione);
+			  
+			   //se esito ko, ritorno senza fare ulteriori controlli
+			   if (batteria.getStatoBatteria().equals("0")) {
+					arrayBatteryStory.aggiungiBatteria(batteria);
+					if (c_mysql != null) {
+		                pool.returnConnection(c_mysql);
+		            }
+					return setting.ESITO_KO_ISTANTANEO;
+				}
+		 
+		  
+		   ResultSet rs;
+			try {
+				
+				
+				rs = stmt_mysql.executeQuery("SELECT stato_test,postazione FROM linea2 where postazione<"+batteria.getPostazione()+" AND  codice='"+codice+"' order by data asc");
+				//rs = stmt_mysql.executeQuery("SELECT stato_test,postazione FROM linea5 where  codice='"+codice+"' order by data asc");	
+				int numero_occorrenze = 0;
+				int ultima_postazione = 0;
+				boolean pass = true;
+				while (rs.next()){
+					
+					ultima_postazione = rs.getInt("postazione"); //ultima_postazione processata
+					
+					if (rs.getInt("stato_test")==0) {
+						pass = false;	
+					}
+						
+					else {
+						numero_occorrenze +=1;
+						pass = true;
+					}
+					
+				}//fine while
+				
+				rs.close();
+				
+				if (!pass)  {
+					//pool.returnConnection(c_mysql);
+					arrayBatteryStory.aggiungiBatteria(batteria);
+					return setting.SCARTO_PER_ESITO; //esito in una stazione precedente
+				}
+				
+				
+			
+				if (numero_postazione == (numero_occorrenze + 1)) {
+					//pool.returnConnection(c_mysql);
+					arrayBatteryStory.aggiungiBatteria(batteria);
+					return setting.BATTERIA_OK;
+				}//fine if
+				
+							
+				if (numero_postazione > (numero_occorrenze + 1)) {
+					//pool.returnConnection(c_mysql);
+					arrayBatteryStory.aggiungiBatteria(batteria);
+					return setting.SCARTO_SALTO_STAZIONE;
+					
+				}
+				  
+				if (numero_postazione < (numero_occorrenze + 1)) {
+					//pool.returnConnection(c_mysql);
+					arrayBatteryStory.aggiungiBatteria(batteria);
+					return setting.BATTERIA_GIA_PROCESSATA;
+					
+				}
+			
+			} catch (SQLException e) {
+				log.write("---------------------> ERRORE IN CHECK. CONNESSIONE. POSSIBILE TIMEOUT: "+e.toString());
+				//e.printStackTrace();
+				arrayBatteryStory.aggiungiBatteria(batteria);
+				return setting.SCARTO_TIMEOUT;
+				
+			} finally {
+				
+					//log.write("CheckControl. BATTERIA: "+codice+ " POSTAZIONE:" + postazione + "  RILASCIO CONNESSIONE \n");
+					if (c_mysql != null) {
+		                pool.returnConnection(c_mysql);
+		            }
+				
+				//return setting.BYPASS;
+			}
+		    
+			return setting.SCARTO_TIMEOUT;
 		
 		}//FINE METODO
 		
 
-//controllo per le batterie che NON sono nella posizione 0 del BUFFER del PLC.
-//dovrebbe EFFETTUARE TUTTI I CONTROLLI POSSIBILI
-//non viene mai chiamata dalla postazione di controllo finale
-//AGGIORNAMENTO 27_01_2022. NON CONTROLLO PIU' NEL DB
-public int controlloDbBatteriaOnLine(Batteria batteria) throws Exception {
-	
-	String codice = "";
-	String postazione = "";
-	
-
-	codice = batteria.getCodiceBatteria();
-	postazione = batteria.getPostazione();
-	int risposta = -1;  
-		
-		
-		
-	
-		try {
-			c_mysql = pool.getConnection();
-			stmt_mysql = c_mysql.createStatement(); 
-			stmt_mysql.setQueryTimeout(timeout_query);
-			//log.write("CheckControl. BATTERIA: "+codice+ " POSTAZIONE:" + postazione + "  CHIEDO CONNESSIONE");
-		  } catch (Exception e) {  
-			log.write("CheckControl. ERRORE CREAZIONE CONNESSIONE CHECK \n");
-	      	//System.err.println(e.toString());
-	      	arrayBatteryStory.aggiungiBatteria(batteria);
-	      	if (c_mysql != null) {
-                pool.returnConnection(c_mysql);
-            }
-	      	return setting.ERRORE_INDEFINITO;  //errore LAN
-	           
-	      }
-	
-		  
-		  
-			//evito che le batterie saltino la postazione
-			int numero_postazione = 0;  
-		   
-			numero_postazione = Integer.parseInt(postazione);
-		  
-		   
-	 
-	  
-	   ResultSet rs;
-		try {
-			
-			
-			rs = stmt_mysql.executeQuery("SELECT stato_test,postazione FROM "+Setting.TABLE_LINEA+" where postazione<"+batteria.getPostazione()+" AND  codice='"+codice+"' order by data asc");
-			//rs = stmt_mysql.executeQuery("SELECT stato_test,postazione FROM linea5 where  codice='"+codice+"' order by data asc");	
-			int numero_occorrenze = 0;
-			int ultima_postazione = 0;
-			boolean pass = true;
-			while (rs.next()){
-				
-				ultima_postazione = rs.getInt("postazione"); //ultima_postazione processata
-				
-				if (rs.getInt("stato_test")==0) {
-					pass = false;	
-				}
-					
-				else {
-					numero_occorrenze +=1;
-					pass = true;
-				}
-				
-			}//fine while
-			
-			rs.close();
-			
-			if (!pass)  {
-				//pool.returnConnection(c_mysql);
-				arrayBatteryStory.aggiungiBatteria(batteria);
-				return setting.SCARTO_PER_ESITO; //esito in una stazione precedente
-			}
-			
-			
-		
-			if (numero_postazione == (numero_occorrenze + 1)) {
-				//pool.returnConnection(c_mysql);
-				arrayBatteryStory.aggiungiBatteria(batteria);
-				return setting.BATTERIA_OK;
-			}//fine if
-			
-						
-			if (numero_postazione > (numero_occorrenze + 1)) {
-				//pool.returnConnection(c_mysql);
-				arrayBatteryStory.aggiungiBatteria(batteria);
-				return setting.SCARTO_SALTO_STAZIONE;
-				
-			}
-			  
-			if (numero_postazione < (numero_occorrenze + 1)) {
-				//pool.returnConnection(c_mysql);
-				arrayBatteryStory.aggiungiBatteria(batteria);
-				return setting.BATTERIA_GIA_PROCESSATA;
-				
-			}
-		
-		} catch (SQLException e) {
-			log.write("---------------------> ERRORE IN CHECK. CONNESSIONE. POSSIBILE TIMEOUT: "+e.toString());
-			//e.printStackTrace();
-			arrayBatteryStory.aggiungiBatteria(batteria);
-			return setting.SCARTO_TIMEOUT;
-			
-		} finally {
-			
-				//log.write("CheckControl. BATTERIA: "+codice+ " POSTAZIONE:" + postazione + "  RILASCIO CONNESSIONE \n");
-				if (c_mysql != null) {
-	                pool.returnConnection(c_mysql);
-	            }
-			
-			//return setting.BYPASS;
-		}
-	    
-		return setting.SCARTO_TIMEOUT;
-		
-	
-	
-	}//FINE METODO
-	
-
 
 	public int controlloDbBatteriaDoppione(Batteria batteria) {
-		
-		
-		arrayBatteryStory.aggiungiBatteria(batteria);
-		//se esito ko, ritorno senza fare ulteriori controlli
-		if (batteria.getStatoBatteria().equals("0")) {
-				return setting.ESITO_KO_ISTANTANEO;
-		}else {
-				return setting.BATTERIA_OK;
-		}
-		
-		
-
-	}//FINE METODO
-
-public int controlloDbBatteriaDoppioneOnLine(Batteria batteria) {
-		
-		
 		
 		String codice = batteria.getCodiceBatteria();
 		String postazione = batteria.getPostazione();
@@ -351,7 +309,7 @@ public int controlloDbBatteriaDoppioneOnLine(Batteria batteria) {
 	   ResultSet rs;
 		try {
 			
-			rs = stmt_mysql.executeQuery("SELECT * FROM "+Setting.TABLE_LINEA+" where codice='"+codice+"' and postazione ="+ postazione + " order by data asc");
+			rs = stmt_mysql.executeQuery("SELECT * FROM linea2 where codice='"+codice+"' and postazione ="+ postazione + " order by data asc");
 						
 			int count =  0;
 			while (rs.next()){
@@ -402,9 +360,9 @@ public int controlloDbBatteriaDoppioneOnLine(Batteria batteria) {
 		}
 	    
 	    //return setting.SCARTO_PER_ESITO;
-	   
 
 	}//FINE METODO
+
 
 	
 	
@@ -440,8 +398,8 @@ public int isWaste(Batteria batteria) {
 	   ResultSet rs;
 		try {
 			
-			
-			rs = stmt_mysql.executeQuery("SELECT p1,p2,p3,p4,p5,p6,p7 FROM "+Setting.DB_TABLE_BATTERIE_LINEA+" where codice='"+codice+"' ");
+			//r4 mi occorre per verificare il numero di riprocessamento del controllo corti
+			rs = stmt_mysql.executeQuery("SELECT p1,p2,p3,p4,p5,p6,p7,p8,p9,r4 FROM batterie_linea2 where codice='"+codice+"' ");
 			
 			
 			if (rs.next()) {
@@ -521,6 +479,34 @@ public int isWaste(Batteria batteria) {
 					}
 					
 					
+					
+					iVal = rs.getInt("p8");
+				    if (!rs.wasNull()) {
+				    	 if (iVal == 0)
+				    		return 8;
+					}else
+					{
+						return 18;
+					}
+					
+					
+				    iVal = rs.getInt("p9");
+				    if (!rs.wasNull()) {
+				    	 if (iVal == 0)
+				    		return 9;
+					}else
+					{
+						return 19;
+					}
+				    
+				    
+				    //riprocessamenti postazione 4
+				    iVal = rs.getInt("r4");
+				    if (!rs.wasNull()) {
+				    	 if (iVal > 1)
+				    		return 100; //ritorno 100 se il secondo controllo corti è stato riprocessato
+					}
+					
 				
 					return 0;
 			}
@@ -576,7 +562,7 @@ public int setMicroStop(boolean start_stop, Batteria batteria) throws UnknownHos
 			int stato = -1;
 			
 			
-					rs = stmt_mysql.executeQuery("SELECT id,start_stop FROM "+Setting.DB_TABLE_FERMI_LINEA+" where postazione="+nomestazione+"  ORDER by time desc limit 1 ");
+					rs = stmt_mysql.executeQuery("SELECT id,start_stop FROM fermi_linea2 where postazione="+nomestazione+"  ORDER by time desc limit 1 ");
 					
 					if (rs.next()) {
 						//se esiste è stato creato per avvio
@@ -598,12 +584,12 @@ public int setMicroStop(boolean start_stop, Batteria batteria) throws UnknownHos
 							//l'ultimo record è in stato di stop
 							if(start_stop) 
 								//l'ultimo record è in stato di stop e la stazione si è appena partita
-								stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_FERMI_LINEA+" SET time_stop = '"+ dat + "', start_stop = 1 WHERE ID="+ ultimo_id);
+								stmt_mysql.executeUpdate("UPDATE fermi_linea2 SET time_stop = '"+ dat + "', start_stop = 1 WHERE ID="+ ultimo_id);
 							if(!start_stop) {
 								//l'ultimo record è in stato di stop , devo impostare un nuovo stop
 								//chiudo il precedente ed avvio il nuovo
 								//stmt_mysql.executeUpdate("UPDATE fermi_linea5 SET time_stop = '"+ dat + "',start_stop = 0 WHERE ID="+ ultimo_id);
-								stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_FERMI_LINEA+" (postazione,start_stop,time) VALUES " +
+								stmt_mysql.executeUpdate("INSERT INTO fermi_linea2 (postazione,start_stop,time) VALUES " +
 										" ("+nomestazione+",0,'"+dat+"'"+")");
 							}//fine start_stop
 							
@@ -612,7 +598,7 @@ public int setMicroStop(boolean start_stop, Batteria batteria) throws UnknownHos
 							//l'ultimo record è in stato di start
 							if(!start_stop) 
 								//l'ultimo record è in stato di start e la stazione si è appena avviata
-								stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_FERMI_LINEA+" (postazione,start_stop,time) VALUES " +
+								stmt_mysql.executeUpdate("INSERT INTO fermi_linea2 (postazione,start_stop,time) VALUES " +
 										" ("+nomestazione+",0,'"+dat+"'"+")");
 						}//fine stato==1
 						
@@ -621,11 +607,11 @@ public int setMicroStop(boolean start_stop, Batteria batteria) throws UnknownHos
 						//NON ESISTE UN RECORD
 						if (ss==1)
 							//NON CI SONO RECORD PRECEDENTI, INSERISCO LO STOP
-							stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_FERMI_LINEA+" (postazione,start_stop,time) VALUES " +
+							stmt_mysql.executeUpdate("INSERT INTO fermi_linea2 (postazione,start_stop,time) VALUES " +
 									" ("+nomestazione+",1,'"+dat+"'"+")");
 						else
 							//NON CI SONO RECORD PRECEDENTI, INSERISCO LO START
-							stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_FERMI_LINEA+" (postazione,start,time_stop) VALUES " +
+							stmt_mysql.executeUpdate("INSERT INTO fermi_linea2 (postazione,start,time_stop) VALUES " +
 									" ("+nomestazione+",0,'"+dat+"'"+")");
 					}//fine else ultimo_id<0
 						            				        
