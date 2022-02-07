@@ -33,6 +33,10 @@ import javax.swing.ImageIcon;
 
 public class Giustificativo extends JDialog implements Runnable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtFermo;
 	private int ID;
@@ -41,7 +45,7 @@ public class Giustificativo extends JDialog implements Runnable {
 	private static LoggerFile log = new LoggerFile();
 	private giustificativoDB giustificativo_db;
 	private JTextField txtCodiceFinale;
-	private String codice_finale="000000000";
+	private String codice_finale="00000000000";
 	
 	public static ArrayList<String> giustificativo1 = new ArrayList<>();
 	public static ArrayList<String> giustificativo2 = new ArrayList<>();
@@ -55,6 +59,7 @@ public class Giustificativo extends JDialog implements Runnable {
 	private static ArrayListComboBoxModel model3;
 	private static ArrayListComboBoxModel model4;
 	private static ArrayListComboBoxModel model5;
+	private JTextField txtInizioFermo;
 
 	/**
 	 * Launch the application.
@@ -93,7 +98,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		//setVisible(true);
-		setBounds(100, 100, 1283, 545);
+		setBounds(100, 100, 1283, 643);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -113,16 +118,16 @@ public class Giustificativo extends JDialog implements Runnable {
 		txtFermo.setHorizontalAlignment(SwingConstants.CENTER);
 		txtFermo.setEditable(false);
 		txtFermo.setFont(new Font("Arial", Font.BOLD, 18));
-		txtFermo.setBounds(10, 95, 1220, 50);
+		txtFermo.setBounds(359, 95, 871, 50);
 		contentPanel.add(txtFermo);
 		txtFermo.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("LINEA E' IN STATO DI FERMO");
+		JLabel lblNewLabel = new JLabel("LINEA IN STATO DI FERMO");
 		lblNewLabel.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/alert4.png")));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 23));
 		lblNewLabel.setForeground(Color.RED);
-		lblNewLabel.setBounds(10, 22, 1220, 62);
+		lblNewLabel.setBounds(10, 11, 1220, 73);
 		contentPanel.add(lblNewLabel);
 		
 		giustificativo = new JComboBox();
@@ -157,7 +162,7 @@ public class Giustificativo extends JDialog implements Runnable {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() == ItemEvent.SELECTED) {
 					String sub1 = codice_finale.substring(0,1);
-					String sub2 = codice_finale.substring(2,codice_finale.length());
+					String sub2 = codice_finale.substring(3,codice_finale.length());
 					String val1 = (""+giustificativo2.getSelectedItem()).split("-")[0];
 					System.out.println("sub1=" + sub1 + " - val1=" + val1 +" - sub2=" + sub2 );
 					codice_finale = sub1 + val1 + sub2;
@@ -180,8 +185,8 @@ public class Giustificativo extends JDialog implements Runnable {
 		giustificativo3.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() == ItemEvent.SELECTED) {
-					String sub1 = codice_finale.substring(0,2);
-					String sub2 = codice_finale.substring(4,codice_finale.length());
+					String sub1 = codice_finale.substring(0,4);
+					String sub2 = codice_finale.substring(6,codice_finale.length());
 					String val1 = (""+giustificativo3.getSelectedItem()).split("-")[0];
 					System.out.println("sub1=" + sub1 + " - val1=" + val1 +" - sub2=" + sub2 );
 					codice_finale = sub1 + val1 + sub2;
@@ -191,20 +196,20 @@ public class Giustificativo extends JDialog implements Runnable {
 		});
 		giustificativo3.setModel(model3);
 		giustificativo3.setFont(new Font("Arial", Font.BOLD, 20));
-		giustificativo3.setBounds(645, 194, 244, 78);
+		giustificativo3.setBounds(994, 194, 236, 78);
 		contentPanel.add(giustificativo3);
 		
 		JLabel lblNewLabel_1_1_1 = new JLabel("Tipologia");
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1_1.setBounds(645, 173, 160, 14);
+		lblNewLabel_1_1_1.setBounds(994, 173, 236, 14);
 		contentPanel.add(lblNewLabel_1_1_1);
 		
 		JComboBox giustificativo4 = new JComboBox();
 		giustificativo4.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() == ItemEvent.SELECTED) {
-					String sub1 = codice_finale.substring(0,4);
-					String sub2 = codice_finale.substring(6,codice_finale.length());
+					String sub1 = codice_finale.substring(0,6);
+					String sub2 = codice_finale.substring(8,codice_finale.length());
 					String val1 = (""+giustificativo4.getSelectedItem()).split("-")[0];
 					System.out.println("sub1=" + sub1 + " - val1=" + val1 +" - sub2=" + sub2 );
 					codice_finale = sub1 + val1 + sub2;
@@ -214,20 +219,20 @@ public class Giustificativo extends JDialog implements Runnable {
 		});
 		giustificativo4.setModel(model4);
 		giustificativo4.setFont(new Font("Arial", Font.BOLD, 20));
-		giustificativo4.setBounds(899, 194, 331, 78);
+		giustificativo4.setBounds(10, 304, 625, 78);
 		contentPanel.add(giustificativo4);
 		
 		JLabel lblNewLabel_1_1_1_1 = new JLabel("Componente");
 		lblNewLabel_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1_1_1.setBounds(899, 173, 331, 14);
+		lblNewLabel_1_1_1_1.setBounds(10, 283, 625, 14);
 		contentPanel.add(lblNewLabel_1_1_1_1);
 		
 		JComboBox giustificativo5 = new JComboBox();
 		giustificativo5.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange() == ItemEvent.SELECTED) {
-					String sub1 = codice_finale.substring(0,6);
-					String sub2 = codice_finale.substring(8,codice_finale.length());
+					String sub1 = codice_finale.substring(0,8);
+					String sub2 = codice_finale.substring(10,codice_finale.length());
 					String val1 = (""+giustificativo5.getSelectedItem()).split("-")[0];
 					System.out.println("sub1=" + sub1 + " - val1=" + val1 +" - sub2=" + sub2 );
 					codice_finale = sub1 + val1 + sub2;
@@ -237,28 +242,28 @@ public class Giustificativo extends JDialog implements Runnable {
 		});
 		giustificativo5.setModel(model5);
 		giustificativo5.setFont(new Font("Arial", Font.BOLD, 20));
-		giustificativo5.setBounds(10, 303, 332, 78);
+		giustificativo5.setBounds(645, 304, 339, 78);
 		contentPanel.add(giustificativo5);
 		
 		JLabel lblNewLabel_1_1_1_1_1 = new JLabel("Stato Componente");
 		lblNewLabel_1_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1_1_1_1.setBounds(10, 282, 188, 14);
+		lblNewLabel_1_1_1_1_1.setBounds(645, 283, 339, 14);
 		contentPanel.add(lblNewLabel_1_1_1_1_1);
 		
 		txtCodiceFinale = new JTextField();
 		txtCodiceFinale.setForeground(Color.RED);
 		txtCodiceFinale.setFont(new Font("Arial", Font.BOLD, 20));
 		txtCodiceFinale.setEditable(false);
-		txtCodiceFinale.setBounds(652, 303, 282, 78);
+		txtCodiceFinale.setBounds(10, 411, 282, 78);
 		contentPanel.add(txtCodiceFinale);
 		txtCodiceFinale.setColumns(10);
 		
 		txtCodiceFinale.setText(codice_finale);
-		JButton okButton = new JButton("INSERISCI MOTIVAZIONE");
+		JButton okButton = new JButton("INVIA MOTIVAZIONE");
 		okButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		okButton.setForeground(new Color(0, 0, 0));
 		okButton.setBackground(new Color(255, 182, 193));
-		okButton.setBounds(944, 303, 286, 78);
+		okButton.setBounds(302, 411, 286, 78);
 		contentPanel.add(okButton);
 		okButton.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/fermo.png")));
 		okButton.addMouseListener(new MouseAdapter() {
@@ -282,7 +287,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		
 		JLabel lblNewLabel_1_2 = new JLabel("Situazione Linea");
 		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_2.setBounds(352, 283, 120, 14);
+		lblNewLabel_1_2.setBounds(994, 284, 120, 14);
 		contentPanel.add(lblNewLabel_1_2);
 		
 		JComboBox giustificativo6 = new JComboBox();
@@ -301,13 +306,50 @@ public class Giustificativo extends JDialog implements Runnable {
 		});
 		giustificativo6.setModel(new DefaultComboBoxModel(new String[] {"", "C-CRITICO", "N-NON CRITICO"}));
 		giustificativo6.setFont(new Font("Arial", Font.BOLD, 20));
-		giustificativo6.setBounds(352, 303, 236, 78);
+		giustificativo6.setBounds(994, 304, 236, 78);
 		contentPanel.add(giustificativo6);
 		
 		JLabel lblNewLabel_1_2_1 = new JLabel("Codice Inviato");
 		lblNewLabel_1_2_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_2_1.setBounds(652, 284, 120, 14);
+		lblNewLabel_1_2_1.setBounds(10, 392, 120, 14);
 		contentPanel.add(lblNewLabel_1_2_1);
+		
+		JComboBox giustificativo7 = new JComboBox();
+		giustificativo7.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					String sub1 = codice_finale.substring(0,3);
+					String sub2 = codice_finale.substring(4,codice_finale.length());
+					String val1 = (""+giustificativo7.getSelectedItem()).split("-")[0];
+					System.out.println("sub1=" + sub1 + " - val1=" + val1 +" - sub2=" + sub2 );
+					codice_finale = sub1 + val1 + sub2;
+					txtCodiceFinale.setText(codice_finale);
+				}
+				
+			}
+		});
+		giustificativo7.setModel(new DefaultComboBoxModel(new String[] {"", "1-MACCHINA FERMA", "2-MACCHINA LAVORA", "3-MACCHINA CON INCEPPAMENTI"}));
+		giustificativo7.setFont(new Font("Arial", Font.BOLD, 20));
+		giustificativo7.setBounds(645, 194, 339, 78);
+		contentPanel.add(giustificativo7);
+		
+		JLabel lblNewLabel_1_1_1_2 = new JLabel("Stato");
+		lblNewLabel_1_1_1_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_1_1_2.setBounds(645, 173, 160, 14);
+		contentPanel.add(lblNewLabel_1_1_1_2);
+		
+		txtInizioFermo = new JTextField();
+		txtInizioFermo.setHorizontalAlignment(SwingConstants.CENTER);
+		txtInizioFermo.setFont(new Font("Arial", Font.BOLD, 18));
+		txtInizioFermo.setEditable(false);
+		txtInizioFermo.setColumns(10);
+		txtInizioFermo.setBounds(10, 95, 339, 50);
+		contentPanel.add(txtInizioFermo);
+		
+		JLabel lblNewLabel_1_3 = new JLabel("Inizio Fermo");
+		lblNewLabel_1_3.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_3.setBounds(10, 77, 120, 14);
+		contentPanel.add(lblNewLabel_1_3);
 		
 		{
 			JPanel buttonPane = new JPanel();
@@ -316,13 +358,13 @@ public class Giustificativo extends JDialog implements Runnable {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				
-				JButton btnCambioLinea = new JButton("CAMBIO LINEA");
+				JButton btnCambioLinea = new JButton("AVVIO LINEA");
 				btnCambioLinea.setFont(new Font("Tahoma", Font.BOLD, 11));
 				btnCambioLinea.setBackground(SystemColor.inactiveCaption);
 				btnCambioLinea.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("E0000002", ID))
+						if (!comando.invia_segnalazione("E000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 						else {
 							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -336,7 +378,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				btnPausaPranzo.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("F0000002", ID))
+						if (!comando.invia_segnalazione("F000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 						else {
 							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -354,7 +396,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				btnPausaCaffe.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("G0000002", ID))
+						if (!comando.invia_segnalazione("G000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 						else {
 							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -375,7 +417,7 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnFermoProgrammato.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("H0000002", ID))
+					if (!comando.invia_segnalazione("H000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
 						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 					else {
 						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -383,6 +425,24 @@ public class Giustificativo extends JDialog implements Runnable {
 					}
 				}
 			});
+			
+			JButton btnCambioProduzione = new JButton("CAMBIO PRODUZIONE");
+			btnCambioProduzione.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/cambio_linea.png")));
+			btnCambioProduzione.setFont(new Font("Tahoma", Font.BOLD, 11));
+			btnCambioProduzione.setBackground(SystemColor.inactiveCaption);
+			btnCambioProduzione.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					if (!comando.invia_segnalazione("L000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
+						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
+					else {
+						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
+						setVisible(false);
+					}
+				}
+			});
+			btnCambioProduzione.setActionCommand("OK");
+			buttonPane.add(btnCambioProduzione);
 			btnFermoProgrammato.setFont(new Font("Tahoma", Font.BOLD, 11));
 			btnFermoProgrammato.setBackground(SystemColor.inactiveCaption);
 			btnFermoProgrammato.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/fermoprogrammato.png")));
@@ -393,7 +453,7 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnAssemblea.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("I0000002", ID))
+					if (!comando.invia_segnalazione("I000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
 						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 					else {
 						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -412,7 +472,7 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnSciopero.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("L0000002", ID))
+					if (!comando.invia_segnalazione("L000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
 						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 					else {
 						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -429,13 +489,15 @@ public class Giustificativo extends JDialog implements Runnable {
 		
 		
 		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
-		//setVisible(true);
+		
+		
 	}//fine gui
 	
 	
-public void setFermo(String testo) {
+public void setFermo(String testo,String inizio) {
 		
 		txtFermo.setText(testo);
+		txtInizioFermo.setText(inizio);
 		
 	}
 
@@ -472,7 +534,7 @@ public void run() {
 		System.out.println("GIUSTIFICATIVO ID=" + ID);
 		if ((Setting.minuti_fermo_linea >=Setting.tempoMaxLineaFerma)&&(ID>0)) {
 			
-			setFermo("La Linea e' ferma da " + Setting.minuti_fermo_linea + " minuti. Necessario giustificare");
+			setFermo("La Linea e' ferma da " + Setting.minuti_fermo_linea + " minuti. Necessario giustificare", Setting.data_fermo_linea);
 			this.setVisible(true);
 		}
 		

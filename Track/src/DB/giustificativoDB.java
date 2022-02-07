@@ -52,13 +52,7 @@ public class giustificativoDB {
 		
 		Date date = new Date(System.currentTimeMillis());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		//GregorianCalendar data_attuale = new GregorianCalendar();
-		//GregorianCalendar ultima_data = new GregorianCalendar();
-		
-		//data_attuale.setTime(date);
-		
-		//String dat =  sdf.format(date);
+		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		
 		
 	  
@@ -74,20 +68,23 @@ public class giustificativoDB {
 		
 		  ResultSet rs;	            
 				try {   
-				      rs = stmt_mysql.executeQuery("SELECT * FROM "+Setting.DB_TABLE_STOP_LINEA+" where motivo_fermo='DA GIUSTIFICARE' AND  motivo_fermo<>'PAUSA PRANZO'  order by tempo desc limit 1");
+				      rs = stmt_mysql.executeQuery("SELECT * FROM "+Setting.DB_TABLE_STOP_LINEA+" where motivo_fermo='DA GIUSTIFICARE'   order by tempo desc limit 1");
 				      if (rs.next()){
 							 
 				    	  ID = rs.getInt("ID"); //ultima_postazione processata
 				    	  minutidifferenza = rs.getLong("minuti_differenza");
 				    	  giustificativo = rs.getString("motivo_fermo");
+				    	  String inizio_fermata = sdf2.format(rs.getTimestamp("start"));
 				    	  				    	  
 				    	  System.out.println("ID:"+ID+" - ORARIO ATTUALE : "+sdf.format(date) +"  --> differenza:" + minutidifferenza+" - GIUSTIFICATIVO='"+giustificativo+"'");
 							
+				    	  Setting.data_fermo_linea = inizio_fermata;
 				    	  Setting.minuti_fermo_linea = minutidifferenza;
 				    	  
 						}//fine if
 				      else{
 				    	  Setting.minuti_fermo_linea = 0;
+				    	  Setting.data_fermo_linea = "";
 				      }
 						
 						rs.close();

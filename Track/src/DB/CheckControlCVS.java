@@ -230,16 +230,7 @@ public class CheckControlCVS extends TimerTask{
 			    		int ID = rs.getInt("ID");
 			    		stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET stop = '"+dax2+"', minuti_differenza="+diff+" WHERE ID="+ID+";");
 			    		rs.close();
-			    		/*
-			    		try {
-							if ( Setting.winGiustificativo==null)
-								 Setting.winGiustificativo = new Giustificativo();
-							Setting.winGiustificativo.setFermo("Linea ferma da " + diff + " minuti.",ID);
-							Setting.winGiustificativo.setVisible(true);
-						} catch (Exception e) {
-							log.write("CheckControll CSV. Linea ferma. Errore apertura successivi popup");
-						}
-						*/
+			    		
 			    		
 			    	}//fine if rs
 			    	else {

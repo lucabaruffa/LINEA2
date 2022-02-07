@@ -143,12 +143,13 @@ public class Setting {
 	public static ElencoIndicatori elenco_indicatori = new ElencoIndicatori();
 	//public static Giustificativo winGiustificativo;
 	public static long minuti_fermo_linea=0; //numero minuti di lineaferma
+	public static String data_fermo_linea=""; //numero minuti di lineaferma
 	public static int timeCheckControlGiustificativo = 2; //giustifificativo si aggiorna ogni 2 minuti;
 	
 	
 	//sezione BATABASE
 	public static String LINEA = "Linea 2";
-	public static String LINEA_GIUSTIFICATIVI = "Linea2";
+	public static String LINEA_GIUSTIFICATIVI = "linea2";
 	public static String TABLE_LINEA = "linea2";
 	public static String DB_TABLE_BATTERIE_LINEA = "batterie_linea2";
 	public static String DB_TABLE_FERMI_LINEA = "fermi_linea2";
@@ -461,6 +462,15 @@ public class Setting {
 		    props.setProperty("passworddb", PASSWORDDB);
 		    props.setProperty("numerostazioniattive", NUMERO_STAZIONI_ATTIVE);
 		    props.setProperty("dbgreencode", ""+DBGREENCODE);
+		    props.setProperty("linea", ""+LINEA);
+		    props.setProperty("linea_giustificativi", ""+LINEA_GIUSTIFICATIVI);
+		    props.setProperty("table_linea", ""+TABLE_LINEA);
+		    props.setProperty("db_table_batterie_linea", ""+DB_TABLE_BATTERIE_LINEA);
+		    props.setProperty("db_table_fermi_linea", ""+DB_TABLE_FERMI_LINEA);
+		    props.setProperty("db_table_stop_linea", ""+DB_TABLE_STOP_LINEA);
+		    props.setProperty("db_batterie_num_linea", ""+DB_BATTERIE_NUM_LINEA);
+		    
+		  
 		    
 		    arrayDB[0] = Integer.parseInt(DB);
 		    arrayDB[1] = Integer.parseInt(DB2);
@@ -513,6 +523,15 @@ public class Setting {
 		    NUMERO_STAZIONI_ATTIVE = props.getProperty("numerostazioniattive");
 		    
 		    DBGREENCODE = Integer.parseInt(props.getProperty("dbgreencode"));
+		    
+		    LINEA = props.getProperty("linea");
+		    LINEA_GIUSTIFICATIVI = props.getProperty("linea_giustificativi");
+		    TABLE_LINEA = props.getProperty("table_linea");		   
+		    DB_TABLE_BATTERIE_LINEA = props.getProperty("db_table_batterie_linea");	
+		    DB_TABLE_FERMI_LINEA = props.getProperty("db_table_fermi_linea");
+		    DB_TABLE_STOP_LINEA = props.getProperty("db_table_stop_linea");
+		    DB_BATTERIE_NUM_LINEA = Integer.parseInt(props.getProperty("db_batterie_num_linea"));
+		    
 		    
 		    arrayDB[0] = Integer.parseInt(DB);
 		    arrayDB[1] = Integer.parseInt(DB2);

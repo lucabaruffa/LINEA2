@@ -2,27 +2,33 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment>CONFIGURAZIONE LINEA 2</comment>
-<entry key="rack">0</entry>
-<entry key="numerostazioniattive">8</entry>
 <entry key="tipoconnessione">OP</entry>
 <entry key="slot">1</entry>
-<entry key="db10">140</entry>
-<entry key="db3">133</entry>
 <entry key="ipdb">etpserver.fiamm.dom</entry>
-<entry key="db2">132</entry>
-<entry key="db5">135</entry>
-<entry key="db4">134</entry>
-<entry key="db7">137</entry>
-<entry key="db6">136</entry>
-<entry key="db9">139</entry>
-<entry key="db8">138</entry>
 <entry key="ipplc">100.100.2.1</entry>
 <entry key="passworddb">matrox02</entry>
-<entry key="db">131</entry>
+<entry key="rack">0</entry>
+<entry key="numerostazioniattive">9</entry>
+<entry key="db10">5140</entry>
+<entry key="db3">5133</entry>
+<entry key="db2">5132</entry>
+<entry key="db5">5135</entry>
+<entry key="db4">5134</entry>
+<entry key="db7">5137</entry>
+<entry key="db6">5136</entry>
+<entry key="db9">5139</entry>
+<entry key="db8">5138</entry>
+<entry key="db">5131</entry>
 <entry key="usernamedb">luca</entry>
-<entry key="BTX12_min_acido">782</entry>
-<entry key="BTX12_max_acido">818</entry>
-<entry key="BTX14_min_acido">915</entry>
-<entry key="BTX14_max_acido">951</entry>
 <entry key="dbgreencode">5020</entry>
+
+<entry key="table_linea">linea2</entry>
+<entry key="db_table_stop_linea">stop_linea2</entry>
+<entry key="linea">Linea 2</entry>
+<entry key="linea_giustificativi">Linea2</entry>
+<entry key="db_table_batterie_linea">batterie_linea2</entry>
+<entry key="db_batterie_num_linea">2</entry>
+<entry key="db_table_fermi_linea">fermi_linea2</entry>
+
+
 </properties>

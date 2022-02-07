@@ -422,7 +422,7 @@ public class main  {
 	
 		
 		frmPlc.getContentPane().setBackground(new Color(255, 255, 255));
-		frmPlc.setTitle("EVIDON LINEA 2");
+		frmPlc.setTitle("EVIDON");
 		frmPlc.setBounds(2, 2, 1927, 1051);
 		frmPlc.getContentPane().setLayout(null);
 		

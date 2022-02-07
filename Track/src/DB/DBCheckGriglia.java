@@ -113,7 +113,7 @@ public ArrayList<String>[] getGiustificativi() {
 	  ResultSet rs;	            
 	  try {
 		 
-		rs = stmt_mysql.executeQuery("Select * from giustificativi  order by giustificativo1,giustificativo2,giustificativo3,giustificativo4,giustificativo5 asc");
+		rs = stmt_mysql.executeQuery("Select * from giustificativi where linea='"+Setting.LINEA_GIUSTIFICATIVI+"'  order by giustificativo1,giustificativo2,giustificativo3,giustificativo4,giustificativo5 asc");
         
 			while (rs.next()) {
 				String g1 = rs.getString("giustificativo1");
