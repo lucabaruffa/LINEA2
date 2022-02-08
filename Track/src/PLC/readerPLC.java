@@ -30,7 +30,7 @@ import linea2.Indicatore;
 import linea2.LoggerFile;
 import linea2.Setting;
 
-public class readerPLC_nuovo implements Runnable   {
+public class readerPLC implements Runnable   {
 	
 	
 	public byte[] Buffer = new byte[65536]; // 64K buffer (maximum for S7400 systems)
@@ -81,7 +81,7 @@ public class readerPLC_nuovo implements Runnable   {
 	//private ControlloRiempimentoAcido controllopesoacido = new ControlloRiempimentoAcido();
 	
 	
-	public readerPLC_nuovo() {
+	public readerPLC() {
 		//monitor.append("costruttore");
 	}//fine costruttore
 	
@@ -111,7 +111,7 @@ public class readerPLC_nuovo implements Runnable   {
 	
 	
 	
-	public readerPLC_nuovo(int db, JProgressBar b, int nome, Indicatore ind, ArrayBatteriePostazione arrayBat) {
+	public readerPLC(int db, JProgressBar b, int nome, Indicatore ind, ArrayBatteriePostazione arrayBat) {
 		
 		//monitor =g;
 		nomeStazione = nome;
@@ -165,10 +165,6 @@ public class readerPLC_nuovo implements Runnable   {
 				log.write("\nCARICAMENTO PROPERTIES readerPLC. conteggio="+conteggio+" - Scartate="+numero_batterie_scartate+"\n");
 				indicatore.setConteggio(""+conteggio);
 				indicatore.scarto.setText(""+numero_batterie_scartate);
-			}else {
-				//conteggio = Integer.parseInt(setting.ReadProperties("conteggio_postazione"+nome));
-				//indicatore.riprocessato.setText((setting.ReadProperties("numero_batterie_riprocessate_postazione"+nome,nome)));
-				//numero_batterie_riprocessate = Integer.valueOf(setting.ReadProperties("numero_batterie_riprocessate_postazione"+nome,nome));
 			}
 			
 		}catch(Exception j) {
@@ -442,15 +438,6 @@ public class readerPLC_nuovo implements Runnable   {
 								    	        					
 								    	        					scriviRisultatoScartoPostazione(batteria);
 								    	        					
-								    	        					//-------------------- 07-02-2022-------------------
-								    	        					 boolean contiene = false;
-											               			 contiene = array.contains(batteria); 
-														             if (!contiene) {		
-														                	array.addBatteriaTop(batteria);
-														             }
-								    	        					
-								    	        					//-------------------07-02-2022---------------------
-								    	        					
 								    	        				}catch(Exception j) {
 								    	        					log.write("Reader PLc line445-> - Errore scriviRisultato postazione "+nomeStazione+" :" + j.toString());
 								    	        				}
@@ -502,10 +489,10 @@ public class readerPLC_nuovo implements Runnable   {
 							        				 indicatore.setBatteriaZero("IN ATTESA");
 							        				 
 							        				 if (isFinalController()){
-							        					 areaErrore.setBackground(Setting.grigio);
+							        					 areaErrore.setBackground(setting.grigio);
 								        		   		 areaErrore.setText(Setting.ATTESA_BATTERIA);
-								        		   		 Setting.getCodiceBatteriaScartata().setText("IN ATTESA");
-								        	   			 Setting.getCodiceBatteriaScartata().setBackground(setting.grigio);
+								        		   		 setting.getCodiceBatteriaScartata().setText("IN ATTESA");
+								        	   			 setting.getCodiceBatteriaScartata().setBackground(setting.grigio);
 							        				 }
 					        				 }catch(Exception j) {
 				    	        					log.write("Reader PLc line501->   - Errore else areaerrore indicatorew "+nomeStazione+" :" + j.toString());
@@ -517,9 +504,9 @@ public class readerPLC_nuovo implements Runnable   {
 	        		
 				     }//fine i==0	
 	        		
-	        		//--------07-02-2022 ---------------------------------------
-	        		//else if (data.after(dax) && (i>0) && (!isFinalController())){
-	        		else if (data.after(dax) && (i>0) ){ 				    					    	
+	        		
+	        		else if (data.after(dax) && (i>0) && (!isFinalController())){
+				    	 				    					    	
 						    	 				try {
 						    			        	//top = (array.getOnTop());
 						    	        			dax.setTime((sdf.parse(timestamp)));  	
@@ -546,13 +533,8 @@ public class readerPLC_nuovo implements Runnable   {
 					    	        			
 					    	        try {	
 					               		 
-					    	        	if (isFinalController()) {
-					    	        		 boolean contiene = false;
-					               			 contiene = array.contains(batteria);
-								             if (!contiene) {   		
-								               		array.addBatteriaTop(batteria);
-								             	}
-					    	        	}else					    	        	
+	
+		
 	
 					    	        	if (check(batteria,i)) {
 					               			 
@@ -1029,6 +1011,7 @@ public class readerPLC_nuovo implements Runnable   {
 				}
 		   
 		   	//log.write("readerplc line1049 -> dopo di iswaste. RITORNO = "+ritorno);
+		   	//if (Integer.parseInt(batteria.getPostazione())==2)
 		   	//log.write("POSTAZIONE "+batteria.getPostazione()+". RITORNO IL VALORE = " + ritorno + " con batteria cod:" + batteria.getCodiceBatteria());
 		   
 		   	if (ritorno > 0) {

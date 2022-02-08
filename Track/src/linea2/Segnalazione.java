@@ -65,7 +65,7 @@ public class Segnalazione extends JFrame {
 		
 		user = new JTextField();
 		user.setHorizontalAlignment(SwingConstants.LEFT);
-		user.setText("OPERATORE LINEA 5");
+		user.setText("OPERATORE "+Setting.LINEA);
 		panel.add(user);
 		user.setColumns(10);
 		
@@ -121,7 +121,7 @@ public class Segnalazione extends JFrame {
 					            
 				try {   
 				      stmt_mysql.executeUpdate("INSERT INTO segnalazioni (operatore,testo,linea) VALUES " +
-					           		  				   " ('"+user.getText()+"','"+testo.getText()+"', 'LINEA5')");
+					           		  				   " ('"+user.getText()+"','"+testo.getText()+"', '"+Setting.LINEA_GIUSTIFICATIVI+"')");
 					            
 				 }catch(Exception h) {
 					   	 log.write("ERRORE INSERIMENTO db SEGNALAZIONE.   Errore:"+ h.toString());	 

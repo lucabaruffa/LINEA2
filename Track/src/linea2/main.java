@@ -2199,8 +2199,13 @@ public class main  {
 			btn_abilitazione_10.setText("PULSANTE INATTIVO");
 		}
 		
-		setting.setLabelBatterieBuone(numeroBatterieBuone);
-		setting.setLabelBatterieScartate(numeroBatterieScarto);
+		try {
+			setting.setLabelBatterieBuone(numeroBatterieBuone);
+			setting.setLabelBatterieScartate(numeroBatterieScarto);
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
 		lblConfiguratorePlc = new JLabel("CONFIGURATORE PLC");
 		lblConfiguratorePlc.setFont(new Font("Arial", Font.BOLD, 11));
@@ -2266,7 +2271,7 @@ public class main  {
 			btnNewButton_3.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					new DBCommand(true).invia_segnalazione("CHIAMATA URGENTE LINEA 2","UN OPERATORE HA EFFETTUATO UNA CHIAMATA URGENTE DALLA LINEA 3. RICHIESTA CAPOTURNO",Setting.EMAIL_CAPOTURNO);
+					new DBCommand(true).invia_segnalazione("CHIAMATA URGENTE "+Setting.LINEA,"UN OPERATORE HA EFFETTUATO UNA CHIAMATA URGENTE DALLA "+Setting.LINEA+". RICHIESTA CAPOTURNO",Setting.EMAIL_CAPOTURNO);
 					JOptionPane.showMessageDialog(frmPlc, "MESSAGGIO INVIATO","INFO",JOptionPane.INFORMATION_MESSAGE);
 				}
 			});
@@ -2279,7 +2284,7 @@ public class main  {
 			btnNewButton_3_1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					new DBCommand(true).invia_segnalazione("CHIAMATA URGENTE LINEA 2","UN OPERATORE HA EFFETTUATO UNA CHIAMATA URGENTE DALLA LINEA 3. RICHIESTA QUALITA",Setting.EMAIL_QUALITA);
+					new DBCommand(true).invia_segnalazione("CHIAMATA URGENTE "+Setting.LINEA,"UN OPERATORE HA EFFETTUATO UNA CHIAMATA URGENTE DALLA "+Setting.LINEA+". RICHIESTA QUALITA",Setting.EMAIL_QUALITA);
 					JOptionPane.showMessageDialog(frmPlc, "MESSAGGIO INVIATO","INFO",JOptionPane.INFORMATION_MESSAGE);
 				}
 			});
@@ -2292,7 +2297,7 @@ public class main  {
 			btnNewButton_3_2.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					new DBCommand(true).invia_segnalazione("CHIAMATA URGENTE LINEA 2","UN OPERATORE HA EFFETTUATO UNA CHIAMATA URGENTE DALLA LINEA 3. RICHIESTA ELETTRICA",Setting.EMAIL_ELETTRICISTA);
+					new DBCommand(true).invia_segnalazione("CHIAMATA URGENTE "+Setting.LINEA,"UN OPERATORE HA EFFETTUATO UNA CHIAMATA URGENTE DALLA "+Setting.LINEA+". RICHIESTA ELETTRICA",Setting.EMAIL_ELETTRICISTA);
 					JOptionPane.showMessageDialog(frmPlc, "MESSAGGIO INVIATO","INFO",JOptionPane.INFORMATION_MESSAGE);
 				}
 			});
@@ -2318,12 +2323,12 @@ public class main  {
 					
 					if((btn_abilitazione_10.isSelected())) {
 						btn_abilitazione_10.setIcon(new ImageIcon(icona_pulsante_controllo));
-						new DBCommand(true).invia_segnalazione("CONTROLLO LINEA 2","CONTROLLO FINALE ABILITATO ("+Setting.NOME_STAZIONE_DI_CONTROLLO_2+")",Setting.EMAIL_TUTTI);
+						new DBCommand(true).invia_segnalazione("CONTROLLO "+Setting.LINEA,"CONTROLLO FINALE ABILITATO ("+Setting.NOME_STAZIONE_DI_CONTROLLO_2+")",Setting.EMAIL_TUTTI);
 						//btn_abilitazione_10.setSelectedIcon(new ImageIcon(icona_pulsante_controllo));
 					}
 					else {
 						btn_abilitazione_10.setIcon(new ImageIcon(icona_pulsante_controllo_off));
-						new DBCommand(true).invia_segnalazione("CONTROLLO LINEA 2",Setting.NOME_STAZIONE_DI_CONTROLLO_2+" DIABILITATO ("+Setting.NOME_STAZIONE_DI_CONTROLLO_2+")",Setting.EMAIL_TUTTI);
+						new DBCommand(true).invia_segnalazione("CONTROLLO "+Setting.LINEA,Setting.NOME_STAZIONE_DI_CONTROLLO_2+" DIABILITATO ("+Setting.NOME_STAZIONE_DI_CONTROLLO_2+")",Setting.EMAIL_TUTTI);
 						//btn_abilitazione_10.setDisabledIcon(new ImageIcon(icona_pulsante_controllo_off));
 					}
 					
@@ -2347,8 +2352,6 @@ public class main  {
 				
 				frame.caricaDatiConfigurazionePostazioneInterblocco(btn_abilitazione_10);
 				
-				
-				
 			} catch (Exception e1) {
 				log.write("\nMain. Errore caricaDatiConfigurazionePostazioneInterblocco : "+ e1.toString()+"\n");
 				e1.printStackTrace();
@@ -2360,7 +2363,7 @@ public class main  {
 			
 				
 			
-			//new DBCommand(true).invia_segnalazione("CONTROLLO LINEA 3","PROGRAMMA DI CONTROLLO AVVIATO!",Setting.EMAIL_TUTTI);
+			//new DBCommand(true).invia_segnalazione("EVIDON LINEA 3 AVVIATO","IL PROGRAMMA EVIDON IN FASE DI AVVIO!",Setting.EMAIL_TUTTI);
 	
 }//fine metodo
 	
@@ -2621,11 +2624,7 @@ private void start() {
 			
 		    Giustificativo giustificativo =new Giustificativo();
 		    scheduler.scheduleAtFixedRate(giustificativo, 1, Setting.timeCheckControlGiustificativo, TimeUnit.MINUTES); //ogni 3 minuti
-		    //WinGiustifica wingiustifica = new WinGiustifica();//.getInstance();
-	    	//wingiustifica.visualizza();
-		    //Setting.winGiustificativo = new Giustificativo();
-		    //Setting.winGiustificativo.setVisible(false);
-	    	
+		   
 		    
 	
 }//fine metodo start
@@ -2634,7 +2633,7 @@ private void start() {
 
 class Activator{
 	
-	private String appName="monitor_linea2";
+	private String appName="monitor_evidon";
     private File file;
     private FileChannel channel;
     private FileLock lock;

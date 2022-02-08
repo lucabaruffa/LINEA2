@@ -134,7 +134,13 @@ public ArrayList<String>[] getGiustificativi() {
 			
     	}        
 	  finally {
-			  pool.returnConnection(c_mysql);
+			
+		  		try {
+					pool.returnConnection(c_mysql);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	  }
 	  
 	  ritorno[0] = giustificativo1;

@@ -11,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import static linea2.Encryption.*;
 
 public class Setting {
 
@@ -36,9 +38,11 @@ public class Setting {
 	private static String NUMERO_STAZIONI_ATTIVE ="9";
 	
 	
+    
+	
+	
 	//NOME DELLE STAZIONI DI CONTROLLO
 	public static int STAZIONE_DI_CONTROLLO_1 = 20; //POSTAZIONE 7
-	//public static String STAZIONE_DI_CONTROLLO_1_STR = "20"; //POSTAZIONE 7
 	public static String NOME_STAZIONE_DI_CONTROLLO_1 = "POSTAZIONE DI CONTROLLO 1";
 	
 	public static int STAZIONE_DI_CONTROLLO_2 = 21; //POSTAZIONE 10
@@ -53,7 +57,7 @@ public class Setting {
 	public static String IPDB = "etpserver.fiamm.dom";
 	public static String IPPORT = "3306";
 	public static String USERNAMEDB = "luca";
-	public static String PASSWORDDB = "matrox02";
+	public static String PASSWORDDB = "TestPassword123";
 	public static String DB_NAME = "tracciabilita";
 	
 	
@@ -141,7 +145,6 @@ public class Setting {
 	public static JTextField txtTipologiaBatteria;
 	public static long startTime=0;
 	public static ElencoIndicatori elenco_indicatori = new ElencoIndicatori();
-	//public static Giustificativo winGiustificativo;
 	public static long minuti_fermo_linea=0; //numero minuti di lineaferma
 	public static String data_fermo_linea=""; //numero minuti di lineaferma
 	public static int timeCheckControlGiustificativo = 2; //giustifificativo si aggiorna ogni 2 minuti;
@@ -155,6 +158,13 @@ public class Setting {
 	public static String DB_TABLE_FERMI_LINEA = "fermi_linea2";
 	public static String DB_TABLE_STOP_LINEA = "stop_linea2";
 	public static int DB_BATTERIE_NUM_LINEA = 2;
+	
+	byte[] salt = new String("12345678").getBytes();
+	String pwd = "TestPassword123";
+	//impostare nel file config.xml il valore Hy7fbIwpyKgp0oileu+oLg==:WNRknMJz/8u8GmWlCZFPFA==    come primo avvio
+    int iterationCount = 40000;
+    int keyLength = 128;
+    SecretKeySpec key = createSecretKey(pwd.toCharArray(), salt, iterationCount, keyLength);
 	
 	/**
 	 * @return the data_ultimo_aggiornamento
@@ -178,7 +188,7 @@ public class Setting {
 		//if (((adesso - startTime)/1000000000) > 10) {
 			caricaConfigurazione();
 			startTime = System.nanoTime();
-			System.out.println("Setting AVVIO");
+			System.out.println("Setting con caricamento");
 		//}else {
 			//System.out.println("Loader Setting. Sono passati meno di 10 secondi. NON RICARICO");
 			
@@ -189,7 +199,7 @@ public class Setting {
 	
 	public Setting(boolean tmp) throws Exception
 	{
-		System.out.println("Setting CON parametro");
+		System.out.println("Setting senza ricaricamento");
 		//carico da qui se devo prelevare informazioni quando la configurazione è già stata caricata
 		
 	}//setting
@@ -203,7 +213,7 @@ public class Setting {
     		Properties prop = new Properties();
     		prop.setProperty(var1, value1);
     		prop.setProperty(var2, value2);
-			prop.storeToXML(output, "LINEA 2 " + Setting.NOME_STAZIONE_DI_CONTROLLO_2);
+			prop.storeToXML(output, "" + Setting.NOME_STAZIONE_DI_CONTROLLO_2);
 
 			output.close();
 			
@@ -216,14 +226,15 @@ public class Setting {
 		}
 	}//fine writeProperties
 	
-	public void WriteProperties(String var1, String value1, int postazione) {
+	/*
+	public void WriteProperties3(String var1, String value1, int postazione) {
         try {
         	
         	File configFile = new File("value"+postazione+".xml");
     		OutputStream output = new FileOutputStream(configFile);
     		Properties prop = new Properties();
     		prop.setProperty(var1, value1);
-			prop.storeToXML(output, "LINEA 2 P" + postazione);
+			prop.storeToXML(output, "P" + postazione);
 
 			output.close();
 			
@@ -235,11 +246,12 @@ public class Setting {
 			e.printStackTrace();
 		}
 	}//fine writeProperties
+	*/
 	
 	public String ReadProperties(String var1, int postazione) {
 		
 		
-		File configFile = new File("value"+postazione+".xml");
+		File configFile = new File("value.xml");
 		 
 		try {
 			InputStream inputStream = new FileInputStream(configFile);
@@ -261,8 +273,8 @@ public class Setting {
 					output = new FileOutputStream(configFile);
 					Properties prop = new Properties();
 		    		prop.setProperty("conteggio_finale", "0");
-		    		prop.setProperty("numero_batterie_riprocessate_postazione"+postazione, "0");
-					prop.storeToXML(output, "LINEA 2 P");
+		    		prop.setProperty("numero_batterie_scartate", "0");
+					prop.storeToXML(output, "LINEA");
 
 					output.close();
 				} catch (Exception e5) {
@@ -442,6 +454,16 @@ public class Setting {
 		
 			File configFile = new File("config.xml");
 			
+			
+			//SecretKeySpec key = createSecretKey(pwd.toCharArray(), salt, iterationCount, keyLength);
+			
+			String originalPassword = PASSWORDDB;
+	       
+	        String encryptedPassword = encrypt(originalPassword, key);
+	        System.out.println("Encrypted password: " + encryptedPassword);
+	        //String decryptedPassword = decrypt(encryptedPassword, key);
+	        //System.out.println("Decrypted password: " + decryptedPassword);
+			
 		    Properties props = new Properties();
 		    props.setProperty("ipplc", IPPLC);
 		    props.setProperty("rack", RACK);
@@ -459,7 +481,7 @@ public class Setting {
 		    props.setProperty("tipoconnessione", TIPO_CONNESSIONE);
 		    props.setProperty("ipdb", IPDB);
 		    props.setProperty("usernamedb", USERNAMEDB);
-		    props.setProperty("passworddb", PASSWORDDB);
+		    props.setProperty("passworddb",  encryptedPassword);
 		    props.setProperty("numerostazioniattive", NUMERO_STAZIONI_ATTIVE);
 		    props.setProperty("dbgreencode", ""+DBGREENCODE);
 		    props.setProperty("linea", ""+LINEA);
@@ -469,8 +491,8 @@ public class Setting {
 		    props.setProperty("db_table_fermi_linea", ""+DB_TABLE_FERMI_LINEA);
 		    props.setProperty("db_table_stop_linea", ""+DB_TABLE_STOP_LINEA);
 		    props.setProperty("db_batterie_num_linea", ""+DB_BATTERIE_NUM_LINEA);
-		    
-		  
+		    props.setProperty("tempoMaxLineaFerma", ""+tempoMaxLineaFerma);
+		   
 		    
 		    arrayDB[0] = Integer.parseInt(DB);
 		    arrayDB[1] = Integer.parseInt(DB2);
@@ -485,7 +507,7 @@ public class Setting {
 		    arrayDB[Setting.STAZIONE_DI_CONTROLLO_2] = DB_POSTAZIONE_CONTROLLO2;
 					    
 		    OutputStream outputStream = new FileOutputStream(configFile);
-		    props.storeToXML(outputStream, "CONFIGURAZIONE LINEA 2");
+		    props.storeToXML(outputStream, "CONFIGURAZIONE LINEA");
 			outputStream.close();
 		
 		
@@ -497,7 +519,8 @@ public class Setting {
 	{
 		
 		File configFile = new File("config.xml");
-		 
+		
+		
 		try {
 			InputStream inputStream = new FileInputStream(configFile);
 			Properties props = new Properties();
@@ -519,7 +542,7 @@ public class Setting {
 		    TIPO_CONNESSIONE = props.getProperty("tipoconnessione");
 		    IPDB = props.getProperty("ipdb");
 		    USERNAMEDB = props.getProperty("usernamedb");
-		    PASSWORDDB = props.getProperty("passworddb");
+		    String TMP_PASSWORDDB = props.getProperty("passworddb");
 		    NUMERO_STAZIONI_ATTIVE = props.getProperty("numerostazioniattive");
 		    
 		    DBGREENCODE = Integer.parseInt(props.getProperty("dbgreencode"));
@@ -531,6 +554,7 @@ public class Setting {
 		    DB_TABLE_FERMI_LINEA = props.getProperty("db_table_fermi_linea");
 		    DB_TABLE_STOP_LINEA = props.getProperty("db_table_stop_linea");
 		    DB_BATTERIE_NUM_LINEA = Integer.parseInt(props.getProperty("db_batterie_num_linea"));
+		    tempoMaxLineaFerma = Integer.parseInt(props.getProperty("tempoMaxLineaFerma"));
 		    
 		    
 		    arrayDB[0] = Integer.parseInt(DB);
@@ -545,6 +569,15 @@ public class Setting {
 		    
 		    //POSTAZIONE DI ECCEZIONE
 		    arrayDB[Setting.STAZIONE_DI_CONTROLLO_2] = DB_POSTAZIONE_CONTROLLO2;  //postazione di controllo 2
+		    
+			
+			//String originalPassword = TMP_PASSWORDDB;
+	        //System.out.println("Original password: " + originalPassword);
+	        
+	        String decryptedPassword = decrypt(TMP_PASSWORDDB, key);
+	        //System.out.println("Decrypted password: " + decryptedPassword);
+			
+			PASSWORDDB = decryptedPassword;
 		    
 		    inputStream.close();
 		} catch (FileNotFoundException ex) {

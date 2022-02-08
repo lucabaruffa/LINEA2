@@ -24,7 +24,7 @@ public class DBConnectionPool {
     private static Stack<Connection> freePool = new Stack<>();
     private static Set<Connection> occupiedPool = new HashSet<>();
     
-    private Indicatore indicatore = new Indicatore();
+    //private Indicatore indicatore = new Indicatore();
     
     private static LoggerFile log = new LoggerFile();
 
@@ -65,8 +65,13 @@ public class DBConnectionPool {
 		}
     	
       //POOL CONNESSIONI DB
- 		setDBConnectionPool("jdbc:mysql://"+setting.IPDB+"/"+setting.DB_NAME, setting.getUSERNAMEDB(), setting.getPASSWORDDB());
+ 		setDBConnectionPool("jdbc:mysql://"+Setting.IPDB+"/"+Setting.DB_NAME, setting.getUSERNAMEDB(), setting.getPASSWORDDB());
     	
+ 		
+ 		
+ 		
+ 		
+ 		
     }
     
     /**
@@ -171,8 +176,11 @@ public class DBConnectionPool {
      */
     private Connection createNewConnection() throws SQLException, ClassNotFoundException {
     	Class.forName("com.mysql.cj.jdbc.Driver");
+    	//jdbc:odbc:dataSourceName
+    	
     	Connection conn = null;
         conn = DriverManager.getConnection(databaseUrl, userName, password);
+    	
         return conn;
     }
 

@@ -72,13 +72,10 @@ public class plcCommand    {
 		log.write("AVVIO RUN");
 		
 		//monitor.append("RUNNING\n");
-		if(Client.Connected) {
-			
-			long startTime = System.nanoTime();
-			
-			ShowStatus();
-				
-			long endTime = System.nanoTime();
+		if(Client.Connected) {		
+			//long startTime = System.nanoTime();	
+			ShowStatus();				
+			//long endTime = System.nanoTime();
 			//monitor.append("\nPostazione "+ nomeStazione + ". Tempo esecuzione = "+ (endTime - startTime)/1000000+" millisecondi");  
 		}//fine if
 		else {

@@ -13,10 +13,8 @@ import PLC.readerPLC;
 public class Linea {
 
 	private static CopyOnWriteArrayList<readerPLC> dateList;
-	private CopyOnWriteArrayList<Thread> lista_thread;
 	private Setting setting;
-	private DBConnectionPool pool;
-	
+
 	
 	
 	ArrayBatterie arrayArrayBatterie = new ArrayBatterie();
@@ -24,8 +22,6 @@ public class Linea {
 	
 	public Linea(JProgressBar bufferBatterie, ElencoIndicatori el, JTextField errore) throws InterruptedException {
 		dateList = new CopyOnWriteArrayList<readerPLC>();
-		lista_thread = new CopyOnWriteArrayList<Thread>();
-		
 		
 		try {
 			setting = new Setting();
@@ -35,9 +31,7 @@ public class Linea {
 		}
 		
 		
-		//POOL CONNESSIONI DB
- 		pool = new DBConnectionPool();
- 		
+ 		 		
  		int stazioni_attive = Integer.parseInt(setting.getNumeroStazioniAttive());
  			
  		setting.setAreaError(errore);
@@ -58,8 +52,7 @@ public class Linea {
 			readerPLC lettorePLC = new readerPLC(DB,bufferBatterie,(i+1), indicatore, arrayBatteriePostazione);
 			lettorePLC.avvia();
 			this.addReader(lettorePLC);
-			
-			
+						
 			//NELL'ARRAY DELL'ARRAY INSERISCO L'ARRAY DELLA POSTAZIONE
 			arrayArrayBatterie.addArray(arrayBatteriePostazione);
 			
@@ -67,7 +60,7 @@ public class Linea {
 			Thread t1 = new Thread(lettorePLC);
 			//lista_thread.add(t1);
 			
-			Thread.sleep(1000);
+			Thread.sleep(800);
 			//AVVIO IL LETTORE READER PLC
 			t1.start();
 	
@@ -90,14 +83,11 @@ public class Linea {
 		//NELL'ARRAY DELL'ARRAY INSERISCO L'ARRAY DELLA POSTAZIONE
 		arrayArrayBatterie.addArray(arrayBatteriePostazione);
 		
-		//CREO IL THREAD E LO INSERISCO NELLA LISTA DEI THREAD
-		Thread t1 = new Thread(lettorePLC);
+		//CREO IL THREAD E LO AVVIO
+		new Thread(lettorePLC).start();
 		//lista_thread.add(t1);
 		
 		Thread.sleep(500);
-		
-		//AVVIO IL LETTORE READER PLC
-		t1.start();
 		
 		
 	}//fine costruttore

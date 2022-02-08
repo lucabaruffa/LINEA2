@@ -59,29 +59,29 @@ public class LoggerFile {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date(System.currentTimeMillis());
 		String dax = sdf.format(date);
-		path = dir + ""+dax+"-linea2.txt";
+		path = dir + ""+dax+"-linea.txt";
 		
 		String timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
 		try {
 			File file = new File(path);
 			
 			if (getFileSizeMegaBytes(file)>1) {
-				path = dir + ""+dax+"-linea2_2.txt";
+				path = dir + ""+dax+"-linea_2.txt";
 				file = new File(path);
 			}
 			
 			if (getFileSizeMegaBytes(file)>1) {
-				path = dir + ""+dax+"-linea2_3.txt";
+				path = dir + ""+dax+"-linea_3.txt";
 				file = new File(path);
 			}
 			
 			if (getFileSizeMegaBytes(file)>1) {
-				path = dir + ""+dax+"-linea2_4.txt";
+				path = dir + ""+dax+"-linea_4.txt";
 				file = new File(path);
 			}
 			
 			if (getFileSizeMegaBytes(file)>1) {
-				path = dir + ""+dax+"-linea2_5.txt";
+				path = dir + ""+dax+"-linea_5.txt";
 				file = new File(path);
 			}
 			
@@ -164,7 +164,7 @@ public static void readBatterieBloccate(JTextArea monitor) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date(System.currentTimeMillis());
 		String dax = sdf.format(date);
-		path = dir + ""+dax+"-linea2.txt";
+		path = dir + ""+dax+"-linea.txt";
 		// Scrittura di dati da file
 				FileReader fileInput;
 				BufferedReader bufferReader;
