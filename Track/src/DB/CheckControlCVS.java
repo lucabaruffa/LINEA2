@@ -33,13 +33,13 @@ import java.time.temporal.ChronoUnit;
 import org.json.JSONObject;
 
 import PLC.ConfiguratorePLc;
-import linea2.ArrayBatteriePostazione;
-import linea2.ArrayBatteryStory;
-import linea2.Batteria;
-import linea2.CalcoloFermi;
-import linea2.Giustificativo;
-import linea2.LoggerFile;
-import linea2.Setting;
+import linea.ArrayBatteriePostazione;
+import linea.ArrayBatteryStory;
+import linea.Batteria;
+import linea.CalcoloFermi;
+import linea.Giustificativo;
+import linea.LoggerFile;
+import linea.Setting;
 
 
 //faccio un controllo sulle batterie presente nel file CSV. 

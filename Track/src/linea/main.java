@@ -1,4 +1,4 @@
-package linea2;
+package linea;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -2450,7 +2450,9 @@ public class main  {
 									        	//timestamp = batteria.gettimestamp();
 									        	//monitor.append("prima di if\n");
 									        	if (Integer.parseInt(batteria.getStatoBatteria())==1) ok[Integer.parseInt(batteria.getPostazione())-1] = "OK";
-									        	else ok[Integer.parseInt(batteria.getPostazione())-1] = "KO";
+									        	//else ok[Integer.parseInt(batteria.getPostazione())-1] = "KO";
+									        	if (Integer.parseInt(batteria.getStatoBatteria())==0) ok[Integer.parseInt(batteria.getPostazione())-1] = "KO";
+									        	if (Integer.parseInt(batteria.getStatoBatteria())==-2) ok[Integer.parseInt(batteria.getPostazione())-1] = "BYPASS";
 								        	}//fine if
 									   }//fine for
 									  
@@ -2527,6 +2529,10 @@ public class main  {
             }
             if(number.equals("KO")){
             	setBackground(new Color(255, 135, 128));
+            	setForeground(Color.darkGray);
+            }
+            if(number.equals("BYPASS")){
+            	setBackground(new Color(195, 215, 222));
             	setForeground(Color.darkGray);
             }
             if(number.equals("/")){

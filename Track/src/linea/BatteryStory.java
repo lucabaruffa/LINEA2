@@ -1,4 +1,4 @@
-package linea2;
+package linea;
 import java.util.LinkedList;
 import java.util.Queue;
 

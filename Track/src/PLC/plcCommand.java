@@ -23,13 +23,13 @@ import Moka7.IntByRef;
 import Moka7.S7;
 import Moka7.S7Client;
 import View.Scarti;
-import linea2.ArrayBatteriePostazione;
-import linea2.Batteria;
-import linea2.ConfiguratoreLinea;
-import linea2.Indicatore;
-import linea2.LoggerFile;
-import linea2.Setting;
-import linea2.greenCode;
+import linea.ArrayBatteriePostazione;
+import linea.Batteria;
+import linea.ConfiguratoreLinea;
+import linea.Indicatore;
+import linea.LoggerFile;
+import linea.Setting;
+import linea.greenCode;
 
 public class plcCommand    {
 	

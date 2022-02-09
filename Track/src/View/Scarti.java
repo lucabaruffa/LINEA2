@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import linea2.LoggerFile;
+import linea.LoggerFile;
 
 import java.awt.Toolkit;
 import java.awt.Window.Type;

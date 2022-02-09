@@ -20,11 +20,11 @@ import DB.DBCommand;
 import Moka7.IntByRef;
 import Moka7.S7;
 import Moka7.S7Client;
-import linea2.AtomoConfigurazioneLinea;
-import linea2.Indicatore;
-import linea2.LoggerFile;
-import linea2.SendEmailOffice365;
-import linea2.Setting;
+import linea.AtomoConfigurazioneLinea;
+import linea.Indicatore;
+import linea.LoggerFile;
+import linea.SendEmailOffice365;
+import linea.Setting;
 
 public class ConfiguratorePLc implements Runnable {
 

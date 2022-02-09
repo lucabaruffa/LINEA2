@@ -9,8 +9,8 @@ import java.util.GregorianCalendar;
 
 import javax.swing.JTextField;
 
-import linea2.LoggerFile;
-import linea2.Setting;
+import linea.LoggerFile;
+import linea.Setting;
 
 public class giustificativoDB {
 	

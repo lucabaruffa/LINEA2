@@ -1,4 +1,4 @@
-package linea2;
+package linea;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;

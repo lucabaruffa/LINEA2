@@ -27,10 +27,10 @@ import java.text.SimpleDateFormat;
 import org.json.JSONObject;
 
 import PLC.ConfiguratorePLc;
-import linea2.ArrayBatteryStory;
-import linea2.Batteria;
-import linea2.LoggerFile;
-import linea2.Setting;
+import linea.ArrayBatteryStory;
+import linea.Batteria;
+import linea.LoggerFile;
+import linea.Setting;
 
 
 public class DBCommand{

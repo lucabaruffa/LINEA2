@@ -1,4 +1,6 @@
-package linea2;
+package linea;
+import static linea.Encryption.*;
+
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +17,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import static linea2.Encryption.*;
 
 public class Setting {
 

@@ -14,10 +14,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import linea2.ArrayBatteryStory;
-import linea2.Batteria;
-import linea2.LoggerFile;
-import linea2.Setting;
+import linea.ArrayBatteryStory;
+import linea.Batteria;
+import linea.LoggerFile;
+import linea.Setting;
 
 
 

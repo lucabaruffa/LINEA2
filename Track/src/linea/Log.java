@@ -1,4 +1,4 @@
-package linea2;
+package linea;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 

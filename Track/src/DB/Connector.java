@@ -14,11 +14,11 @@ import java.util.Locale;
 
 import javax.swing.JTextField;
 
-import linea2.ArrayBatteryStory;
-import linea2.Batteria;
-import linea2.Indicatore;
-import linea2.LoggerFile;
-import linea2.Setting;
+import linea.ArrayBatteryStory;
+import linea.Batteria;
+import linea.Indicatore;
+import linea.LoggerFile;
+import linea.Setting;
 
 
 public class Connector implements Runnable{

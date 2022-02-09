@@ -1,4 +1,4 @@
-package linea2;
+package linea;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;

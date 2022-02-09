@@ -1,5 +1,5 @@
 
-package linea2;
+package linea;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.text.DateFormat;
@@ -302,6 +302,11 @@ public class WinStory extends JFrame {
 			            if(number.equals("0")){
 			            	value ="KO";
 			            	setBackground(Color.red);
+			            	setForeground(Color.darkGray);
+			            }
+			            if(number.equals("-2")){
+			            	value ="BYPASS";
+			            	setBackground(new Color(195, 215, 222));
 			            	setForeground(Color.darkGray);
 			            }
 			            if(number.equals("")){

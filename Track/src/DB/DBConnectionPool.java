@@ -8,9 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import linea2.Indicatore;
-import linea2.LoggerFile;
-import linea2.Setting;
+import linea.Indicatore;
+import linea.LoggerFile;
+import linea.Setting;
 
 public class DBConnectionPool {
     private static String databaseUrl;

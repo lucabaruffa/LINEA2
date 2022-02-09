@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimerTask;
-import linea2.Setting;
-import linea2.greenCode;
+
+import linea.Setting;
+import linea.greenCode;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;

@@ -1,4 +1,4 @@
-package linea2;
+package linea;
 
 
 import javax.swing.JFrame;
@@ -146,9 +146,9 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_scarto_2.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_2.isSelected())  
-					btn_scarto_2.setText("SCARTO ATTIVO");  
+					btn_scarto_2.setText("POSTAZIONE ATTIVA");  
 		        else  
-		        	btn_scarto_2.setText("SCARTO DISATTIVATO"); 
+		        	btn_scarto_2.setText("POSTAZIONE DISATTIVATA"); 
 			}
 		});
 		btn_scarto_2.setBackground(Color.LIGHT_GRAY);
@@ -173,9 +173,9 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_scarto_3.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_3.isSelected())  
-					btn_scarto_3.setText("SCARTO ATTIVO");  
+					btn_scarto_3.setText("POSTAZIONE ATTIVA");  
 		        else  
-		        	btn_scarto_3.setText("SCARTO DISATTIVATO"); 
+		        	btn_scarto_3.setText("POSTAZIONE DISATTIVATA"); 
 			}
 		});
 		btn_scarto_3.setBackground(Color.LIGHT_GRAY);
@@ -200,9 +200,9 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_scarto_4.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_4.isSelected())  
-					btn_scarto_4.setText("SCARTO ATTIVO");  
+					btn_scarto_4.setText("POSTAZIONE ATTIVA");  
 		        else  
-		        	btn_scarto_4.setText("SCARTO DISATTIVATO"); 
+		        	btn_scarto_4.setText("POSTAZIONE DISATTIVATA"); 
 			}
 		});
 		btn_scarto_4.setBackground(Color.LIGHT_GRAY);
@@ -227,9 +227,9 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_scarto_5.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_5.isSelected())  
-					btn_scarto_5.setText("SCARTO ATTIVO");  
+					btn_scarto_5.setText("POSTAZIONE ATTIVA");  
 		        else  
-		        	btn_scarto_5.setText("SCARTO DISATTIVATO"); 
+		        	btn_scarto_5.setText("POSTAZIONE DISATTIVATA"); 
 			}
 		});
 		btn_scarto_5.setBackground(Color.LIGHT_GRAY);
@@ -254,9 +254,9 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_scarto_6.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_6.isSelected())  
-					btn_scarto_6.setText("SCARTO ATTIVO");  
+					btn_scarto_6.setText("POSTAZIONE ATTIVA");  
 		        else  
-		        	btn_scarto_6.setText("SCARTO DISATTIVATO"); 
+		        	btn_scarto_6.setText("POSTAZIONE DISATTIVATA"); 
 			}
 		});
 		btn_scarto_6.setBackground(Color.LIGHT_GRAY);
@@ -281,9 +281,9 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_scarto_7.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_7.isSelected())  
-					btn_scarto_7.setText("SCARTO ATTIVO");  
+					btn_scarto_7.setText("POSTAZIONE ATTIVA");  
 		        else  
-		        	btn_scarto_7.setText("SCARTO DISATTIVATO"); 
+		        	btn_scarto_7.setText("POSTAZIONE DISATTIVATA"); 
 			}
 		});
 		btn_scarto_7.setBackground(Color.LIGHT_GRAY);
@@ -308,9 +308,9 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_scarto_10.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_10.isSelected())  
-					btn_scarto_10.setText("SCARTO ATTIVO");  
+					btn_scarto_10.setText("POSTAZIONE ATTIVA");  
 		        else  
-		        	btn_scarto_10.setText("SCARTO DISATTIVATO"); 
+		        	btn_scarto_10.setText("POSTAZIONE DISATTIVATA"); 
 			}
 		});
 		btn_scarto_10.setBackground(Color.LIGHT_GRAY);
@@ -514,12 +514,7 @@ public void salvaDatiConfigurazione() {
 				
 				dateList[5].spare1 = 0;
 				dateList[5].spare2 = 0;
-			} catch (Exception e3) {
-				// TODO Auto-generated catch block
-				e3.printStackTrace();
-			}
-			//------------------------------------------------------------
-			try {
+			
 				if(btn_lettore_7.isSelected()) dateList[6].statoscanner=256;
 				else dateList[6].statoscanner=0;
 

@@ -16,12 +16,12 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import linea2.ArrayBatterie;
-import linea2.ArrayBatteriePostazione;
-import linea2.ArrayBatteryStory;
-import linea2.Batteria;
-import linea2.LoggerFile;
-import linea2.Setting;
+import linea.ArrayBatterie;
+import linea.ArrayBatteriePostazione;
+import linea.ArrayBatteryStory;
+import linea.Batteria;
+import linea.LoggerFile;
+import linea.Setting;
 
 public class SenderDB implements Runnable {
 

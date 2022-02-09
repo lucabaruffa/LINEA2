@@ -23,12 +23,12 @@ import Moka7.IntByRef;
 import Moka7.S7;
 import Moka7.S7Client;
 import View.Scarti;
-import linea2.ArrayBatteriePostazione;
-import linea2.Batteria;
-import linea2.ConfiguratoreLinea;
-import linea2.Indicatore;
-import linea2.LoggerFile;
-import linea2.Setting;
+import linea.ArrayBatteriePostazione;
+import linea.Batteria;
+import linea.ConfiguratoreLinea;
+import linea.Indicatore;
+import linea.LoggerFile;
+import linea.Setting;
 
 public class readerPLC implements Runnable   {
 	
@@ -77,6 +77,8 @@ public class readerPLC implements Runnable   {
 	
 	private JTextField areaErrore;
 	private String stato_batteria_postazione_bilancia2 = "1";
+	
+	private String old_stato_batteria="-1";
 	
 	//private ControlloRiempimentoAcido controllopesoacido = new ControlloRiempimentoAcido();
 	
@@ -154,8 +156,8 @@ public class readerPLC implements Runnable   {
 		}
 		
 		
-		numero_batterie_scartate = setting.totale_batterie_scartate[nomeStazione-1];
-		conteggio = setting.totale_batterie_lavorate[nomeStazione-1];
+		numero_batterie_scartate = Setting.totale_batterie_scartate[nomeStazione-1];
+		conteggio = Setting.totale_batterie_lavorate[nomeStazione-1];
 		
 		//tento di caricare le informazione dell'ultima stazione
 		try {
@@ -393,10 +395,9 @@ public class readerPLC implements Runnable   {
 	        	int data2 = S7.GetDIntAt(Buffer, offset_DBAREA);
 	        	offset_DBAREA += 4;
 	        	
-	        	
+	        	//CREO LA BATTERIA
 				try {
 					batteria = new Batteria(i,cod_batteria,timestamp,""+stato,data1,data2);
-					//log.write("Postazione:" +nomeStazione+  "  -> valore1 =" + data1);
 					batteria.setPostazione(""+nomeStazione);
 					
 				} catch (Exception e) {
@@ -417,7 +418,6 @@ public class readerPLC implements Runnable   {
 				    	        			indicatore.setBatteriaZero(cod_batteria);
 				    	        			numero_di_cicli_senza_batterie = 0;
 				    	        			
-				    	        			
 				    	        			//nella prima postazione controllo la TIPOLOGIA DELLA BATTERIA
 							    	        if (nomeStazione==1) {
 							    	        		try {
@@ -434,8 +434,7 @@ public class readerPLC implements Runnable   {
 				    	        				//log.write("Reader PLc -> postazione 10 arrivo batteria :" + cod_batteria);
 								    	        				try {
 								    	        					tempo_ultima_batteria = timestamp;
-								    	        					//log.write("Reader PLc line444-> - timestamp =" + timestamp);
-								    	        					
+								    	        													    	        					
 								    	        					scriviRisultatoScartoPostazione(batteria);
 								    	        					
 								    	        				}catch(Exception j) {
@@ -454,7 +453,7 @@ public class readerPLC implements Runnable   {
 										    	 				}
 								    	        				
 								    	        				
-								    	        				
+								    	        				//AGGIORNO GLI INDICATORI
 				    	        								int total_batt = Integer.parseInt(indicatore.conteggio.getText());
 								    	        				int total_scarto = Integer.parseInt(indicatore.scarto.getText());
 								    	        							    	        				
@@ -489,10 +488,10 @@ public class readerPLC implements Runnable   {
 							        				 indicatore.setBatteriaZero("IN ATTESA");
 							        				 
 							        				 if (isFinalController()){
-							        					 areaErrore.setBackground(setting.grigio);
+							        					 areaErrore.setBackground(Setting.grigio);
 								        		   		 areaErrore.setText(Setting.ATTESA_BATTERIA);
-								        		   		 setting.getCodiceBatteriaScartata().setText("IN ATTESA");
-								        	   			 setting.getCodiceBatteriaScartata().setBackground(setting.grigio);
+								        		   		 Setting.getCodiceBatteriaScartata().setText("IN ATTESA");
+								        	   			 Setting.getCodiceBatteriaScartata().setBackground(Setting.grigio);
 							        				 }
 					        				 }catch(Exception j) {
 				    	        					log.write("Reader PLc line501->   - Errore else areaerrore indicatorew "+nomeStazione+" :" + j.toString());
@@ -532,13 +531,14 @@ public class readerPLC implements Runnable   {
 					    	        			tempo_ultima_batteria = timestamp;
 					    	        			
 					    	        try {	
-					               		 
-	
-		
-	
+					               	
+					    	        	//questa variabile 
+					    	        	//old_stato_batteria="-1";
+					    	        	
 					    	        	if (check(batteria,i)) {
 					               			 
 					               			   boolean contiene = false;
+					               			//log.write("Reader PLC.DOPO VERIFICA - Batteria:"+batteria.getCodiceBatteria()+ " - Risultato:"+ batteria.getStatoBatteria());
 					               			 
 					               			 	contiene = array.contains(batteria);
 					               			 
@@ -555,7 +555,7 @@ public class readerPLC implements Runnable   {
 								                		float v1 = ((float)(data1))/1000;
 								                		float v2 = ((float)(data2))/1000;
 								                		
-								                		indicatore.risultato.setBackground(setting.grigio);
+								                		indicatore.risultato.setBackground(Setting.grigio);
 								                		
 								                		if (nomeStazione==1) indicatore.risultato.setText(""+data1+" - " + data2);
 								                		if (nomeStazione==2) indicatore.risultato.setText(""+data1+" - " + data2);
@@ -623,7 +623,7 @@ public class readerPLC implements Runnable   {
 	        if ((numero_di_cicli_senza_batterie>NUMERO_CICLI_START_STOP)) {
 	        	
 	        	indicatore.statoLinea.setText("STOP");
-	        	indicatore.statoLinea.setBackground(setting.rosso);
+	        	indicatore.statoLinea.setBackground(Setting.rosso);
 	        	
 		        if (!stopped)  {
 		        	
@@ -640,7 +640,7 @@ public class readerPLC implements Runnable   {
 	        	//numero_di_cicli_senza_batterie = 0;
 	        }else {
 	        	indicatore.statoLinea.setText("RUNNING");
-	        	indicatore.statoLinea.setBackground(setting.verde);
+	        	indicatore.statoLinea.setBackground(Setting.verde);
 	        	indicatore.tempostatoLinea.setText("");
 	        	
 	        	if (!segnalato) {
@@ -662,8 +662,8 @@ public class readerPLC implements Runnable   {
 	        prima_lettura = false;
 	        //indicatore.setConteggio(""+conteggio);
 	   
-		    bufferBatterie.setValue(array.totaleBatterie);
-	        bufferBatterie.setString(""+array.totaleBatterie+ " BATTERIE IN CODA");
+		    bufferBatterie.setValue(ArrayBatteriePostazione.totaleBatterie);
+	        bufferBatterie.setString(""+ArrayBatteriePostazione.totaleBatterie+ " BATTERIE IN CODA");
 	        	
 		   
 	    	
@@ -672,7 +672,7 @@ public class readerPLC implements Runnable   {
 	    
 	    
 	    
-	    public void connetti() {
+	 public void connetti() {
 	    	if (setting.getConnectionType().equals("OP"))
 			{
 				Client.SetConnectionType(S7.OP);
@@ -704,20 +704,20 @@ public class readerPLC implements Runnable   {
 	            //statoplc.setText("CONNESSIONE OK!");
 	    	}else {
 	    		log.write("CONNESSIONE FALLITA! - NUOVO TENTATIVO FRA "+sleep+" SECONDI\n");
-	    		indicatore.statoplc.setText("ERRORE");
-	    		indicatore.statoplc.setBackground(setting.rosso);
+	    		Indicatore.statoplc.setText("ERRORE");
+	    		Indicatore.statoplc.setBackground(Setting.rosso);
 	    		//statoplc.setBackground(new Color(219, 22, 65));
 	    	}
 	    }//fine connetti
 	    
 	    
 	    
-	    static class SortByDate implements Comparator<Batteria> {
+	 static class SortByDate implements Comparator<Batteria> {
 	        @Override
 	        public int compare(Batteria a, Batteria b) {
 	            return b.data.compareTo(a.data);
 	        }
-	    }//fine sortbydate
+	 }//fine sortbydate
 	    
 	    
 	    public static String getMyDate(String myDate, String requiredFormat, String mycurrentFormat) {
@@ -754,26 +754,22 @@ public class readerPLC implements Runnable   {
 	     * non ha più senso dare l'ok al PLC
 	     */
 	    private boolean check(Batteria batteria, int indice) {
-	    	boolean ritorno = false; 
+	    	//boolean ritorno = false; 
 	    	
 	    		//monitor.append("INDICE:"+indice+" HO INVIATO IL CODICE BATTERIA: " + batteria.getCodiceBatteria() +" CON POSTAZIONE="+batteria.getPostazione()+"\n");	    					
 	    		if (batteria.getCodiceBatteria().length()>12) { //SE IL CODICE è VALIDO
 		    		
 	    					int tmp = -1;
 	    					
-	    					//QUESTO CONTROLLO NON SI VERIFICA MAI PERCHE STO CONTROLLANDO LE POSIZIONI DI BUFFER >0
-	    					if (indice == 0) {	
-	    						
-	    					}
-	    					//indice <>0
-	    					else {
+	    					//SE NON SONO NELLA PRIMA POSIZIONE
+	    					if (indice != 0) {	
 	    						//CONTROLLO SU TUTTE LE BATTERIE <> 0
 	    					
-	    						if (!prima_lettura) {
+	    						if (!prima_lettura) 
+	    						{
 	    							if (check != null)
 		    							try {	
 		    								tmp = check.controlloDbBatteria(batteria); //controllo normale con diversi tipi di segnalazione
-		    								
 		    							}catch(Exception h) {
 		    	    						log.write("Reader PLC. Stazione :"+nomeStazione +" - check.control >0: Cod.batteria:"+batteria.getCodiceBatteria()+ " - !primalettura Errore:" + h.toString());
 		    		    				}
@@ -783,8 +779,7 @@ public class readerPLC implements Runnable   {
 	    						else
 	    						{
 	    							try {
-	    								tmp = check.controlloDbBatteriaDoppione(batteria); //cerco solo doppioni. cerco se è presento o meno nel db
-	    									    								
+	    								tmp = check.controlloDbBatteriaDoppione(batteria); //cerco solo doppioni. cerco se è presento o meno nel db		    								
 	    							}catch(Exception h) {
 	    	    						log.write("Reader PLC. Stazione :"+nomeStazione +" - check.control >0: Cod.batteria:"+batteria.getCodiceBatteria()+ " - primalettura Errore:" + h.toString());
 	    		    				}
@@ -793,14 +788,16 @@ public class readerPLC implements Runnable   {
 	    							
 	    						try {		
 		    						//scarto abilitato
-		    						if (configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0)	{
-		    							//codice di ritorno dal controllo, codice batteria, postazione
-		    							 
-		    							return segnala(tmp,batteria.getCodiceBatteria(),batteria.getPostazione());	//se la batteri non supera il testo, segnalo con
-		    							    						
+		    						if ((configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0)||(configuratore.getListaAtomoConfigurazione()[nomeStazione-1].statoscanner>0)	){
+		    							//codice di ritorno dal controllo, codice batteria, postazione 
+		    							return segnala(tmp,batteria.getCodiceBatteria(),batteria.getPostazione());	//se la batteri non supera il testo, segnalo con    						
 		    						}else
 		    						{
 		    							//SCARTO DISABILITATO
+		    							//MODIFICA DEL 08-02-2022
+		    							//voglio memorizzare che la postazione è disabilitata. Lo faccio memorizzando -2
+		    							log.write("Reader PLC. Stazione :"+nomeStazione +" - Batteria:"+batteria.getCodiceBatteria()+ " - Risultato:"+ tmp);
+		    							batteria.setStato("-2");
 		    							return segnala(9,batteria.getCodiceBatteria(),batteria.getPostazione());
 		    							
 		    						}
@@ -834,8 +831,8 @@ public class readerPLC implements Runnable   {
 		   switch(risposta) {
 		   case -1:
 			   //indicatore.batteria.setBackground(setting.bianco);
-			   indicatore.conteggio.setBackground(setting.bianco);
-			   indicatore.stato.setBackground(setting.arancio); 
+			   indicatore.conteggio.setBackground(Setting.bianco);
+			   indicatore.stato.setBackground(Setting.arancio); 
 			   indicatore.setStato("BYPASS");
 			   //conteggio +=1;
 			   indicatore.setConteggio(""+conteggio);
@@ -843,8 +840,8 @@ public class readerPLC implements Runnable   {
 			   break;
 		   case 0:
 			   	//indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			   	indicatore.stato.setBackground(setting.verde);
+				indicatore.conteggio.setBackground(Setting.bianco);
+			   	indicatore.stato.setBackground(Setting.verde);
 				indicatore.setStato("OK");
 				//conteggio +=1;
 				indicatore.setConteggio(""+conteggio);
@@ -857,8 +854,8 @@ public class readerPLC implements Runnable   {
 		   break;
 		   case 1:
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.rosso); 
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.rosso); 
 			    indicatore.setStato("RIPROCESS.");
 			    numero_batterie_riprocessate +=1;
 				//conteggio +=1;
@@ -876,8 +873,8 @@ public class readerPLC implements Runnable   {
 		   // eventuali altri case
 		   case 2:
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.arancio);
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.arancio);
 			    indicatore.setStato("KO PRECE.");
 			    log.write("BATTERIA KO nella stazione precedete. POSTAZIONE ATTUALE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
@@ -888,8 +885,8 @@ public class readerPLC implements Runnable   {
 				 
 		   case 3:
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.rosso); 
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.rosso); 
 			    indicatore.setStato("TIMEOUT");
 			    log.write("TIMEOUT DEL DATABASE.  --->  postazione n."+postazione+"  , BATTERIA:"+ codice_batt);
 				//conteggio +=1;
@@ -898,8 +895,8 @@ public class readerPLC implements Runnable   {
 		   break;
 		   case 4:
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.rosso); 
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.rosso); 
 			    indicatore.setStato("SALTO P.");
 			    log.write("SALTO POSTAZIONE N."+postazione+"   CODICE BATTERIA:" + codice_batt);
 			    
@@ -909,8 +906,8 @@ public class readerPLC implements Runnable   {
 		   break;
 		   case 5:
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.rosso); 
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.rosso); 
 			    indicatore.setStato("NO LAN");
 			    //log.write("NEL CHECK HO RISCONTRATO UN VALORE DI CONTROL. NON DOVREI ESSERE QUI. - POSTAZIONE N."+postazione+"   CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
@@ -919,8 +916,8 @@ public class readerPLC implements Runnable   {
 		   break;
 		   case 6:
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.arancio); 
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.arancio); 
 			    indicatore.setStato("BUFFER");
 				//conteggio +=1;
 				indicatore.setConteggio(""+conteggio);
@@ -928,8 +925,8 @@ public class readerPLC implements Runnable   {
 		   break;
 		   case 7:
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.rosso);
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.rosso);
 			    indicatore.setStato("ESITO KO");
 			    log.write("BATTERIA KO. POSTAZIONE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
@@ -939,8 +936,8 @@ public class readerPLC implements Runnable   {
 		  break;
 		   case 8:
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.rosso);
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.rosso);
 			    indicatore.setStato("ESITO KO");
 			    //log.write("BATTERIA KO. POSTAZIONE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
@@ -950,16 +947,22 @@ public class readerPLC implements Runnable   {
 		  break;
 		   case 9:
 			   	//OK CON BYPASS
-				indicatore.conteggio.setBackground(setting.bianco);
-			   	indicatore.stato.setBackground(setting.verde);
-				indicatore.setStato("OK BYPASS");
-				//conteggio +=1;
+				//indicatore.conteggio.setBackground(Setting.bianco);
+			   	//indicatore.stato.setBackground(Setting.verde);
+			   	//indicatore.stato.setBackground(Setting.verde);
+			   	indicatore.conteggio.setBackground(Setting.grigio);
+			   	indicatore.stato.setBackground(Setting.grigio);
+			   	indicatore.batteria.setBackground(Setting.grigio);
+			   	indicatore.batteriaZero.setBackground(Setting.grigio);
+			   	indicatore.conteggio.setBackground(Setting.grigio);
+				indicatore.setStato("BYPASS");
+				
 				indicatore.setConteggio(""+conteggio);
 				ris = true;
 		   break;
 		   case 10:
-				indicatore.conteggio.setBackground(setting.bianco);
-			   	indicatore.stato.setBackground(setting.rosso);
+				indicatore.conteggio.setBackground(Setting.bianco);
+			   	indicatore.stato.setBackground(Setting.rosso);
 				indicatore.setStato("ERR DBCONF");
 				//conteggio +=1;
 				indicatore.setConteggio(""+conteggio);
@@ -967,8 +970,8 @@ public class readerPLC implements Runnable   {
 		   break;
 		   case 11: //KO POSTAZIONE 9 BILANCIA
 			   //indicatore.batteria.setBackground(setting.bianco);
-				indicatore.conteggio.setBackground(setting.bianco);
-			    indicatore.stato.setBackground(setting.rosso);
+				indicatore.conteggio.setBackground(Setting.bianco);
+			    indicatore.stato.setBackground(Setting.rosso);
 			    indicatore.setStato("ESITO KO");
 			    log.write("BATTERIA KO. POSTAZIONE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
@@ -983,8 +986,8 @@ public class readerPLC implements Runnable   {
 		   
 		   default:
 			   //indicatore.batteria.setBackground(setting.bianco);
-			   indicatore.conteggio.setBackground(setting.bianco);
-			   indicatore.stato.setBackground(setting.rosso); 
+			   indicatore.conteggio.setBackground(Setting.bianco);
+			   indicatore.stato.setBackground(Setting.rosso); 
 			   indicatore.setStato("NET :" + risposta);
 			   log.write("NEL CHECK HO RISCONTRATO UN VALORE DI DEFAULT. NON DOVREI ESSERE QUI");
 			   //conteggio +=1;
@@ -1010,8 +1013,7 @@ public class readerPLC implements Runnable   {
 					log.write("Reader PLC Line1043. Stazione :"+nomeStazione +":  " + e.toString());
 				}
 		   
-		   	//log.write("readerplc line1049 -> dopo di iswaste. RITORNO = "+ritorno);
-		   	//if (Integer.parseInt(batteria.getPostazione())==2)
+				   	
 		   	//log.write("POSTAZIONE "+batteria.getPostazione()+". RITORNO IL VALORE = " + ritorno + " con batteria cod:" + batteria.getCodiceBatteria());
 		   
 		   	if (ritorno > 0) {
@@ -1021,11 +1023,11 @@ public class readerPLC implements Runnable   {
 			   				
 			   				String nome_postazione_errore = "NON CONOSCIUTA";
 			   				
-			   				//gli errori <10 sono ko
+			   				//gli errori <10 sono KO
 			   				if (ritorno<Integer.parseInt(setting.getNumeroStazioniAttive())) {
 			   					
 				   					numero_batterie_scartate +=1;
-					   				indicatore.risultato.setBackground(setting.rosso);
+					   				indicatore.risultato.setBackground(Setting.rosso);
 					   				
 				   					if (ritorno == 1) nome_postazione_errore = "CON. CORTI 1";
 					   				if (ritorno == 2) nome_postazione_errore = "PUNTATRICE 1";
@@ -1044,12 +1046,12 @@ public class readerPLC implements Runnable   {
 					   				viewer.setMessage("SEGNALATA PER KO P. " + nome_postazione_errore );
 					   				viewer.setMessage("----------------------------\n");
 					   				
-					   				areaErrore.setBackground(setting.rosso);
+					   				areaErrore.setBackground(Setting.rosso);
 					   				
 					   				
 					   				areaErrore.setText("BATTERIA " + batteria.getCodiceBatteria() + " - KO POSTAZIONE " + nome_postazione_errore );
 					   				Setting.getCodiceBatteriaScartata().setText(batteria.getCodiceBatteria());
-					   				Setting.getCodiceBatteriaScartata().setBackground(setting.rosso);
+					   				Setting.getCodiceBatteriaScartata().setBackground(Setting.rosso);
 					   				
 					   				
 					   				
@@ -1061,7 +1063,7 @@ public class readerPLC implements Runnable   {
 
 				   					//NON SEGNO LE BATTERIE SALTO POSTAZIONE
 				   					//numero_batterie_scartate +=1;
-				   					indicatore.risultato.setBackground(setting.arancio);
+				   					indicatore.risultato.setBackground(Setting.arancio);
 				   				
 				   					SimpleDateFormat formatter= new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 					   				Date date = new Date(System.currentTimeMillis());
@@ -1081,9 +1083,9 @@ public class readerPLC implements Runnable   {
 					   				//log.write("readerplc 1120-> sono in nritorno fra 10 e 20");
 					   				
 					   									   				
-					   				areaErrore.setBackground(setting.arancio);
-					   				setting.getCodiceBatteriaScartata().setText(batteria.getCodiceBatteria());
-					   				setting.getCodiceBatteriaScartata().setBackground(setting.arancio);
+					   				areaErrore.setBackground(Setting.arancio);
+					   				Setting.getCodiceBatteriaScartata().setText(batteria.getCodiceBatteria());
+					   				Setting.getCodiceBatteriaScartata().setBackground(Setting.arancio);
 					   				
 					   				if (ritorno!=100)
 					   					areaErrore.setText("COD." + batteria.getCodiceBatteria() + " - SALTO POSTAZIONE " + nome_postazione_errore);
@@ -1114,12 +1116,12 @@ public class readerPLC implements Runnable   {
 			   			//non e' final controller
 			   			
 			   			if ((ritorno<Integer.parseInt(setting.getNumeroStazioniAttive()))){
-			   				indicatore.risultato.setBackground(setting.rosso);
+			   				indicatore.risultato.setBackground(Setting.rosso);
 			   				indicatore.risultato.setText("KO P. " + ritorno);
 			   			}
 			   			
 			   			if ((ritorno>=Integer.parseInt(setting.getNumeroStazioniAttive()))&& (ritorno<(Integer.parseInt(setting.getNumeroStazioniAttive())*2)) ){
-			   				indicatore.risultato.setBackground(setting.rosso);
+			   				indicatore.risultato.setBackground(Setting.rosso);
 			   				indicatore.risultato.setText("SALTO P. " + (ritorno-Integer.parseInt(setting.getNumeroStazioniAttive())));
 			   			}
 			   			
@@ -1136,22 +1138,22 @@ public class readerPLC implements Runnable   {
 	   			
 	   			//log.write("readerplc -> RITORNO 0 E POSTAZIONE DI CONTROLLO ");
 	   			
-	   			indicatore.risultato.setBackground(setting.verde);
+	   			indicatore.risultato.setBackground(Setting.verde);
 	   			indicatore.risultato.setText("BATTERIA CONFORME");
-	   			areaErrore.setBackground(setting.verde);
+	   			areaErrore.setBackground(Setting.verde);
 	   			areaErrore.setText("BATTERIA " + batteria.getCodiceBatteria() + " - ESITO OK ");
-	   			setting.getCodiceBatteriaScartata().setText(batteria.getCodiceBatteria());
-	   			setting.getCodiceBatteriaScartata().setBackground(setting.verde);
+	   			Setting.getCodiceBatteriaScartata().setText(batteria.getCodiceBatteria());
+	   			Setting.getCodiceBatteriaScartata().setBackground(Setting.verde);
 	   			
 	   		}
 	   		
 	   		if (ritorno == -1) {
-	   			indicatore.risultato.setBackground(setting.rosso);
+	   			indicatore.risultato.setBackground(Setting.rosso);
 	   			indicatore.risultato.setText("ERR. LAN");
 	   			
 	   			//NELLA POSTAZIONE 10, IN CASO DI MANCANZA LAN, SCRIVO
 	   			if (Integer.parseInt(batteria.getPostazione()) == Setting.STAZIONE_DI_CONTROLLO_2) {
-	   				areaErrore.setBackground(setting.rosso);
+	   				areaErrore.setBackground(Setting.rosso);
 	   				areaErrore.setText("ERRORE RETE - DISABILITARE CONTROLLO");
 	   			}
 	   				
@@ -1164,12 +1166,12 @@ public class readerPLC implements Runnable   {
    				viewer.setMessage("SEGNALATA PER NON PRESENZA DEL RECORD NEL DB. " + ritorno );
    				viewer.setMessage("----------------------------\n");
 	   			
-	   			indicatore.risultato.setBackground(setting.rosso);
+	   			indicatore.risultato.setBackground(Setting.rosso);
 	   			indicatore.risultato.setText("NON TROVATA");
 	   			
 	   		    //NELLA POSTAZIONE 10, IN CASO DI MANCANZA LAN, SCRIVO
 	   			if (isFinalController()) {
-	   				areaErrore.setBackground(setting.arancio);
+	   				areaErrore.setBackground(Setting.arancio);
 	   				areaErrore.setText("BATTERIA " + batteria.getCodiceBatteria() + " - NON TROVATA ");
 	   			}
 	   		}
@@ -1180,8 +1182,8 @@ public class readerPLC implements Runnable   {
 	   			//log.write("readerplc -> sono nuovamente nella postazione di controllo VERSO FINE");
 	   			
 	   			conteggio +=1;
-	   			indicatore.conteggio.setBackground(setting.bianco);
-	   			indicatore.stato.setBackground(setting.verde);
+	   			indicatore.conteggio.setBackground(Setting.bianco);
+	   			indicatore.stato.setBackground(Setting.verde);
 	   			indicatore.setStato("" + ritorno);
 	   			
 	   			indicatore.setTempo(batteria.gettimestamp());
