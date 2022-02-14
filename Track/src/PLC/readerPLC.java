@@ -49,7 +49,7 @@ public class readerPLC implements Runnable   {
     private JProgressBar bufferBatterie;
     private String tempo_ultima_batteria="01/01/1970 00:00:00";
     private Indicatore indicatore;
-    private int conteggio = 0;    
+    //private int conteggio = 0;    
     private Setting setting;
     private boolean prima_lettura = true;  //avvio la prima lettura del programma. Ho riavviato il programma
     public GregorianCalendar data = new GregorianCalendar(); 
@@ -69,7 +69,7 @@ public class readerPLC implements Runnable   {
 	private String codice_batteria_old="OLD";
 	
 	private int numero_batterie_riprocessate = 0;
-	private int numero_batterie_scartate = 0;
+	//private int numero_batterie_scartate = 0;
 	
 	private static LoggerFile log = new LoggerFile();
 	
@@ -79,8 +79,6 @@ public class readerPLC implements Runnable   {
 	private String stato_batteria_postazione_bilancia2 = "1";
 	
 	private String old_stato_batteria="-1";
-	
-	//private ControlloRiempimentoAcido controllopesoacido = new ControlloRiempimentoAcido();
 	
 	
 	public readerPLC() {
@@ -156,17 +154,19 @@ public class readerPLC implements Runnable   {
 		}
 		
 		
-		numero_batterie_scartate = Setting.totale_batterie_scartate[nomeStazione-1];
-		conteggio = Setting.totale_batterie_lavorate[nomeStazione-1];
+		//numero_batterie_scartate = Setting.totale_batterie_scartate[nomeStazione-1];
+		//conteggio = Setting.totale_batterie_lavorate[nomeStazione-1];
+		
+		
 		
 		//tento di caricare le informazione dell'ultima stazione
 		try {
 			if (nomeStazione==Setting.STAZIONE_DI_CONTROLLO_2){
-				conteggio = Integer.parseInt(setting.ReadProperties("conteggio_finale",nome));
-				numero_batterie_scartate = Integer.parseInt(setting.ReadProperties("numero_batterie_scartate",nome));
-				log.write("\nCARICAMENTO PROPERTIES readerPLC. conteggio="+conteggio+" - Scartate="+numero_batterie_scartate+"\n");
-				indicatore.setConteggio(""+conteggio);
-				indicatore.scarto.setText(""+numero_batterie_scartate);
+				//conteggio = Integer.parseInt(setting.ReadProperties("conteggio_finale",nome));
+				//numero_batterie_scartate = Integer.parseInt(setting.ReadProperties("numero_batterie_scartate",nome));
+				//log.write("\nCARICAMENTO PROPERTIES readerPLC. conteggio="+conteggio+" - Scartate="+numero_batterie_scartate+"\n");
+				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
 			}
 			
 		}catch(Exception j) {
@@ -412,7 +412,7 @@ public class readerPLC implements Runnable   {
 	        		if ((i==0) && (!codice_batteria_old.equals(cod_batteria) && cod_batteria != null)) {
 	        			
 	        			 		//se il codice letto ha dimensioni maggiori di 12 (codice teoricamente valido)
-			        			 if (cod_batteria.length()>12) {
+			        			 if (cod_batteria.length()>20) {
 				        				 try { 
 				        				 	codice_batteria_old = cod_batteria;		
 				    	        			indicatore.setBatteriaZero(cod_batteria);
@@ -436,6 +436,16 @@ public class readerPLC implements Runnable   {
 								    	        					tempo_ultima_batteria = timestamp;
 								    	        													    	        					
 								    	        					scriviRisultatoScartoPostazione(batteria);
+								    	        					
+								    	        					//-------------------- 07-02-2022-------------------
+								    	        					 boolean contiene = false;
+											               			 contiene = array.contains(batteria); 
+														             if (!contiene) {		
+														                	array.addBatteriaTop(batteria);
+														             }
+								    	        					
+								    	        					//-------------------07-02-2022---------------------
+								    	        					
 								    	        					
 								    	        				}catch(Exception j) {
 								    	        					log.write("Reader PLc line445-> - Errore scriviRisultato postazione "+nomeStazione+" :" + j.toString());
@@ -527,7 +537,7 @@ public class readerPLC implements Runnable   {
 						    	 				indicatore.setTempo(timestamp);
 					    	        			indicatore.setBatteria(cod_batteria);
 					    	        			//indicatore.riprocessato.setText(""+numero_batterie_riprocessate);
-					    	        			indicatore.scarto.setText(""+numero_batterie_scartate);
+					    	        			indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
 					    	        			tempo_ultima_batteria = timestamp;
 					    	        			
 					    	        try {	
@@ -550,7 +560,8 @@ public class readerPLC implements Runnable   {
 								                		array.addBatteriaTop(batteria);
 								                		 
 								                		
-								                		conteggio +=1;
+								                		//conteggio +=1;
+								                		Setting.totale_batterie_lavorate[nomeStazione-1] += 1; 
 								                		
 								                		float v1 = ((float)(data1))/1000;
 								                		float v2 = ((float)(data2))/1000;
@@ -604,8 +615,9 @@ public class readerPLC implements Runnable   {
 	        
 			if ((ora==22)||(ora==6)||(ora==14) && riazzera_contatori) {
 				numero_batterie_riprocessate = 0;
-				numero_batterie_scartate = 0;
-				conteggio = 0;
+				Setting.totale_batterie_scartate[nomeStazione-1] = 0;
+				//conteggio = 0;
+				Setting.totale_batterie_lavorate[nomeStazione-1] = 0; 
 				riazzera_contatori = false;
 				
 				//if (!isFinalController()){
@@ -796,7 +808,7 @@ public class readerPLC implements Runnable   {
 		    							//SCARTO DISABILITATO
 		    							//MODIFICA DEL 08-02-2022
 		    							//voglio memorizzare che la postazione è disabilitata. Lo faccio memorizzando -2
-		    							log.write("Reader PLC. Stazione :"+nomeStazione +" - Batteria:"+batteria.getCodiceBatteria()+ " - Risultato:"+ tmp);
+		    							//log.write("Reader PLC. Stazione :"+nomeStazione +" - Batteria:"+batteria.getCodiceBatteria()+ " - Risultato:"+ tmp);
 		    							batteria.setStato("-2");
 		    							return segnala(9,batteria.getCodiceBatteria(),batteria.getPostazione());
 		    							
@@ -835,7 +847,8 @@ public class readerPLC implements Runnable   {
 			   indicatore.stato.setBackground(Setting.arancio); 
 			   indicatore.setStato("BYPASS");
 			   //conteggio +=1;
-			   indicatore.setConteggio(""+conteggio);
+			   //indicatore.setConteggio(""+conteggio);
+			   indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
 			   ris = true;
 			   break;
 		   case 0:
@@ -844,7 +857,8 @@ public class readerPLC implements Runnable   {
 			   	indicatore.stato.setBackground(Setting.verde);
 				indicatore.setStato("OK");
 				//conteggio +=1;
-				indicatore.setConteggio(""+conteggio);
+				//indicatore.setConteggio(""+conteggio);
+				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
 				stato_batteria_postazione_bilancia2 = "1";
 				
 				//if (postazione.equals("2"))		    								
@@ -859,7 +873,8 @@ public class readerPLC implements Runnable   {
 			    indicatore.setStato("RIPROCESS.");
 			    numero_batterie_riprocessate +=1;
 				//conteggio +=1;
-				indicatore.setConteggio(""+conteggio);
+			    indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				//indicatore.riprocessato.setText(""+numero_batterie_riprocessate);
 				try {
 					//setting.WriteProperties("numero_batterie_riprocessate_postazione"+nomeStazione, ""+numero_batterie_riprocessate,nomeStazione);
@@ -879,7 +894,8 @@ public class readerPLC implements Runnable   {
 			    log.write("BATTERIA KO nella stazione precedete. POSTAZIONE ATTUALE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
 				//numero_batterie_scartate +=1;
-				indicatore.setConteggio(""+conteggio);
+			    indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+			    //indicatore.setConteggio(""+conteggio);
 				ris = true;
 		  break;
 				 
@@ -890,7 +906,8 @@ public class readerPLC implements Runnable   {
 			    indicatore.setStato("TIMEOUT");
 			    log.write("TIMEOUT DEL DATABASE.  --->  postazione n."+postazione+"  , BATTERIA:"+ codice_batt);
 				//conteggio +=1;
-				indicatore.setConteggio(""+conteggio);
+			    indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				ris = true;
 		   break;
 		   case 4:
@@ -901,7 +918,8 @@ public class readerPLC implements Runnable   {
 			    log.write("SALTO POSTAZIONE N."+postazione+"   CODICE BATTERIA:" + codice_batt);
 			    
 				//conteggio +=1;
-				indicatore.setConteggio(""+conteggio);
+			    indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				ris = true;
 		   break;
 		   case 5:
@@ -911,7 +929,8 @@ public class readerPLC implements Runnable   {
 			    indicatore.setStato("NO LAN");
 			    //log.write("NEL CHECK HO RISCONTRATO UN VALORE DI CONTROL. NON DOVREI ESSERE QUI. - POSTAZIONE N."+postazione+"   CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
-				indicatore.setConteggio(""+conteggio);
+			    indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				ris = true;
 		   break;
 		   case 6:
@@ -920,7 +939,8 @@ public class readerPLC implements Runnable   {
 			    indicatore.stato.setBackground(Setting.arancio); 
 			    indicatore.setStato("BUFFER");
 				//conteggio +=1;
-				indicatore.setConteggio(""+conteggio);
+			    indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				ris = false;
 		   break;
 		   case 7:
@@ -930,8 +950,9 @@ public class readerPLC implements Runnable   {
 			    indicatore.setStato("ESITO KO");
 			    log.write("BATTERIA KO. POSTAZIONE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
-				numero_batterie_scartate +=1;
-				indicatore.setConteggio(""+conteggio);
+			    Setting.totale_batterie_scartate[nomeStazione-1] +=1;
+				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				ris = true;
 		  break;
 		   case 8:
@@ -957,7 +978,8 @@ public class readerPLC implements Runnable   {
 			   	indicatore.conteggio.setBackground(Setting.grigio);
 				indicatore.setStato("BYPASS");
 				
-				indicatore.setConteggio(""+conteggio);
+				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				ris = true;
 		   break;
 		   case 10:
@@ -965,7 +987,8 @@ public class readerPLC implements Runnable   {
 			   	indicatore.stato.setBackground(Setting.rosso);
 				indicatore.setStato("ERR DBCONF");
 				//conteggio +=1;
-				indicatore.setConteggio(""+conteggio);
+				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				ris = true;
 		   break;
 		   case 11: //KO POSTAZIONE 9 BILANCIA
@@ -975,8 +998,9 @@ public class readerPLC implements Runnable   {
 			    indicatore.setStato("ESITO KO");
 			    log.write("BATTERIA KO. POSTAZIONE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
-				numero_batterie_scartate +=1;
-				indicatore.setConteggio(""+conteggio);
+			    Setting.totale_batterie_scartate[nomeStazione-1] +=1;
+				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				//indicatore.setConteggio(""+conteggio);
 				stato_batteria_postazione_bilancia2 = "0";
 				ris = true;
 		  break;
@@ -991,7 +1015,8 @@ public class readerPLC implements Runnable   {
 			   indicatore.setStato("NET :" + risposta);
 			   log.write("NEL CHECK HO RISCONTRATO UN VALORE DI DEFAULT. NON DOVREI ESSERE QUI");
 			   //conteggio +=1;
-			   indicatore.setConteggio(""+conteggio);
+			   indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+			   //indicatore.setConteggio(""+conteggio);
 			   ris = true;
 		   }
 		   
@@ -1026,7 +1051,7 @@ public class readerPLC implements Runnable   {
 			   				//gli errori <10 sono KO
 			   				if (ritorno<Integer.parseInt(setting.getNumeroStazioniAttive())) {
 			   					
-				   					numero_batterie_scartate +=1;
+			   					Setting.totale_batterie_scartate[nomeStazione-1] +=1;
 					   				indicatore.risultato.setBackground(Setting.rosso);
 					   				
 				   					if (ritorno == 1) nome_postazione_errore = "CON. CORTI 1";
@@ -1053,7 +1078,8 @@ public class readerPLC implements Runnable   {
 					   				Setting.getCodiceBatteriaScartata().setText(batteria.getCodiceBatteria());
 					   				Setting.getCodiceBatteriaScartata().setBackground(Setting.rosso);
 					   				
-					   				
+					   				//MODIFICA DEL 11_02_2022. DEVO TENERE TRACCIA DELLO STATO RICEVUTO
+					   				batteria.setStato("1");
 					   				
 					   			}//FINE IF ritorno <10
 			   				
@@ -1103,6 +1129,9 @@ public class readerPLC implements Runnable   {
 						   			}
 						   				
 						   				viewer.setMessage("----------------------------\n");
+						   				
+						   			//MODIFICA DEL 11_02_2022. DEVO TENERE TRACCIA DELLO STATO RICEVUTO
+						   			batteria.setStato("0");
 						   			
 						   				//log.write("readerplc 1152-> sono in nritorno fra 10 e 20");
 						   			//log.write("readerplc -> sono nuovamente nella postazione di controllo ESCO");
@@ -1118,11 +1147,15 @@ public class readerPLC implements Runnable   {
 			   			if ((ritorno<Integer.parseInt(setting.getNumeroStazioniAttive()))){
 			   				indicatore.risultato.setBackground(Setting.rosso);
 			   				indicatore.risultato.setText("KO P. " + ritorno);
+			   			//MODIFICA DEL 11_02_2022. DEVO TENERE TRACCIA DELLO STATO RICEVUTO
+				   			batteria.setStato("0");
 			   			}
 			   			
 			   			if ((ritorno>=Integer.parseInt(setting.getNumeroStazioniAttive()))&& (ritorno<(Integer.parseInt(setting.getNumeroStazioniAttive())*2)) ){
 			   				indicatore.risultato.setBackground(Setting.rosso);
 			   				indicatore.risultato.setText("SALTO P. " + (ritorno-Integer.parseInt(setting.getNumeroStazioniAttive())));
+			   			//MODIFICA DEL 11_02_2022. DEVO TENERE TRACCIA DELLO STATO RICEVUTO
+				   			batteria.setStato("1");
 			   			}
 			   			
 			   			
@@ -1145,11 +1178,17 @@ public class readerPLC implements Runnable   {
 	   			Setting.getCodiceBatteriaScartata().setText(batteria.getCodiceBatteria());
 	   			Setting.getCodiceBatteriaScartata().setBackground(Setting.verde);
 	   			
+	   			//MODIFICA DEL 11_02_2022. DEVO TENERE TRACCIA DELLO STATO RICEVUTO
+	   			batteria.setStato("1");
+	   			
 	   		}
 	   		
 	   		if (ritorno == -1) {
 	   			indicatore.risultato.setBackground(Setting.rosso);
 	   			indicatore.risultato.setText("ERR. LAN");
+	   			
+	   		//MODIFICA DEL 11_02_2022. DEVO TENERE TRACCIA DELLO STATO RICEVUTO
+	   			batteria.setStato("-2"); //IL -2 è IL bypass
 	   			
 	   			//NELLA POSTAZIONE 10, IN CASO DI MANCANZA LAN, SCRIVO
 	   			if (Integer.parseInt(batteria.getPostazione()) == Setting.STAZIONE_DI_CONTROLLO_2) {
@@ -1173,6 +1212,9 @@ public class readerPLC implements Runnable   {
 	   			if (isFinalController()) {
 	   				areaErrore.setBackground(Setting.arancio);
 	   				areaErrore.setText("BATTERIA " + batteria.getCodiceBatteria() + " - NON TROVATA ");
+	   				
+	   			    //MODIFICA DEL 11_02_2022. DEVO TENERE TRACCIA DELLO STATO RICEVUTO
+		   			batteria.setStato("-2"); //IL -2 è IL bypass
 	   			}
 	   		}
 	   		
@@ -1181,7 +1223,8 @@ public class readerPLC implements Runnable   {
 	   			
 	   			//log.write("readerplc -> sono nuovamente nella postazione di controllo VERSO FINE");
 	   			
-	   			conteggio +=1;
+	   			//conteggio +=1;
+	   			Setting.totale_batterie_lavorate[nomeStazione-1] +=1;
 	   			indicatore.conteggio.setBackground(Setting.bianco);
 	   			indicatore.stato.setBackground(Setting.verde);
 	   			indicatore.setStato("" + ritorno);
@@ -1189,12 +1232,12 @@ public class readerPLC implements Runnable   {
 	   			indicatore.setTempo(batteria.gettimestamp());
 				indicatore.setBatteria(batteria.getCodiceBatteria());
 				
-				indicatore.setConteggio(""+conteggio);
-				indicatore.scarto.setText(""+numero_batterie_scartate);
+				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+				indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
 				//salvo permanentemente questi valori per tenerli in memoria in caso di chiusura
 				
 				try {
-					setting.WriteProperties("conteggio_finale", ""+conteggio,"numero_batterie_scartate", ""+numero_batterie_scartate,nomeStazione);
+					setting.WriteProperties("conteggio_finale", ""+	Setting.totale_batterie_lavorate[nomeStazione-1],"numero_batterie_scartate", ""+Setting.totale_batterie_scartate[nomeStazione-1],nomeStazione);
 					
 				}catch(Exception kk) {
 					log.write("readerPLC line1235 -> errore scrivirisultato . err: "+ kk.toString());
@@ -1205,12 +1248,11 @@ public class readerPLC implements Runnable   {
 		   	
 		   	
 		   	
-	   		
-	   	   //SCRIVO RISULTATO DEL CONTROLLO SUL DB	
-	   	   //CON VALORE INFERIORE A 10 LA BATTERIA VIENE BLOCCATA DAL PLC (DEFINITO DAL PLC)
-		   SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-		   Date date = new Date(System.currentTimeMillis());
-		   //System.out.println(formatter.format(date));
+		    //SCRIVO RISULTATO DEL CONTROLLO SUL DB	
+		    //CON VALORE INFERIORE A 10 LA BATTERIA VIENE BLOCCATA DAL PLC (DEFINITO DAL PLC)
+			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
+			Date date = new Date(System.currentTimeMillis());
+			//System.out.println(formatter.format(date));
 		   
 		    		   		  
 			int indirizzo_start = 0;
@@ -1218,32 +1260,15 @@ public class readerPLC implements Runnable   {
 	   		indirizzo_start +=2;
 	   			   			   		   
 	   		S7.SetDateAt(Buffer, indirizzo_start , date);
-	   		   
-	   		int db = -1;
-	   		if (isController()) db = Setting.DB_POSTAZIONE_CONTROLLO1;
-	   		if (isFinalController()) db = Setting.DB_POSTAZIONE_CONTROLLO2;
 	   		
 	   		indirizzo_start +=8;
 	   		
 	   		String code = batteria.getCodiceBatteria();
-	   		//byte[] buf = new byte[26];//code.getBytes();
-	   		log.write("readerplc line1277-> mi accingo a scrivere il risultato nel db. Batteria:" + code);
-	   		//code = "123456789101";
-	   		
-	   		for (int i = 0; i < code.length(); i++) {
-	        	
-	            if (code.charAt(i) <= ' ') {
-	               break;
-	            }else {
-	              
-	           // S7.SetShortAt(Buffer, indirizzo_start, Integer.parseInt(String.valueOf(code.charAt(i))));
-	            //S7.SetShortAt(Buffer, indirizzo_start, (String.valueOf(code.charAt(i))));
-	            S7.SetcCharAt(Buffer, indirizzo_start, Short.parseShort(String.valueOf(code.charAt(i))));
-	            //S7.SetcCharAt(Buffer, Pos, Value);
-	            	indirizzo_start +=2;	
-	            }//fine else
-	        }////fine for
-	   			
+	   			   		
+	        S7.SetString(Buffer, indirizzo_start, code);
+	           
+	        int db = Setting.DB_ESITO_POSTAZIONE_CONTROLLO2;
+	        
 	   		try {
 	   			DBWrite(db); //inizio, dimensioni
 	   		}catch(Exception h) {
@@ -1254,8 +1279,7 @@ public class readerPLC implements Runnable   {
 	   }//fine public scartoPostazione
 	  
 	   
-	   
-	   
+	   	   
 	 
 	   
 	   //ricevo in ingresso lo start (true) o stop (false)

@@ -1232,9 +1232,7 @@ public class readerPLC_nuovo implements Runnable   {
 	   			   			   		   
 	   		S7.SetDateAt(Buffer, indirizzo_start , date);
 	   		   
-	   		int db = -1;
-	   		if (isController()) db = Setting.DB_POSTAZIONE_CONTROLLO1;
-	   		if (isFinalController()) db = Setting.DB_POSTAZIONE_CONTROLLO2;
+	   		int db = Setting.DB_ESITO_POSTAZIONE_CONTROLLO2;
 	   		
 	   		indirizzo_start +=8;
 	   		

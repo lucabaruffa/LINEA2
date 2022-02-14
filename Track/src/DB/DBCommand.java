@@ -165,9 +165,27 @@ public boolean invia_segnalazione(String oggetto,String messaggio,String destina
 	return true;
 }//fine invia
 
-public boolean invia_segnalazione(String oggetto,int ID) {
+public boolean invia_segnalazione(String oggetto,int ID, String badge) {
 	
 	
+	 String codice_tesserino = "";
+	 
+	 //potrebbe essere che badge sia  null
+	if (badge.length()>3) {
+		
+		if (badge.substring(0,1).equals("ò")) {
+			System.out.println("Sono in presenza di badge");
+			codice_tesserino = badge.substring(1,5);
+		}else {
+			System.out.println("Probabilmente sono in presenza di nome");
+			codice_tesserino = badge;
+		}
+		
+		
+	 }
+		 
+		 
+	 //System.out.println("codice tesserino:" + codice_tesserino);
 	  
 	  try {
 		c_mysql = pool.getConnection();
@@ -181,7 +199,7 @@ public boolean invia_segnalazione(String oggetto,int ID) {
 	
 				            
 			try {   
-			      stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET motivo_fermo='"+oggetto+"' WHERE id="+ID);
+			      stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET motivo_fermo='"+oggetto+"', operatore='"+codice_tesserino+"' WHERE id="+ID);
 			      log.write("Fatto giustificativo su ID=" + ID);    
 				  System.out.println("fatto aggiornamento su ID=" + ID);          
 			 }catch(Exception h) {

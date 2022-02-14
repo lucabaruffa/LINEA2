@@ -30,6 +30,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import javax.swing.JPasswordField;
 
 public class Giustificativo extends JDialog implements Runnable {
 
@@ -60,6 +61,7 @@ public class Giustificativo extends JDialog implements Runnable {
 	private static ArrayListComboBoxModel model4;
 	private static ArrayListComboBoxModel model5;
 	private JTextField txtInizioFermo;
+	private JTextField txtBadge;
 
 	/**
 	 * Launch the application.
@@ -118,16 +120,16 @@ public class Giustificativo extends JDialog implements Runnable {
 		txtFermo.setHorizontalAlignment(SwingConstants.CENTER);
 		txtFermo.setEditable(false);
 		txtFermo.setFont(new Font("Arial", Font.BOLD, 18));
-		txtFermo.setBounds(359, 95, 871, 50);
+		txtFermo.setBounds(359, 113, 871, 50);
 		contentPanel.add(txtFermo);
 		txtFermo.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("LINEA IN STATO DI FERMO");
 		lblNewLabel.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/alert4.png")));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 23));
 		lblNewLabel.setForeground(Color.RED);
-		lblNewLabel.setBounds(10, 11, 1220, 73);
+		lblNewLabel.setBounds(10, 11, 663, 73);
 		contentPanel.add(lblNewLabel);
 		
 		giustificativo = new JComboBox();
@@ -262,7 +264,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		JButton okButton = new JButton("INVIA MOTIVAZIONE");
 		okButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		okButton.setForeground(new Color(0, 0, 0));
-		okButton.setBackground(new Color(255, 182, 193));
+		okButton.setBackground(new Color(144, 238, 144));
 		okButton.setBounds(302, 411, 286, 78);
 		contentPanel.add(okButton);
 		okButton.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/fermo.png")));
@@ -270,12 +272,17 @@ public class Giustificativo extends JDialog implements Runnable {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				
-				
-				if (!comando.invia_segnalazione(codice_finale+"5", ID))
-					JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
-				else {
-					JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
-					setVisible(false);
+				String badge = txtBadge.getText();
+					
+				if (badge.length()>0) {
+					if (!comando.invia_segnalazione(codice_finale+"5", ID, badge))
+						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
+					else {
+						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
+						setVisible(false);
+					}
+				}else {
+					JOptionPane.showMessageDialog(getContentPane(), "INSERIRE COGNOME O BADGE OPERATORE !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 				}
 					
 					
@@ -343,13 +350,25 @@ public class Giustificativo extends JDialog implements Runnable {
 		txtInizioFermo.setFont(new Font("Arial", Font.BOLD, 18));
 		txtInizioFermo.setEditable(false);
 		txtInizioFermo.setColumns(10);
-		txtInizioFermo.setBounds(10, 95, 339, 50);
+		txtInizioFermo.setBounds(10, 113, 339, 50);
 		contentPanel.add(txtInizioFermo);
 		
 		JLabel lblNewLabel_1_3 = new JLabel("Inizio Fermo");
 		lblNewLabel_1_3.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_3.setBounds(10, 77, 120, 14);
+		lblNewLabel_1_3.setBounds(10, 95, 120, 14);
 		contentPanel.add(lblNewLabel_1_3);
+		
+		JLabel lblNewLabel_1_1_1_3 = new JLabel("Cognome o Badge operatore");
+		lblNewLabel_1_1_1_3.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_1_1_3.setBounds(745, 11, 312, 14);
+		contentPanel.add(lblNewLabel_1_1_1_3);
+		
+		txtBadge = new JTextField();
+		txtBadge.setForeground(new Color(255, 0, 0));
+		txtBadge.setFont(new Font("Arial", Font.BOLD, 20));
+		txtBadge.setBounds(745, 29, 485, 42);
+		contentPanel.add(txtBadge);
+		txtBadge.setColumns(10);
 		
 		{
 			JPanel buttonPane = new JPanel();
@@ -364,7 +383,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				btnCambioLinea.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("E000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
+						if (!comando.invia_segnalazione("E000000"+Setting.DB_BATTERIE_NUM_LINEA, ID,""))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 						else {
 							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -378,7 +397,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				btnPausaPranzo.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("F000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
+						if (!comando.invia_segnalazione("F000000"+Setting.DB_BATTERIE_NUM_LINEA, ID,""))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 						else {
 							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -396,7 +415,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				btnPausaCaffe.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("G000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
+						if (!comando.invia_segnalazione("G000000"+Setting.DB_BATTERIE_NUM_LINEA, ID,""))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 						else {
 							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -417,7 +436,7 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnFermoProgrammato.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("H000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
+					if (!comando.invia_segnalazione("H000000"+Setting.DB_BATTERIE_NUM_LINEA, ID,""))
 						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 					else {
 						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -433,7 +452,7 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnCambioProduzione.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("L000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
+					if (!comando.invia_segnalazione("L000000"+Setting.DB_BATTERIE_NUM_LINEA, ID,""))
 						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 					else {
 						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -453,7 +472,7 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnAssemblea.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("I000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
+					if (!comando.invia_segnalazione("I000000"+Setting.DB_BATTERIE_NUM_LINEA, ID,""))
 						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 					else {
 						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);
@@ -472,7 +491,7 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnSciopero.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("L000000"+Setting.DB_BATTERIE_NUM_LINEA, ID))
+					if (!comando.invia_segnalazione("L000000"+Setting.DB_BATTERIE_NUM_LINEA, ID,""))
 						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!","ATTENZIONE",JOptionPane.ERROR_MESSAGE);
 					else {
 						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente","OK",JOptionPane.INFORMATION_MESSAGE);

@@ -2267,14 +2267,15 @@ public class main  {
 		
 		
 			
-			JButton btnNewButton_3 = new JButton("CHIAMATA AL CAPOTURNO");
+		JButton btnNewButton_3 = new JButton("CHIAMATA AL CAPOTURNO");
 			btnNewButton_3.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					new DBCommand(true).invia_segnalazione("CHIAMATA URGENTE "+Setting.LINEA,"UN OPERATORE HA EFFETTUATO UNA CHIAMATA URGENTE DALLA "+Setting.LINEA+". RICHIESTA CAPOTURNO",Setting.EMAIL_CAPOTURNO);
 					JOptionPane.showMessageDialog(frmPlc, "MESSAGGIO INVIATO","INFO",JOptionPane.INFORMATION_MESSAGE);
 				}
-			});
+		});
+			
 			btnNewButton_3.setFont(new Font("Segoe UI", Font.BOLD, 11));
 			btnNewButton_3.setBackground(new Color(240, 248, 255));
 			btnNewButton_3.setBounds(1701, 474, 200, 84);

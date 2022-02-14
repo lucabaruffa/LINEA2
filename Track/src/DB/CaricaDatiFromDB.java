@@ -141,7 +141,8 @@ public class CaricaDatiFromDB {
 				}
 				
 				
-				rs = stmt_mysql.executeQuery("SELECT distinct codice, postazione,stato_test,data,valore1,valore2 FROM "+Setting.TABLE_LINEA+" where data>='"+dax+"' AND postazione <10 order by data asc");	
+				//rs = stmt_mysql.executeQuery("SELECT distinct codice, postazione,stato_test,data,valore1,valore2 FROM "+Setting.TABLE_LINEA+" where data>='"+dax+"' AND postazione <10 order by data asc");	
+				rs = stmt_mysql.executeQuery("SELECT distinct codice, postazione,stato_test,data,valore1,valore2 FROM "+Setting.TABLE_LINEA+" where data>='"+dax+"'  order by data asc");
 				
 				int numero_occorrenze = 0;
 				while (rs.next()){
@@ -168,9 +169,9 @@ public class CaricaDatiFromDB {
 												
 						vettArrayBatt.aggiungiBatteria(batteria);
 						
-						setting.totale_batterie_lavorate[postazione-1] +=1;
+						Setting.totale_batterie_lavorate[postazione-1] +=1;
 						
-						if (stato_test==0) setting.totale_batterie_scartate[postazione-1] +=1;
+						if (stato_test==0) Setting.totale_batterie_scartate[postazione-1] +=1;
 						
 					} catch (Exception e) {
 						log.write("ERRORE CREAZIONE BATTERIA: Modulo CaricadatifromDB "+ e.toString() + "   modulo:CarcaDatiFrom db");

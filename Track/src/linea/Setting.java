@@ -39,9 +39,6 @@ public class Setting {
 	private static String NUMERO_STAZIONI_ATTIVE ="9";
 	
 	
-    
-	
-	
 	//NOME DELLE STAZIONI DI CONTROLLO
 	public static int STAZIONE_DI_CONTROLLO_1 = 20; //POSTAZIONE 7
 	public static String NOME_STAZIONE_DI_CONTROLLO_1 = "POSTAZIONE DI CONTROLLO 1";
@@ -50,9 +47,9 @@ public class Setting {
 	public static String NOME_STAZIONE_DI_CONTROLLO_2 = "POSTAZIONE DI CONTROLLO 2";
 	
 	
-	public static final int DB_POSTAZIONE_CONTROLLO1 = 5140;   ////DB scrittura esito controllo finale. postazione 7
+	//public static final int DB_POSTAZIONE_CONTROLLO1 = 5140;   ////DB scrittura esito controllo finale. postazione 7
 	public static final int DB_POSTAZIONE_CONTROLLO2 = 5140;  //DB scrittura esito controllo finale . postazione 10
-    
+	public static final int DB_ESITO_POSTAZIONE_CONTROLLO2 = 5150; //5150 //DB scrittura esito controllo finale . postazione 10
 	
 	//SEZIONE DATABASE
 	public static String IPDB = "etpserver.fiamm.dom";
