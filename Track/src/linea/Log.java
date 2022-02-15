@@ -1,4 +1,5 @@
 package linea;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -25,10 +26,11 @@ public class Log extends JFrame {
 	private static LoggerFile log = new LoggerFile();
 	private JPanel panel;
 	private JButton btnNewButton;
+
 	/**
 	 * Launch the application.
 	 */
-	
+
 	/**
 	 * Create the frame.
 	 */
@@ -37,7 +39,7 @@ public class Log extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent e) {
-				
+
 				log.read(monitor);
 			}
 		});
@@ -48,19 +50,19 @@ public class Log extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
-		
+
 		monitor = new JTextArea();
 		scrollPane.setViewportView(monitor);
-		
+
 		log.read(monitor);
-		
+
 		panel = new JPanel();
 		contentPane.add(panel, BorderLayout.SOUTH);
 		panel.setBackground(SystemColor.inactiveCaptionBorder);
-		
+
 		btnNewButton = new JButton("Aggiorna");
 		btnNewButton.setBackground(Color.WHITE);
 		btnNewButton.setIcon(new ImageIcon(Log.class.getResource("/resource/reload.png")));
@@ -72,12 +74,9 @@ public class Log extends JFrame {
 		});
 		panel.add(btnNewButton);
 	}
-	
-	
-	
+
 	public JTextArea getMonitor() {
 		return monitor;
 	}
-	
 
 }

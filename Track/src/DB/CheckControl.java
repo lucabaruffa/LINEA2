@@ -435,35 +435,31 @@ public int isWaste(Batteria batteria) {
 	      }//FINE CATCH
 		  
 		
-		  
-		
 	   ResultSet rs;
 		try {
 			
 			
-			rs = stmt_mysql.executeQuery("SELECT p1,p2,p3,p4,p5,p6,p7 FROM "+Setting.DB_TABLE_BATTERIE_LINEA+" where codice='"+codice+"' ");
+			rs = stmt_mysql.executeQuery("SELECT p1,p2,p3,p4,p5,p6 FROM "+Setting.DB_TABLE_BATTERIE_LINEA+" where codice='"+codice+"' ");
 			
 			
 			if (rs.next()) {
 					
+					//CONTROLLO PRIMA I KO , DOPO I SALTI DI POSTAZIONE
+				
 					int iVal = 0;
 					iVal = rs.getInt("p1");
 				    if (!rs.wasNull()) {
 				    	 if (iVal == 0)
 				    		return 1;
-					}else
-					{
-						return 11;
-					}
+					} 
+				    
+				   
 				    
 						
 				    iVal = rs.getInt("p2");
 				    if (!rs.wasNull()) {
 				    	 if (iVal == 0)
 				    		return 2;
-					}else
-					{
-						return 12;
 					}
 					
 					
@@ -471,9 +467,6 @@ public int isWaste(Batteria batteria) {
 				    if (!rs.wasNull()) {
 				    	 if (iVal == 0)
 				    		return 3;
-					}else
-					{
-						return 13;
 					}
 					
 					
@@ -481,9 +474,6 @@ public int isWaste(Batteria batteria) {
 				    if (!rs.wasNull()) {
 				    	 if (iVal == 0)
 				    		return 4;
-					}else
-					{
-						return 14;
 					}
 					
 					
@@ -491,36 +481,64 @@ public int isWaste(Batteria batteria) {
 				    if (!rs.wasNull()) {
 				    	 if (iVal == 0)
 				    		return 5;
-					}else
-					{
-						return 15;
 					}
 					
-					
+					/*
 				    iVal = rs.getInt("p6");
 				    if (!rs.wasNull()) {
 				    	 if (iVal == 0)
 				    		return 6;
-					}else
-					{
-						return 16;
 					}
 				    
-				    if (batteria.getPostazione().equals("7")) {
-						 return 0;
-					}
-					
+				    
 					
 				    iVal = rs.getInt("p7");
 				    if (!rs.wasNull()) {
 				    	 if (iVal == 0)
 				    		return 7;
-					}else
-					{
-						return 17;
 					}
+					*/
 					
-					
+				    
+				    //QUI RITORNO IL SOLTO POSTAZIONE
+				    
+				    iVal = rs.getInt("p1");
+				    if (rs.wasNull()) {
+				    	return 11;
+					}
+				    
+				    iVal = rs.getInt("p2");
+				    if (rs.wasNull()) {
+				    	return 12;
+					}
+				    
+				    iVal = rs.getInt("p3");
+				    if (rs.wasNull()) {
+				    	return 13;
+					}
+				    
+				    iVal = rs.getInt("p4");
+				    if (rs.wasNull()) {
+				    	return 14;
+					}
+				    
+				    iVal = rs.getInt("p5");
+				    if (rs.wasNull()) {
+				    	return 15;
+					}
+				    /*
+				    iVal = rs.getInt("p6");
+				    if (rs.wasNull()) {
+				    	return 11;
+					}
+				    
+				    iVal = rs.getInt("p7");
+				    if (rs.wasNull()) {
+				    	return 11;
+					}
+*/
+				    
+				    
 				
 					return 0;
 			}
@@ -531,7 +549,7 @@ public int isWaste(Batteria batteria) {
 			
 		
 		} catch (SQLException e) {
-			log.write("CheckControl. Line521 ERRORE CONNESSIONE CHECK iswaste. POSSIBILE TIMEOUT: "+e.toString());
+			log.write("CheckControl. Line552 ERRORE CONNESSIONE CHECK iswaste. POSSIBILE TIMEOUT: "+e.toString());
 			return -1;
 			
 		} finally {

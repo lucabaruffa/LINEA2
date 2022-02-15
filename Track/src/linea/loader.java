@@ -1,4 +1,5 @@
 package linea;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -23,31 +24,29 @@ public class loader extends JDialog {
 	private static final JPanel contentPanel = new JPanel();
 	private static final String IMAGE_URL = "/resource/trace.jpg";
 
-	
-
 	/**
 	 * Create the dialog.
 	 */
 	public loader() {
-		
-		//setOpacity(0.8f);
+
+		// setOpacity(0.8f);
 		setResizable(false);
 		setAlwaysOnTop(true);
 		setUndecorated(true);
-		//setAutoRequestFocus(false);
+		// setAutoRequestFocus(false);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		
+
 		try {
 			setContentPane(new JLabel(new ImageIcon(ImageIO.read(getClass().getResourceAsStream(IMAGE_URL)))));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		final Toolkit toolkit = Toolkit.getDefaultToolkit();
 		final Dimension screenSize = toolkit.getScreenSize();
 		final int x = (screenSize.width - this.getWidth()) / 2;
@@ -55,9 +54,9 @@ public class loader extends JDialog {
 		setLocation(x, y);
 		setVisible(true);
 	}
-	
+
 	public void nascondi() {
-		//setVisible(false);
+		// setVisible(false);
 	}
 
 }

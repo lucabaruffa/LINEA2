@@ -29,4 +29,8 @@
 <entry key="db8">5138</entry>
 <entry key="db">5131</entry>
 <entry key="usernamedb">luca</entry>
+
+<entry key="db_postazione_controllo">5140</entry>
+<entry key="db_esito_postazione_controllo">5150</entry>
+
 </properties>

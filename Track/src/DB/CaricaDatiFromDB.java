@@ -135,7 +135,7 @@ public class CaricaDatiFromDB {
 				 
 				
 				
-				for(int z=0;z<10;z++) {
+				for(int z=0;z<22;z++) {
 					setting.totale_batterie_scartate[z]=0;
 					setting.totale_batterie_lavorate[z]=0;
 				}
@@ -144,9 +144,9 @@ public class CaricaDatiFromDB {
 				//rs = stmt_mysql.executeQuery("SELECT distinct codice, postazione,stato_test,data,valore1,valore2 FROM "+Setting.TABLE_LINEA+" where data>='"+dax+"' AND postazione <10 order by data asc");	
 				rs = stmt_mysql.executeQuery("SELECT distinct codice, postazione,stato_test,data,valore1,valore2 FROM "+Setting.TABLE_LINEA+" where data>='"+dax+"'  order by data asc");
 				
-				int numero_occorrenze = 0;
+				
 				while (rs.next()){
-					numero_occorrenze += 1;
+					
 					try {
 						
 						String cod_batteria = rs.getString("codice");
@@ -160,7 +160,6 @@ public class CaricaDatiFromDB {
 						
 						//System.out.println("Stampo batteria:" + cod_batteria + "  time:"+timestamp + "   postazione:" + postazione);
 						
-						
 						timestamp = getMyDate(timestamp, "dd/MM/yyyy HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
 						
 						Batteria batteria = new Batteria(1,cod_batteria,timestamp,""+stato_test,valore1,valore2);
@@ -171,7 +170,7 @@ public class CaricaDatiFromDB {
 						
 						Setting.totale_batterie_lavorate[postazione-1] +=1;
 						
-						if (stato_test==0) Setting.totale_batterie_scartate[postazione-1] +=1;
+						if ((stato_test==0)) Setting.totale_batterie_scartate[postazione-1] +=1;
 						
 					} catch (Exception e) {
 						log.write("ERRORE CREAZIONE BATTERIA: Modulo CaricadatifromDB "+ e.toString() + "   modulo:CarcaDatiFrom db");

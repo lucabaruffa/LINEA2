@@ -30,7 +30,7 @@ import linea.Indicatore;
 import linea.LoggerFile;
 import linea.Setting;
 
-public class readerPLC implements Runnable   {
+public class readerPLC_bk2 implements Runnable   {
 	
 	
 	public byte[] Buffer = new byte[65536]; // 64K buffer (maximum for S7400 systems)
@@ -57,7 +57,7 @@ public class readerPLC implements Runnable   {
 	protected ArrayBatteriePostazione array;
 	private CheckControl check;
 	private int DIMENSIONI_BUFFER_PLC = Setting.DIMENSIONI_BUFFER_PLC; // buffer PLC
-	private boolean riazzera_contatori = false;
+	private boolean riazzera_contatori = true;
 	private int numero_di_cicli_senza_batterie = 0;
 	
 	private boolean segnalato = false, stopped = false; //setStartStop
@@ -81,7 +81,7 @@ public class readerPLC implements Runnable   {
 	private String old_stato_batteria="-1";
 	
 	
-	public readerPLC() {
+	public readerPLC_bk2() {
 		//monitor.append("costruttore");
 	}//fine costruttore
 	
@@ -111,7 +111,7 @@ public class readerPLC implements Runnable   {
 	
 	
 	
-	public readerPLC(int db, JProgressBar b, int nome, Indicatore ind, ArrayBatteriePostazione arrayBat) {
+	public readerPLC_bk2(int db, JProgressBar b, int nome, Indicatore ind, ArrayBatteriePostazione arrayBat) {
 		
 		//monitor =g;
 		nomeStazione = nome;
@@ -433,9 +433,9 @@ public class readerPLC implements Runnable   {
 				    							 indicatore.setTempo(timestamp);
 				    							 Setting.totale_batterie_lavorate[nomeStazione-1] += 1; 
 				    							 indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
-				    							 //indicatore.tempostatoLinea.setText(""+timestamp);
-				    						     //indicatore.statoLinea.setText("RUNNING");
-				    					         //indicatore.statoLinea.setBackground(Setting.verde);
+				    							 indicatore.tempostatoLinea.setText(""+timestamp);
+				    						     indicatore.statoLinea.setText("RUNNING");
+				    					         indicatore.statoLinea.setBackground(Setting.verde);
 				    						}
 				    	        			//--------------------------------
 				    	        			
@@ -497,6 +497,7 @@ public class readerPLC implements Runnable   {
 			        			 }// fine if
 			        			 
 			        			 
+	        		
 			        			 //IN ATTESA DELLLA BATTERIA . POSTAZIONE DI CONTROLLO
 			        			 else {
 					        				 try {
@@ -512,50 +513,9 @@ public class readerPLC implements Runnable   {
 				    	        					log.write("Reader PLc line501->   - Errore else areaerrore indicatorew "+nomeStazione+" :" + j.toString());
 				    	        				}
 						        				 
-					        	 }//fine else
+					        		 }//fine else
 	        			
 	        			
-			        			 //---------------------------
-			        			 if ((numero_di_cicli_senza_batterie>NUMERO_CICLI_START_STOP)) {
-			        		        	
-			        		        	indicatore.statoLinea.setText("STOP");
-			        		        	indicatore.statoLinea.setBackground(Setting.rosso);
-			        		        	
-			        			        if (!stopped)  {
-			        			        	
-			        			        	//19-05-2021 set startstop non per la stazione 10 (che è solo un controller)
-			        			        	if (((nomeStazione!=Setting.STAZIONE_DI_CONTROLLO_2)))
-			        				        		setStartStop(false,batteria);
-			        				        
-			        				        segnalato = true;
-			        				        	        	
-			        		        		stopped = true;
-			        		        		segnalato = false;
-			        			        }
-			        		        	
-			        		        	//numero_di_cicli_senza_batterie = 0;
-			        		        }else {
-			        		        		
-			        		        		indicatore.statoLinea.setText("RUNNING");
-			        		        		indicatore.statoLinea.setBackground(Setting.verde);
-			        		        		indicatore.tempostatoLinea.setText("");
-			        		        	
-				        		        	if (!segnalato) {
-				        		        		setStartStop(true,batteria);
-				        		        		segnalato = true;
-				        		        		stopped = false;
-				        		        	}
-			        		        	
-			        		        }//FINE ELSE
-			        		        
-			        		        
-			        		        if (tempo_ultima_batteria.equals("01/01/1970 00:00:00"))
-			        		        	indicatore.tempostatoLinea.setText("-");
-			        		        else
-			        		        	indicatore.tempostatoLinea.setText(""+tempo_ultima_batteria);
-			        			 //--------------------------
-			        			 
-			        			 
 	        		
 				     }//fine i==0	
 	        		
@@ -660,10 +620,6 @@ public class readerPLC implements Runnable   {
 				numero_batterie_riprocessate = 0;
 				Setting.totale_batterie_scartate[nomeStazione-1] = 0;
 				Setting.totale_batterie_lavorate[nomeStazione-1] = 0; 
-				
-				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
-				indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
-				
 				riazzera_contatori = false;
 				
 				try {
@@ -678,17 +634,55 @@ public class readerPLC implements Runnable   {
 				riazzera_contatori = true;
 			}
 			
-	       
+	        
+	        if ((numero_di_cicli_senza_batterie>NUMERO_CICLI_START_STOP)) {
+	        	
+	        	indicatore.statoLinea.setText("STOP");
+	        	indicatore.statoLinea.setBackground(Setting.rosso);
+	        	
+		        if (!stopped)  {
+		        	
+		        	//19-05-2021 set startstop non per la stazione 10 (che è solo un controller)
+		        	if (((nomeStazione!=Setting.STAZIONE_DI_CONTROLLO_2)))
+			        		setStartStop(false,batteria);
+			        
+			        segnalato = true;
+			        	        	
+	        		stopped = true;
+	        		segnalato = false;
+		        }
+	        	
+	        	//numero_di_cicli_senza_batterie = 0;
+	        }else {
+	        		
+	        		indicatore.statoLinea.setText("RUNNING");
+	        		indicatore.statoLinea.setBackground(Setting.verde);
+	        		indicatore.tempostatoLinea.setText("");
+	        	
+	        	if (!segnalato) {
+	        		setStartStop(true,batteria);
+	        		segnalato = true;
+	        		stopped = false;
+	        	}
+	        	
+	        }//FINE ELSE
+	        
+	        
+	        if (tempo_ultima_batteria.equals("01/01/1970 00:00:00"))
+	        	indicatore.tempostatoLinea.setText("-");
+	        else
+	        	indicatore.tempostatoLinea.setText(""+tempo_ultima_batteria);
+	        
 	        
 	        numero_di_cicli_senza_batterie += 1;
 	        
-	        
+	        prima_lettura = false;
 	        //indicatore.setConteggio(""+conteggio);
 	   
 		    bufferBatterie.setValue(ArrayBatteriePostazione.totaleBatterie);
 	        bufferBatterie.setString(""+ArrayBatteriePostazione.totaleBatterie+ " BATTERIE IN CODA");
 	        	
-	        prima_lettura = false;
+		   
 	    	
 	    }//fine leggi Array
 	    
@@ -833,6 +827,8 @@ public class readerPLC implements Runnable   {
 	    					}//fine else prima lettura
 	    					
 	    					
+	    					
+	    					//ritorno = false;
 	    					
 	    		}//CODICE CORRETTO
 				
@@ -1088,7 +1084,7 @@ public class readerPLC implements Runnable   {
 					   				Setting.getCodiceBatteriaScartata().setBackground(Setting.rosso);
 					   				
 					   				//MODIFICA DEL 11_02_2022. DEVO TENERE TRACCIA DELLO STATO RICEVUTO
-					   				batteria.setStato("0");
+					   				batteria.setStato("1");
 					   				
 					   				indicatore.risultato.setBackground(Setting.rosso);
 					   				indicatore.risultato.setText("KO P. " + ritorno);
@@ -1236,7 +1232,8 @@ public class readerPLC implements Runnable   {
 	   		if (isFinalController()) {
 	   			
 	   			//log.write("readerplc -> sono nuovamente nella postazione di controllo VERSO FINE");
-	   				   			
+	   			
+	   			//conteggio +=1;
 	   			Setting.totale_batterie_lavorate[nomeStazione-1] +=1;
 	   			indicatore.conteggio.setBackground(Setting.bianco);
 	   			indicatore.stato.setBackground(Setting.verde);
