@@ -411,7 +411,7 @@ public class readerPLC implements Runnable   {
 	        		//controllo batteria in ingresso. POSIZIONE 0 DELLA PILA
 	        		if ((i==0) && (!codice_batteria_old.equals(cod_batteria) && cod_batteria != null)) {
 	        			
-	        			 		//se il codice letto ha dimensioni maggiori di 12 (codice teoricamente valido)
+	        			 		//se il codice letto ha dimensioni maggiori di 20 (codice teoricamente valido)
 			        			 if (cod_batteria.length()>20) {
 				        				 try { 
 				        				 	codice_batteria_old = cod_batteria;		
@@ -559,8 +559,8 @@ public class readerPLC implements Runnable   {
 	        		
 				     }//fine i==0	
 	        		
-	        		
-	        		else if (data.after(dax) && (i>0) && (!isFinalController())){
+	        		//22-02-2022 AGGIUNGO IL CONTROLLO SULLA POSTAZIONE ABILITATA . SE E' IN BYPASS QUI NON ENTRA
+	        		else if (data.after(dax) && (i>0) && (!isFinalController()) && (configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0) ){
 				    	 				    					    	
 						    	 				try {
 						    			        	//top = (array.getOnTop());

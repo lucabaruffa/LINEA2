@@ -115,7 +115,7 @@ public ArrayList<String>[] getGiustificativi() {
 	  ResultSet rs;	            
 	  try {
 		 
-		rs = stmt_mysql.executeQuery("Select * from giustificativi where linea='"+Setting.LINEA_GIUSTIFICATIVI+"'  order by giustificativo1,giustificativo2,giustificativo3,giustificativo4,giustificativo5 asc");
+		rs = stmt_mysql.executeQuery("Select * from giustificativi where linea='"+Setting.LINEA_GIUSTIFICATIVI+"'  order by idgiustificativi asc");
         
 			while (rs.next()) {
 				String g1 = rs.getString("giustificativo1");
@@ -124,11 +124,11 @@ public ArrayList<String>[] getGiustificativi() {
 				String g4 = rs.getString("giustificativo4");
 				String g5 = rs.getString("giustificativo5");
 				
-				if (!(g1==null)) giustificativo1.add(g1);
-				if (!(g2==null)) giustificativo2.add(g2);
-				if (!(g3==null)) giustificativo3.add(g3);
-				if (!(g4==null)) giustificativo4.add(g4);
-				if (!(g5==null)) giustificativo5.add(g5);
+				if ((!(g1==null))&&(!g1.equals("")) ) giustificativo1.add(g1);
+				if ((!(g2==null)&&(!g2.equals("")))) giustificativo2.add(g2);
+				if ((!(g3==null)&&(!g3.equals("")))) giustificativo3.add(g3);
+				if ((!(g4==null)&&(!g4.equals("")))) giustificativo4.add(g4);
+				if ((!(g5==null)&&(!g5.equals("")))) giustificativo5.add(g5);
 				 
 			}
 		} catch (Exception ex) {

@@ -393,14 +393,19 @@ public class Giustificativo extends JDialog implements Runnable {
 				btnPausaPranzo.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("F000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
-							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!",
-									"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
-						else {
-							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
-									JOptionPane.INFORMATION_MESSAGE);
-							setVisible(false);
-						}
+						if (txtBadge.getText().length()>3)
+							if (!comando.invia_segnalazione("F000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+								JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!",
+										"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
+							else {
+								JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
+										JOptionPane.INFORMATION_MESSAGE);
+								setVisible(false);
+							}
+						else
+							JOptionPane.showMessageDialog(getContentPane(), "Inserisci Cognome o badge operatore !!",
+									"ATTENZIONE", JOptionPane.WARNING_MESSAGE);
+							
 					}
 				});
 				btnPausaPranzo.setBackground(SystemColor.inactiveCaption);
@@ -413,14 +418,18 @@ public class Giustificativo extends JDialog implements Runnable {
 				btnPausaCaffe.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("G000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
-							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!",
-									"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
-						else {
-							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
-									JOptionPane.INFORMATION_MESSAGE);
-							setVisible(false);
-						}
+						if (txtBadge.getText().length()>3)
+							if (!comando.invia_segnalazione("G000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+								JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!",
+										"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
+							else {
+								JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
+										JOptionPane.INFORMATION_MESSAGE);
+								setVisible(false);
+							}
+						else
+							JOptionPane.showMessageDialog(getContentPane(), "Inserisci Cognome o badge operatore !!",
+									"ATTENZIONE", JOptionPane.WARNING_MESSAGE);
 					}
 				});
 				btnPausaCaffe.setBackground(SystemColor.inactiveCaption);
@@ -436,14 +445,18 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnFermoProgrammato.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("H000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
-						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
-								JOptionPane.ERROR_MESSAGE);
-					else {
-						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
-								JOptionPane.INFORMATION_MESSAGE);
-						setVisible(false);
-					}
+					if (txtBadge.getText().length()>3)
+						if (!comando.invia_segnalazione("H000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
+									JOptionPane.ERROR_MESSAGE);
+						else {
+							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
+									JOptionPane.INFORMATION_MESSAGE);
+							setVisible(false);
+						}
+					else
+							JOptionPane.showMessageDialog(getContentPane(), "Inserisci Cognome o badge operatore !!",
+									"ATTENZIONE", JOptionPane.WARNING_MESSAGE);	
 				}
 			});
 
@@ -454,14 +467,18 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnCambioProduzione.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("L000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
-						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
-								JOptionPane.ERROR_MESSAGE);
-					else {
-						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
-								JOptionPane.INFORMATION_MESSAGE);
-						setVisible(false);
-					}
+					if (txtBadge.getText().length()>3)
+						if (!comando.invia_segnalazione("L000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
+									JOptionPane.ERROR_MESSAGE);
+						else {
+							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
+									JOptionPane.INFORMATION_MESSAGE);
+							setVisible(false);
+						}
+					else
+						JOptionPane.showMessageDialog(getContentPane(), "Inserisci Cognome o badge operatore !!",
+								"ATTENZIONE", JOptionPane.WARNING_MESSAGE);	
 				}
 			});
 			btnCambioProduzione.setActionCommand("OK");
@@ -477,14 +494,18 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnAssemblea.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("I000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
-						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
-								JOptionPane.ERROR_MESSAGE);
-					else {
-						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
-								JOptionPane.INFORMATION_MESSAGE);
-						setVisible(false);
-					}
+					if (txtBadge.getText().length()>3)
+						if (!comando.invia_segnalazione("I000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
+									JOptionPane.ERROR_MESSAGE);
+						else {
+							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
+									JOptionPane.INFORMATION_MESSAGE);
+							setVisible(false);
+						}
+					else
+						JOptionPane.showMessageDialog(getContentPane(), "Inserisci Cognome o badge operatore !!",
+								"ATTENZIONE", JOptionPane.WARNING_MESSAGE);	
 
 				}
 			});
@@ -498,14 +519,18 @@ public class Giustificativo extends JDialog implements Runnable {
 			btnSciopero.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					if (!comando.invia_segnalazione("L000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
-						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
-								JOptionPane.ERROR_MESSAGE);
-					else {
-						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
-								JOptionPane.INFORMATION_MESSAGE);
-						setVisible(false);
-					}
+					if (txtBadge.getText().length()>3)
+						if (!comando.invia_segnalazione("L000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
+									JOptionPane.ERROR_MESSAGE);
+						else {
+							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
+									JOptionPane.INFORMATION_MESSAGE);
+							setVisible(false);
+						}
+					else
+						JOptionPane.showMessageDialog(getContentPane(), "Inserisci Cognome o badge operatore !!",
+								"ATTENZIONE", JOptionPane.WARNING_MESSAGE);	
 				}
 			});
 			btnSciopero.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/sciopero.png")));

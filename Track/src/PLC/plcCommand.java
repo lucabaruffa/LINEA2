@@ -38,7 +38,7 @@ public class plcCommand    {
 	public int Rack = 0; 
 	public int Slot = 1; 
     public final S7Client Client = new S7Client();
-    public int DataToMove=48; // contiene la dimensione del DB connesso
+    public int DataToMove=42; // contiene la dimensione del DB connesso
     private int DB = -1; // db
     private int CurrentStatus = S7.S7CpuStatusUnknown;
     private int sleep = Setting.TIMER_SLEEP_READERPLC;  //tempo di ciclo
@@ -225,6 +225,7 @@ public class plcCommand    {
 	
 	 public greenCode leggiGreenCode() {
 	    	
+		 	//ShowStatus();		
 		 	greenCode green = new greenCode();
 		 
 		    int offset_DBAREA = 0;	
@@ -364,14 +365,12 @@ public class plcCommand    {
 		   		  
 			int indirizzo_start = 0;
 			
-			System.out.println("337: Tento la scittura green:" + green.getGreencode()+"   -- nome:" + green.getNome());
+			log.write("337:plcCommand  Tento la scittura green:" + green.getGreencode()+"   -- nome:" + green.getNome());
 	   			   			   		   
 	   		//S7.SetDateAt(Buffer, indirizzo_start , date);
 	   		
 	   		String code = green.getGreencode();
 	   		String nome = green.getNome();
-	   		
-	   		
 	   		
 	   		
 	   		for (int i = code.length() ; i < 10; i++) {
@@ -383,16 +382,21 @@ public class plcCommand    {
 	        }////fine for
 	   		
 	   		S7.SetString(Buffer, indirizzo_start, code);
-            System.out.println("361: Tento di scrivere sul plc :" + new String(Buffer));
+	   		log.write("361:plcCommand Tento di scrivere sul plc :" + new String(Buffer));
             
             indirizzo_start = indirizzo_start + 10;
 	   		
             
             S7.SetString(Buffer, indirizzo_start, nome);
-            System.out.println("373: Tento di scrivere sul plc :" + new String(Buffer));
+            log.write("373:plcCommand Tento di scrivere sul plc :" + new String(Buffer));
+            
+            indirizzo_start = indirizzo_start + 30;
+            S7.SetShortAt(Buffer, indirizzo_start, 1);
+            
 	   		
 	   		try {
 	   			DBWrite(DB); //inizio, dimensioni
+	   			log.write("399:plcCommand ho scritto sul db:"+DB);
 	   			return true;
 	   		}catch(Exception h) {
 	   			log.write("plcCommand -> Errore scrittura batteria sul plc. DB="+DB+" : ERR=" + h.toString());

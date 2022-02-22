@@ -113,12 +113,7 @@ public class WinSetGreencode extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 					txtpiastra.setText("errore");
 					txtNomeBatteria.setText("errore");
-					// String cod =
-					// (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split("
-					// -- ")[0];
-					// String nom =
-					// (""+(piastradaprodurre.getItemAt(piastradaprodurre.getSelectedIndex()))).split("
-					// -- ")[1];
+					
 					Setting.txtTipologiaBatteria.setText("Errore invio codice marcatore");
 					log.write("\nGREENCODE ERRORE CAMBIO CODICE");
 				} else {
