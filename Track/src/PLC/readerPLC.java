@@ -555,8 +555,7 @@ public class readerPLC implements Runnable   {
 			        		        	indicatore.tempostatoLinea.setText(""+tempo_ultima_batteria);
 			        			 //--------------------------
 			        			 
-			        			 
-	        		
+			        			 	        		
 				     }//fine i==0	
 	        		
 	        		//22-02-2022 AGGIUNGO IL CONTROLLO SULLA POSTAZIONE ABILITATA . SE E' IN BYPASS QUI NON ENTRA
