@@ -1,5 +1,7 @@
 package DB;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -59,6 +61,7 @@ public class CheckControlCVS extends TimerTask{
 	private static String dir = Setting.dir;
 	
 	private static LoggerFile log = new LoggerFile();
+	GregorianCalendar offset_data = new GregorianCalendar();
 	
 	
 	
@@ -118,6 +121,7 @@ public class CheckControlCVS extends TimerTask{
              
 			// itero sul file CVS
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+			SimpleDateFormat sdf_solodata = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			Date date = new Date(System.currentTimeMillis());
 			
@@ -209,20 +213,14 @@ public class CheckControlCVS extends TimerTask{
 				LocalDateTime second = LocalDateTime.parse(tempo_fermo, formatter);
 				
 				SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");				
-				//String data_fermo_linea = sdf2.format(date);
 				String dax2 = sdf2.format(date);
 			   
 			    long diff = second.until(now, ChronoUnit.MINUTES);
 			    
-			    //log.write("CheckControll CSV. Linea ferma da " + diff + " minuti. Data inizio:" + tempo_fermo + " - data fine:" + dax2);
 			    
-			    //
 			    if (diff>Setting.tempoMaxLineaFerma) {
 			    	
 			    	String motivo_fermo= CalcoloFermi.calcolaMotivoFermo(diff);// calcolaMotivoFermo(diff);
-			    	
-			    	
-			    	
 			    	
 			    	//controllo se esiste ilrecord. Lo aggiorno in caso positivo, altrimenti lo inserisco
 			    	ResultSet rs = stmt_mysql.executeQuery("SELECT * FROM "+Setting.DB_TABLE_STOP_LINEA+" where start='"+tempo_fermo+"' AND linea="+Setting.DB_BATTERIE_NUM_LINEA+" limit 1");
@@ -235,24 +233,32 @@ public class CheckControlCVS extends TimerTask{
 			    	}//fine if rs
 			    	else {
 			    		rs.close();
-			    		stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_STOP_LINEA+" (linea,start,stop,minuti_differenza,motivo_fermo) VALUES ("+Setting.DB_BATTERIE_NUM_LINEA+",'"+tempo_fermo+"','"+dax2+"',"+diff+",'"+motivo_fermo+"');");
-			    		/*
-			    		 rs = stmt_mysql.executeQuery("SELECT * FROM stop_linea2 where start='"+tempo_fermo+"' AND linea=2 limit 1");
 			    		
-				    	if (rs.next()){
-				    		int ID = rs.getInt("ID");
+			    		int turno = -1;
+			    		int ora = -1;
+			    		
+				    	try {
 				    		
-				    		 try {
-								if ( Setting.winGiustificativo==null)
-									 Setting.winGiustificativo = new Giustificativo();
-								Setting.winGiustificativo.setFermo("Linea ferma da " + diff + " minuti.",ID);
-								Setting.winGiustificativo.setVisible(true);
+					    		offset_data.setTime((sdf_solodata.parse(tempo_fermo)));
+					    		//Date date_calcolate = (offset_data.getTime());
+					    		
+					    	    ora = offset_data.get(Calendar.HOUR_OF_DAY);
+					    		//ora = date_calcolate.getHours();
+									
+								if ((ora>=6) && (ora<14) ) turno=1;
+								if ((ora>=14) && (ora<22) ) turno=2;
+								if ((ora>=22) || (ora<6) ) 	turno=3;	
+									
 							} catch (Exception e) {
-								log.write("CheckControll CSV. Linea ferma. Errore apertura primo popup ");
+								log.write("CheckControll CSV. Calcolo del turno  error:" + e.toString());
+								System.out.println("CheckControll CSV. Calcolo del turno a error:" + e.toString());
 							}
-							
-				    	}
-				    	*/
+			 
+				   		log.write("CheckControll CSV. Calcolo del turno:" + turno + "  -> data di start:" + tempo_fermo + "  -> ora:" + ora );
+				   		System.out.println("CheckControll CSV. Calcolo del turno:" + turno);
+			    		
+			    		stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_STOP_LINEA+" (linea,start,stop,minuti_differenza,motivo_fermo,turno) VALUES ("+Setting.DB_BATTERIE_NUM_LINEA+",'"+tempo_fermo+"','"+dax2+"',"+diff+",'"+motivo_fermo+"',"+turno+");");
+			    		
 			    	}//fine else
 			    	
 			    	log.write("CheckControll CSV. Linea ferma da più di " + diff + " minuti. Lo segnalo con motivo =" + motivo_fermo);

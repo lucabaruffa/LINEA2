@@ -165,7 +165,7 @@ public boolean invia_segnalazione(String oggetto,String messaggio,String destina
 	return true;
 }//fine invia
 
-public boolean invia_segnalazione(String oggetto,int ID, String badge) {
+public boolean invia_segnalazione(String oggetto,int ID,String note, String badge) {
 	
 	
 	 String codice_tesserino = "";
@@ -174,14 +174,16 @@ public boolean invia_segnalazione(String oggetto,int ID, String badge) {
 	if (badge.length()>3) {
 		
 		if (badge.substring(0,1).equals("ò")) {
-			System.out.println("Sono in presenza di badge");
+			log.write("Sono in presenza di badge:" + badge);
 			codice_tesserino = badge.substring(1,5);
 		}else {
-			System.out.println("Probabilmente sono in presenza di nome");
+			log.write("Probabilmente sono in presenza di nome:"+ badge);
 			codice_tesserino = badge;
 		}
 		
 		
+	 }else {
+		 codice_tesserino = "UTENTE NON VALIDO";
 	 }
 		 
 		 
@@ -190,18 +192,21 @@ public boolean invia_segnalazione(String oggetto,int ID, String badge) {
 	  try {
 		c_mysql = pool.getConnection();
 		stmt_mysql = c_mysql.createStatement();
-		log.write("Fatto giustificativo su ID=" + ID);
+		//log.write("Fatto giustificativo su ID=" + ID);
 	  } catch (Exception e) {
        
        System.out.println("Errore statement :"+e.getMessage()+"   Modulo:DBCommand");
     }//FINE CATCH
 
 	
+	 
+		
+		
 				            
 			try {   
-			      stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET motivo_fermo='"+oggetto+"', operatore='"+codice_tesserino+"' WHERE id="+ID);
+			      stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET motivo_fermo='"+oggetto+"', operatore='"+codice_tesserino+"', note='"+note+"' WHERE id="+ID);
 			      log.write("Fatto giustificativo su ID=" + ID);    
-				  System.out.println("fatto aggiornamento su ID=" + ID);          
+				  System.out.println("fatto aggiornamento su ID=" + ID + " e operatore:" + codice_tesserino);          
 			 }catch(Exception h) {
 				 System.out.println("ERRORE :"+ h.toString());	 
 				   	 return false;

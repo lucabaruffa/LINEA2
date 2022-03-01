@@ -232,11 +232,7 @@ public class ConfiguratoreLinea {
 				else
 					atomo = lista[i];
 
-				boolean setbit_scanner = false;
-				boolean setbit_scarto = false;
-
-				// if (atomo.scartoabilitato<200) atomo.scartoabilitato = 0x11000000;
-				// else atomo.scartoabilitato = 10;
+				
 
 				S7.SetWordAt(Buffer, indirizzo_start, atomo.statoscanner);
 				indirizzo_start += 1;

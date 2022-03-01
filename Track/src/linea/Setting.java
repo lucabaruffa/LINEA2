@@ -159,6 +159,10 @@ public class Setting {
 	int iterationCount = 40000;
 	int keyLength = 128;
 	SecretKeySpec key = createSecretKey(pwd.toCharArray(), salt, iterationCount, keyLength);
+	
+	public static int DBPLCSTATUS = 200;
+	public static StatoPLC statiPLC[] = new StatoPLC[10]; // max 10 plc di campo
+	public static int timeCheckControlplcStatus = 1; // giustifificativo si aggiorna ogni 2 minuti;
 
 	/**
 	 * @return the data_ultimo_aggiornamento

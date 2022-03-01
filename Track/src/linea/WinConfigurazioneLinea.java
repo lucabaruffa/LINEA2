@@ -166,7 +166,7 @@ public class WinConfigurazioneLinea extends JFrame {
 		btn_lettore_2.setBounds(689, 36, 172, 32);
 		getContentPane().add(btn_lettore_2);
 
-		btn_scarto_3 = new JToggleButton("POSTAZIONE DISATTIVATA");
+		btn_scarto_3 = new JToggleButton("POSTAZIONE DISATTIVA");
 		btn_scarto_3.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				if (btn_scarto_3.isSelected())

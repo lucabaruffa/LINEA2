@@ -75,6 +75,7 @@ import DB.SenderDB;
 import Moka7.S7;
 import PLC.ConfiguratorePLc;
 import PLC.plcCommand;
+import PLC.plcStatus;
 import View.Scarti;
 import View.View_Impostazioni_PLC;
 
@@ -2557,7 +2558,9 @@ public class main {
 		Giustificativo giustificativo = new Giustificativo();
 		scheduler.scheduleAtFixedRate(giustificativo, 1, Setting.timeCheckControlGiustificativo, TimeUnit.MINUTES); // ogni
 																													// 3
-																													// minuti
+			
+		plcStatus statiplc = new plcStatus();
+		scheduler.scheduleAtFixedRate(statiplc, 1, Setting.timeCheckControlplcStatus, TimeUnit.MINUTES); // ogni  minuto
 
 	}// fine metodo start
 }// fine classe main

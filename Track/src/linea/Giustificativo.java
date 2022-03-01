@@ -31,6 +31,8 @@ import java.awt.event.ItemEvent;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class Giustificativo extends JDialog implements Runnable {
 
@@ -48,11 +50,11 @@ public class Giustificativo extends JDialog implements Runnable {
 	private JTextField txtCodiceFinale;
 	private String codice_finale = "00000000000";
 
-	public static ArrayList<String> giustificativo1 = new ArrayList<>();
-	public static ArrayList<String> giustificativo2 = new ArrayList<>();
-	public static ArrayList<String> giustificativo3 = new ArrayList<>();
-	public static ArrayList<String> giustificativo4 = new ArrayList<>();
-	public static ArrayList<String> giustificativo5 = new ArrayList<>();
+	public static ArrayList<String> array_giustificativo1 = new ArrayList<>();
+	public static ArrayList<String> array_giustificativo2 = new ArrayList<>();
+	public static ArrayList<String> array_giustificativo3 = new ArrayList<>();
+	public static ArrayList<String> array_giustificativo4 = new ArrayList<>();
+	public static ArrayList<String> array_giustificativo5 = new ArrayList<>();
 	private static DBCheckGriglia dbgriglia;
 
 	private static ArrayListComboBoxModel model1;
@@ -63,6 +65,15 @@ public class Giustificativo extends JDialog implements Runnable {
 	private JTextField txtInizioFermo;
 	private JTextField txtBadge;
 
+	JComboBox<?> giustificativo7;
+	JComboBox<?> giustificativo6;
+	JComboBox<?> giustificativo5;
+	JComboBox<?> giustificativo4;
+	JComboBox<?> giustificativo3;
+	JComboBox<?> giustificativo2;
+	
+	JTextArea txtNote = null;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -96,7 +107,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		// setVisible(true);
-		setBounds(100, 100, 1283, 643);
+		setBounds(100, 100, 1283, 703);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -152,7 +163,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		lblNewLabel_1.setBounds(10, 173, 120, 14);
 		contentPanel.add(lblNewLabel_1);
 
-		JComboBox giustificativo2 = new JComboBox();
+		giustificativo2 = new JComboBox();
 		giustificativo2.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -176,7 +187,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		lblNewLabel_1_1.setBounds(250, 173, 188, 14);
 		contentPanel.add(lblNewLabel_1_1);
 
-		JComboBox giustificativo3 = new JComboBox();
+		giustificativo3 = new JComboBox();
 		giustificativo3.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -199,7 +210,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		lblNewLabel_1_1_1.setBounds(994, 173, 236, 14);
 		contentPanel.add(lblNewLabel_1_1_1);
 
-		JComboBox giustificativo4 = new JComboBox();
+		giustificativo4 = new JComboBox();
 		giustificativo4.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -222,7 +233,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		lblNewLabel_1_1_1_1.setBounds(10, 283, 625, 14);
 		contentPanel.add(lblNewLabel_1_1_1_1);
 
-		JComboBox giustificativo5 = new JComboBox();
+		giustificativo5 = new JComboBox();
 		giustificativo5.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -249,16 +260,17 @@ public class Giustificativo extends JDialog implements Runnable {
 		txtCodiceFinale.setForeground(Color.RED);
 		txtCodiceFinale.setFont(new Font("Arial", Font.BOLD, 20));
 		txtCodiceFinale.setEditable(false);
-		txtCodiceFinale.setBounds(10, 411, 282, 78);
+		txtCodiceFinale.setBounds(10, 503, 282, 78);
 		contentPanel.add(txtCodiceFinale);
 		txtCodiceFinale.setColumns(10);
 
 		txtCodiceFinale.setText(codice_finale);
-		JButton okButton = new JButton("INVIA MOTIVAZIONE");
+		JButton okButton = 
+				new JButton("INVIA MOTIVAZIONE");
 		okButton.setFont(new Font("Tahoma", Font.BOLD, 13));
 		okButton.setForeground(new Color(0, 0, 0));
 		okButton.setBackground(new Color(144, 238, 144));
-		okButton.setBounds(302, 411, 286, 78);
+		okButton.setBounds(302, 503, 286, 78);
 		contentPanel.add(okButton);
 		okButton.setIcon(new ImageIcon(Giustificativo.class.getResource("/resource/fermo.png")));
 		okButton.addMouseListener(new MouseAdapter() {
@@ -267,19 +279,19 @@ public class Giustificativo extends JDialog implements Runnable {
 
 				String badge = txtBadge.getText();
 
-				if (badge.length() > 0) {
-					if (!comando.invia_segnalazione(codice_finale + "5", ID, badge))
-						JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
-								JOptionPane.ERROR_MESSAGE);
-					else {
-						JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
-								JOptionPane.INFORMATION_MESSAGE);
-						setVisible(false);
+					if (check()){
+						if (!comando.invia_segnalazione(codice_finale + "2", ID,txtNote.getText(), badge))
+							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
+									JOptionPane.ERROR_MESSAGE);
+						else {
+							JOptionPane.showMessageDialog(getContentPane(), "Motivazione inserita correttamente", "OK",
+									JOptionPane.INFORMATION_MESSAGE);
+							setVisible(false);
+						}
+					} else {
+						JOptionPane.showMessageDialog(getContentPane(), "INSERIRE COGNOME O BADGE OPERATORE. VERIFICARE CHE TUTTI I CAMPI SIANO COMPILATI !!",
+								"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
 					}
-				} else {
-					JOptionPane.showMessageDialog(getContentPane(), "INSERIRE COGNOME O BADGE OPERATORE !!",
-							"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
-				}
 
 			}
 		});
@@ -291,7 +303,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		lblNewLabel_1_2.setBounds(994, 284, 120, 14);
 		contentPanel.add(lblNewLabel_1_2);
 
-		JComboBox giustificativo6 = new JComboBox();
+		giustificativo6 = new JComboBox();
 		giustificativo6.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -311,10 +323,10 @@ public class Giustificativo extends JDialog implements Runnable {
 
 		JLabel lblNewLabel_1_2_1 = new JLabel("Codice Inviato");
 		lblNewLabel_1_2_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_2_1.setBounds(10, 392, 120, 14);
+		lblNewLabel_1_2_1.setBounds(10, 484, 120, 14);
 		contentPanel.add(lblNewLabel_1_2_1);
 
-		JComboBox giustificativo7 = new JComboBox();
+		giustificativo7 = new JComboBox();
 		giustificativo7.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -377,7 +389,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				btnCambioLinea.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseReleased(MouseEvent e) {
-						if (!comando.invia_segnalazione("E000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+						if (!comando.invia_segnalazione("E000000" + Setting.DB_BATTERIE_NUM_LINEA, ID,""+txtNote.getText(), ""+txtBadge.getText()))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!",
 									"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
 						else {
@@ -387,6 +399,7 @@ public class Giustificativo extends JDialog implements Runnable {
 						}
 					}
 				});
+				
 
 				JButton btnPausaPranzo = new JButton("PAUSA PRANZO");
 				btnPausaPranzo.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -394,7 +407,7 @@ public class Giustificativo extends JDialog implements Runnable {
 					@Override
 					public void mouseReleased(MouseEvent e) {
 						if (txtBadge.getText().length()>3)
-							if (!comando.invia_segnalazione("F000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+							if (!comando.invia_segnalazione("F000000" + Setting.DB_BATTERIE_NUM_LINEA, ID,""+txtNote.getText(), ""+txtBadge.getText()))
 								JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!",
 										"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
 							else {
@@ -419,7 +432,7 @@ public class Giustificativo extends JDialog implements Runnable {
 					@Override
 					public void mouseReleased(MouseEvent e) {
 						if (txtBadge.getText().length()>3)
-							if (!comando.invia_segnalazione("G000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+							if (!comando.invia_segnalazione("G000000" + Setting.DB_BATTERIE_NUM_LINEA, ID,""+txtNote.getText(), ""+txtBadge.getText()))
 								JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!",
 										"ATTENZIONE", JOptionPane.ERROR_MESSAGE);
 							else {
@@ -446,7 +459,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					if (txtBadge.getText().length()>3)
-						if (!comando.invia_segnalazione("H000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+						if (!comando.invia_segnalazione("H000000" + Setting.DB_BATTERIE_NUM_LINEA, ID,""+txtNote.getText(), ""+txtBadge.getText()))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
 									JOptionPane.ERROR_MESSAGE);
 						else {
@@ -468,7 +481,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					if (txtBadge.getText().length()>3)
-						if (!comando.invia_segnalazione("L000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+						if (!comando.invia_segnalazione("L000000" + Setting.DB_BATTERIE_NUM_LINEA, ID,""+txtNote.getText(), ""+txtBadge.getText()))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
 									JOptionPane.ERROR_MESSAGE);
 						else {
@@ -495,7 +508,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					if (txtBadge.getText().length()>3)
-						if (!comando.invia_segnalazione("I000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+						if (!comando.invia_segnalazione("I000000" + Setting.DB_BATTERIE_NUM_LINEA, ID,""+txtNote.getText(), ""+txtBadge.getText()))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
 									JOptionPane.ERROR_MESSAGE);
 						else {
@@ -520,7 +533,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					if (txtBadge.getText().length()>3)
-						if (!comando.invia_segnalazione("L000000" + Setting.DB_BATTERIE_NUM_LINEA, ID, ""))
+						if (!comando.invia_segnalazione("L000000" + Setting.DB_BATTERIE_NUM_LINEA, ID,""+txtNote.getText(), ""+txtBadge.getText()))
 							JOptionPane.showMessageDialog(getContentPane(), "Errore esecuzione comando !!", "ATTENZIONE",
 									JOptionPane.ERROR_MESSAGE);
 						else {
@@ -541,6 +554,28 @@ public class Giustificativo extends JDialog implements Runnable {
 		}
 
 		setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+		
+		giustificativo.setSelectedIndex(-1);
+		giustificativo2.setSelectedIndex(-1);
+		giustificativo3.setSelectedIndex(-1);
+		giustificativo4.setSelectedIndex(-1);
+		giustificativo5.setSelectedIndex(-1);
+		giustificativo6.setSelectedIndex(-1);
+		
+		JLabel lblNewLabel_1_2_1_1 = new JLabel("Note");
+		lblNewLabel_1_2_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_2_1_1.setBounds(10, 393, 120, 14);
+		contentPanel.add(lblNewLabel_1_2_1_1);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 412, 1220, 56);
+		contentPanel.add(scrollPane);
+		
+		txtNote = new JTextArea();
+		scrollPane.setViewportView(txtNote);
+		txtNote.setForeground(new Color(139, 0, 0));
+		txtNote.setFont(new Font("Arial", Font.BOLD, 14));
+		txtNote.setBackground(SystemColor.inactiveCaptionBorder);
 
 	}// fine gui
 
@@ -558,17 +593,17 @@ public class Giustificativo extends JDialog implements Runnable {
 
 		ArrayList<String>[] lista = dbgriglia.getGiustificativi();
 
-		giustificativo1 = lista[0];
-		giustificativo2 = lista[1];
-		giustificativo3 = lista[2];
-		giustificativo4 = lista[3];
-		giustificativo5 = lista[4];
+		array_giustificativo1 = lista[0];
+		array_giustificativo2 = lista[1];
+		array_giustificativo3 = lista[2];
+		array_giustificativo4 = lista[3];
+		array_giustificativo5 = lista[4];
 
-		model1 = new ArrayListComboBoxModel(giustificativo1);
-		model2 = new ArrayListComboBoxModel(giustificativo2);
-		model3 = new ArrayListComboBoxModel(giustificativo3);
-		model4 = new ArrayListComboBoxModel(giustificativo4);
-		model5 = new ArrayListComboBoxModel(giustificativo5);
+		model1 = new ArrayListComboBoxModel(array_giustificativo1);
+		model2 = new ArrayListComboBoxModel(array_giustificativo2);
+		model3 = new ArrayListComboBoxModel(array_giustificativo3);
+		model4 = new ArrayListComboBoxModel(array_giustificativo4);
+		model5 = new ArrayListComboBoxModel(array_giustificativo5);
 
 	}// fine load
 
@@ -584,6 +619,16 @@ public class Giustificativo extends JDialog implements Runnable {
 
 				setFermo("La Linea e' ferma da " + Setting.minuti_fermo_linea + " minuti. Necessario giustificare",
 						Setting.data_fermo_linea);
+				
+				giustificativo.setSelectedIndex(-1);
+				giustificativo2.setSelectedIndex(-1);
+				giustificativo3.setSelectedIndex(-1);
+				giustificativo4.setSelectedIndex(-1);
+				giustificativo5.setSelectedIndex(-1);
+				giustificativo6.setSelectedIndex(-1);
+				txtNote.setText("");
+				txtCodiceFinale.setText("00000000000");
+				
 				this.setVisible(true);
 			}
 
@@ -592,6 +637,29 @@ public class Giustificativo extends JDialog implements Runnable {
 			log.write("Errore Giustificativo. Err:" + e.toString());
 		}
 	}// fine run
+	
+	
+	
+	
+	private boolean check() {
+		
+		if (txtBadge.getText().equals("")) return false;
+		if (giustificativo.getSelectedItem().equals("")) return false;
+		if (giustificativo2.getSelectedItem().equals("")) return false;
+		if (giustificativo3.getSelectedItem().equals("")) return false;
+		if (giustificativo4.getSelectedItem().equals("")) return false;
+		if (giustificativo5.getSelectedItem().equals("")) return false;
+		if (giustificativo6.getSelectedItem().equals("")) return false;
+		if (giustificativo7.getSelectedItem().equals("")) return false;
+		
+		
+		
+		return true;
+	}
+	
+	
+	
+	
 }// fine classdes
 
 class ArrayListComboBoxModel extends AbstractListModel implements ComboBoxModel {

@@ -1,45 +1,25 @@
 package PLC;
-import java.awt.Color;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.Locale;
-
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-import DB.CheckControl;
 import Moka7.IntByRef;
 import Moka7.S7;
 import Moka7.S7Client;
-import View.Scarti;
 import linea.ArrayBatteriePostazione;
-import linea.Batteria;
-import linea.ConfiguratoreLinea;
 import linea.Indicatore;
 import linea.LoggerFile;
 import linea.Setting;
-import linea.greenCode;
+import linea.StatoPLC;
 
-public class plcCommand    {
+public class plcStatus  implements Runnable  {
 	
 	
 	public byte[] Buffer = new byte[65536]; // 64K buffer (maximum for S7400 systems)
 	public int Rack = 0; 
 	public int Slot = 1; 
     public final S7Client Client = new S7Client();
-    public int DataToMove=42; // contiene la dimensione del DB connesso
-    private int DB = -1; // db
+    public int DataToMove=72; // contiene la dimensione del DB connesso
+    private int DB = 200; // db stati del plc
     private int CurrentStatus = S7.S7CpuStatusUnknown;
     private int sleep = Setting.TIMER_SLEEP_READERPLC;  //tempo di ciclo
     private Indicatore indicatore;
@@ -55,19 +35,19 @@ public class plcCommand    {
 	private static LoggerFile log = new LoggerFile();
 	
 	
-	public plcCommand() {
+	public plcStatus() {
 		
 		try {
-			setting = new Setting();
+			setting = new Setting(true);
 		} catch (Exception e) {
-			log.write("ERRORE CARICAMENTO CONFIGURAZIONE NEL MODULO plcCommand\n");
+			log.write("PLCStatus -> ERRORE CARICAMENTO CONFIGURAZIONE \n");
 			e.printStackTrace();
 		}
 		
 					
 		Rack = Integer.parseInt(setting.getRACK());
 		Slot = Integer.parseInt(setting.getSLOT());
-		DB = Setting.DBGREENCODE;
+		DB = Setting.DBPLCSTATUS;
 		
 		log.write("AVVIO RUN");
 		
@@ -79,7 +59,7 @@ public class plcCommand    {
 			//monitor.append("\nPostazione "+ nomeStazione + ". Tempo esecuzione = "+ (endTime - startTime)/1000000+" millisecondi");  
 		}//fine if
 		else {
-			log.write("NON CONNESSO! - AVVIO TENTATIVO DI CONNESSIONE");
+			log.write("plcStatus -> NON CONNESSO! - AVVIO TENTATIVO DI CONNESSIONE");
 			connetti();
 			
 		}
@@ -144,7 +124,6 @@ public class plcCommand    {
         int Result = Client.DBGet(DB, Buffer, SizeRead);        
         if (Result==0)
         {
-        	
         	DataToMove = SizeRead.Value; // memorizzo dimensioni del DB
         	//System.out.println("DB "+DB+" - Size read "+DataToMove+" bytes");
         	log.write("DB "+DB+" - DIMENSIONI DB "+DataToMove+" bytes\n");
@@ -167,7 +146,7 @@ public class plcCommand    {
         	//log.write("\nDBAREA OK.  DB="+DB+"\n" );
         }else
         {
-        	log.write("\nplcCommand -> PROBLEMA CON READAREA!!!!!!!!! ERRORE =" + Result +". db="+DB);
+        	log.write("\nplcStatus -> PROBLEMA CON READAREA!!!!!!!!! ERRORE =" + Result +". db="+DB);
         }
        
     }      
@@ -223,86 +202,89 @@ public class plcCommand    {
 	
 	
 	
-	 public greenCode leggiGreenCode() {
+	 public void readPLCstatus() {
 	    	
-		 	//ShowStatus();		
-		 	greenCode green = new greenCode();
-		 
+		 	
 		    int offset_DBAREA = 0;	
 	  	    DBRead(0);
 	        	
-	  	  log.write("plcCommand -> Tento lettura dal plc del greencode impostato. ");
+	  	    //log.write("plcStatus -> Tento lettura dal plc lo stato di tutti i PLC di campo. ");
 	  	    
-	        String codice = S7.GetStringAt(Buffer, offset_DBAREA ,10).trim();
-	        offset_DBAREA += 10;
+	  	    //PLC1
+	        boolean RUN1 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE1 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME1 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
 	        
-	        String nome = S7.GetStringAt(Buffer, offset_DBAREA ,30).trim();
+	        offset_DBAREA += 20;
 	        
-	        green.setGreencode(codice);
-	        green.setNome(nome);
+	        //PLC2
+	        boolean RUN2 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE2 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME2 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
 	        
-	        log.write("plcCommand -> Tento lettura dal plc del greencode impostato. GREEN : " + green +"  -- nome: " + nome);
+	        offset_DBAREA += 20;
 	        
-	        	
-	        //timestamp = (S7.GetDateAt(Buffer, offset_DBAREA )).toString();
-	        	
-	       /*	
-	        try {
-				data.setTime(sdf.parse(timestamp));
-				//log.write("leggo la data :" + timestamp);
-			} catch (ParseException e1) {
-				log.write("readerPLC - Errore parsing data 331 : " + e1.toString());
-			} 
+	        //PLC3
+	        boolean RUN3 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE3 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME3 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
 	        
-	      */
-	        //tento di aggiornare txt home.
+	        offset_DBAREA += 20;
 	        
-	        log.write("plcReader -> GREEN : " + green +"  -- nome: " + nome);
-	       
-	        return green;
-	        	
+	        //PLC4
+	        boolean RUN4 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE4 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME4 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
+	        
+	        offset_DBAREA += 20;
+	        
+	        //PLC5
+	        boolean RUN5 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE5 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME5 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
+	        
+	        offset_DBAREA += 20;
+	        
+	        //PLC6
+	        boolean RUN6 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE6 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME6 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
+	        
+	        offset_DBAREA += 20;
+	        
+	        //PLC7
+	        boolean RUN7 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE7 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME7 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
+	        
+	        offset_DBAREA += 20;
+	        
+	        //PLC5
+	        boolean RUN8 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE8 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME8 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
+	        
+	        
+	        Setting.statiPLC[1] = new StatoPLC(RUN1,MANUALE1,ALLARME1); 
+	        Setting.statiPLC[2] = new StatoPLC(RUN2,MANUALE2,ALLARME2); 
+	        Setting.statiPLC[3] = new StatoPLC(RUN3,MANUALE3,ALLARME3); 
+	        Setting.statiPLC[4] = new StatoPLC(RUN4,MANUALE4,ALLARME4); 
+	        Setting.statiPLC[5] = new StatoPLC(RUN5,MANUALE5,ALLARME5);
+	        Setting.statiPLC[6] = new StatoPLC(RUN6,MANUALE6,ALLARME6);
+	        Setting.statiPLC[7] = new StatoPLC(RUN7,MANUALE7,ALLARME7);
+	        Setting.statiPLC[8] = new StatoPLC(RUN8,MANUALE8,ALLARME8);
+	        
+	        //log.write("plcStatus -> Stato plc 1. RUN1 =" + RUN1 +"  MANUALE1:" + MANUALE1 + "   ALLARME1:" + ALLARME1);
+	        //log.write("plcStatus -> Stato plc 1. RUN2 =" + RUN2 +"  MANUALE2:" + MANUALE2 + "   ALLARME2:" + ALLARME2);
+	        //log.write("plcStatus -> Stato plc 1. RUN3 =" + RUN3 +"  MANUALE3:" + MANUALE3 + "   ALLARME3:" + ALLARME3);
+	        //log.write("plcStatus -> Stato plc 1. RUN4 =" + RUN4 +"  MANUALE4:" + MANUALE4 + "   ALLARME4:" + ALLARME4);
+	        
 	        
 	    	
 	    }//fine leggi Array
 	 
 	 
-	 public String leggiGreenCodeHome() {
-	    	
-		 	String ritorno="";
-		 
-		    int offset_DBAREA = 0;	
-	  	    DBRead(0);
-	        	
-	  	  log.write("plcCommand -> Tento lettura dal plc del greencode impostato. ");
-	  	    
-	        String codice = S7.GetStringAt(Buffer, offset_DBAREA ,10).trim();
-	        offset_DBAREA += 10;
-	        
-	        String nome = S7.GetStringAt(Buffer, offset_DBAREA ,30).trim();
-	        
-	        ritorno = codice +" " +  nome;
-	        
-	       	
-	        //timestamp = (S7.GetDateAt(Buffer, offset_DBAREA )).toString();
-	        	
-	       /*	
-	        try {
-				data.setTime(sdf.parse(timestamp));
-				//log.write("leggo la data :" + timestamp);
-			} catch (ParseException e1) {
-				log.write("readerPLC - Errore parsing data 331 : " + e1.toString());
-			} 
-	        
-	      */
-	        //tento di aggiornare txt home.
-	       
-	        return ritorno;
-	        	
-	        
-	    	
-	    }//fine leggi Array
-	    
-	    
+	 
 	    
 	    
 	    public void connetti() {
@@ -326,9 +308,9 @@ public class plcCommand    {
 	    	if (Result==0)
 	    	{
 	    		
-	    		Indicatore.statoplc.setText("OK");
-	    		Indicatore.statoplc.setBackground(Setting.verde);
-	    		log.write("\nCONNESSIONE RIUSCITA!\n");
+	    	//Indicatore.statoplc.setText("OK");
+	    	//Indicatore.statoplc.setBackground(Setting.verde);
+	    	log.write("\nCONNESSIONE RIUSCITA AL plcstaus!\n");
 	    		//statoplc.setText("CONNESSIONE OK\n");
 	            
 	    		//monitor.append("PDU negotiated: " + Client.PDULength()+" bytes" );
@@ -338,8 +320,8 @@ public class plcCommand    {
 	    	}else {
 	    		log.write("CONNESSIONE FALLITA! - NUOVO TENTATIVO FRA "+sleep+" SECONDI\n");
 	    		try {
-					indicatore.statoplc.setText("ERRORE");
-					indicatore.statoplc.setBackground(setting.rosso);
+					//indicatore.statoplc.setText("ERRORE");
+					//indicatore.statoplc.setBackground(setting.rosso);
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
@@ -355,57 +337,50 @@ public class plcCommand    {
 	    public void setSleep(int s) {
 	    	sleep = s;
 	    }
+
+
+		@Override
+		public void run() {
+			boolean running = true;
+			// TODO Auto-generated method stub
+			//log.write("AVVIO RUN plcStatus");
+			//while(running) {
+				//monitor.append("RUNNING\n");
+				if(Client.Connected) {
+					
+					//stato.setBackground(Setting.verde);
+					//stato.setText("OK");
+					
+					long startTime = System.nanoTime();
+					readPLCstatus();
+					long endTime = System.nanoTime();
+					//monitor.append("\nPostazione "+ nomeStazione + ". Tempo esecuzione = "+ (endTime - startTime)/1000000+" millisecondi");  
+				}//fine if
+				else {
+					log.write("CONFIGURATORE PLC NON CONNESSO! - AVVIO TENTATIVO DI CONNESSIONE");
+					//stato.setBackground(Setting.rosso);
+					//stato.setText("KO");
+					connetti();	
+				}
+				
+				try {
+					//monitor.append("slider ="+sleep+"\n");
+					Thread.sleep(sleep);
+				}catch(Exception e) {
+					log.write("\nConfiguratore plc Errore inSleep!\n");
+					//stato.setBackground(Setting.rosso);
+					//stato.setText("KO");
+				}//fine catch
+				
+			//}//fine while
+	       
+		}//fine run
 	 
 	    
 	
 	 
 		   	
-	public boolean writeGreenCode(greenCode green) {	   	
-	   	
-		   		  
-			int indirizzo_start = 0;
-			
-			log.write("337:plcCommand  Tento la scittura green:" + green.getGreencode()+"   -- nome:" + green.getNome());
-	   			   			   		   
-	   		//S7.SetDateAt(Buffer, indirizzo_start , date);
-	   		
-	   		String code = green.getGreencode();
-	   		String nome = green.getNome();
-	   		
-	   		
-	   		for (int i = code.length() ; i < 10; i++) {
-	   			code +="0";
-	        }////fine for
-	   		
-	   		for (int i = nome.length() ; i < 30; i++) {
-	   			nome +=" ";
-	        }////fine for
-	   		
-	   		S7.SetString(Buffer, indirizzo_start, code);
-	   		//log.write("361:plcCommand Tento di scrivere sul plc :" + new String(Buffer));
-            
-            indirizzo_start = indirizzo_start + 10;
-	   		
-            
-            S7.SetString(Buffer, indirizzo_start, nome);
-            //log.write("373:plcCommand Tento di scrivere sul plc :" + new String(Buffer));
-            
-            indirizzo_start = indirizzo_start + 30;
-            S7.SetShortAt(Buffer, indirizzo_start, 1); //QUI INVIO AL MARCATORE IL NUMERO DI RICETTA DA STAMPARE. PER ADESSO INVIO SEMPRE 1
-            
-	   		
-	   		try {
-	   			DBWrite(DB); //inizio, dimensioni
-	   			log.write("399:plcCommand ho scritto sul db:"+DB);
-	   			return true;
-	   		}catch(Exception h) {
-	   			log.write("plcCommand -> Errore scrittura batteria sul plc. DB="+DB+" : ERR=" + h.toString());
-	   			System.out.println("plcCommand -> Errore scrittura batteria sul plc. DB="+DB+" : ERR=" + h.toString());
-	   		}
-	   		
-	   		return false;
-	  	   		
-	   }//fine public scartoPostazione
+	
 	  
 	   
 	   
