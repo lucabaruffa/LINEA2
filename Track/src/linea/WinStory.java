@@ -205,7 +205,7 @@ public class WinStory extends JFrame {
 
 					timestamp = getMyDate(timestamp, "dd/MM/yyyy HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
 
-					model.addRow(new Object[] { timestamp, cod_batteria, postazione, stato_test, valore1, valore2,
+					model.addRow(new Object[] { timestamp, cod_batteria, Setting.nomiPostazioni[postazione+1], stato_test, valore1, valore2,
 							differenza });
 
 				} catch (Exception e) {

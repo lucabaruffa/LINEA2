@@ -210,6 +210,10 @@ public class plcStatus  implements Runnable  {
 	        	
 	  	    //log.write("plcStatus -> Tento lettura dal plc lo stato di tutti i PLC di campo. ");
 	  	    
+	  	    // RUN = FALSE NOT RUN  -> TRUE RUN
+	  	    //ALLARME = FALSE NON ALLARME -> TRUE ALLARME
+	  	    //MANUALE = FALSE AUTOMATICA -> TRUE MANUALE
+	  	    
 	  	    //PLC1
 	        boolean RUN1 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
 	        boolean MANUALE1 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
@@ -259,10 +263,17 @@ public class plcStatus  implements Runnable  {
 	        
 	        offset_DBAREA += 20;
 	        
-	        //PLC5
+	        //PLC8
 	        boolean RUN8 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
 	        boolean MANUALE8 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
 	        boolean ALLARME8 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
+	        
+	        offset_DBAREA += 20;
+	        
+	        //PLC9
+	        boolean RUN9 = S7.GetBitAt(Buffer, offset_DBAREA, 0);
+	        boolean MANUALE9 = S7.GetBitAt(Buffer, offset_DBAREA, 1);
+	        boolean ALLARME9 = S7.GetBitAt(Buffer, offset_DBAREA, 2);
 	        
 	        
 	        Setting.statiPLC[1] = new StatoPLC(RUN1,MANUALE1,ALLARME1); 
@@ -273,11 +284,17 @@ public class plcStatus  implements Runnable  {
 	        Setting.statiPLC[6] = new StatoPLC(RUN6,MANUALE6,ALLARME6);
 	        Setting.statiPLC[7] = new StatoPLC(RUN7,MANUALE7,ALLARME7);
 	        Setting.statiPLC[8] = new StatoPLC(RUN8,MANUALE8,ALLARME8);
+	        Setting.statiPLC[9] = new StatoPLC(RUN9,MANUALE9,ALLARME9);
 	        
-	        //log.write("plcStatus -> Stato plc 1. RUN1 =" + RUN1 +"  MANUALE1:" + MANUALE1 + "   ALLARME1:" + ALLARME1);
-	        //log.write("plcStatus -> Stato plc 1. RUN2 =" + RUN2 +"  MANUALE2:" + MANUALE2 + "   ALLARME2:" + ALLARME2);
-	        //log.write("plcStatus -> Stato plc 1. RUN3 =" + RUN3 +"  MANUALE3:" + MANUALE3 + "   ALLARME3:" + ALLARME3);
-	        //log.write("plcStatus -> Stato plc 1. RUN4 =" + RUN4 +"  MANUALE4:" + MANUALE4 + "   ALLARME4:" + ALLARME4);
+	        Setting.statiPLC[21] = new StatoPLC(true,true,true);
+	        
+	        log.write("plcStatus -> Stato plc 1. RUN1 =" + RUN1 +"  MANUALE1:" + MANUALE1 + "   ALLARME1:" + ALLARME1);
+	        log.write("plcStatus -> Stato plc 1. RUN2 =" + RUN2 +"  MANUALE2:" + MANUALE2 + "   ALLARME2:" + ALLARME2);
+	        log.write("plcStatus -> Stato plc 1. RUN3 =" + RUN3 +"  MANUALE3:" + MANUALE3 + "   ALLARME3:" + ALLARME3);
+	        log.write("plcStatus -> Stato plc 1. RUN4 =" + RUN4 +"  MANUALE4:" + MANUALE4 + "   ALLARME4:" + ALLARME4);
+	        log.write("plcStatus -> Stato plc 1. RUN5 =" + RUN5 +"  MANUALE4:" + MANUALE5 + "   ALLARME4:" + ALLARME5);
+	        log.write("plcStatus -> Stato plc 1. RUN6 =" + RUN6 +"  MANUALE4:" + MANUALE6 + "   ALLARME4:" + ALLARME6);
+	        log.write("plcStatus -> Stato plc 1. RUN7 =" + RUN7 +"  MANUALE4:" + MANUALE7 + "   ALLARME4:" + ALLARME7);
 	        
 	        
 	    	

@@ -141,7 +141,7 @@ public class Setting {
 	public static ElencoIndicatori elenco_indicatori = new ElencoIndicatori();
 	public static long minuti_fermo_linea = 0; // numero minuti di lineaferma
 	public static String data_fermo_linea = ""; // numero minuti di lineaferma
-	public static int timeCheckControlGiustificativo = 2; // giustifificativo si aggiorna ogni 2 minuti;
+	public static int timeCheckControlGiustificativo = 5; // giustifificativo si aggiorna ogni 2 minuti;
 
 	// sezione BATABASE
 	public static String LINEA = "Linea 2";
@@ -154,15 +154,16 @@ public class Setting {
 
 	byte[] salt = new String("12345678").getBytes();
 	String pwd = "TestPassword123";
-	// impostare nel file config.xml il valore
-	// Hy7fbIwpyKgp0oileu+oLg==:WNRknMJz/8u8GmWlCZFPFA== come primo avvio
+	
 	int iterationCount = 40000;
 	int keyLength = 128;
 	SecretKeySpec key = createSecretKey(pwd.toCharArray(), salt, iterationCount, keyLength);
 	
 	public static int DBPLCSTATUS = 200;
-	public static StatoPLC statiPLC[] = new StatoPLC[10]; // max 10 plc di campo
+	public static StatoPLC statiPLC[] = new StatoPLC[22]; // max 22 plc di campo
 	public static int timeCheckControlplcStatus = 1; // giustifificativo si aggiorna ogni 2 minuti;
+	
+	public static String[] nomiPostazioni = { "TIME P1", "COD. BATTERIA", "CORTI 1", "PUNTAT 1", "PUNTAT 2", "CORTI 2", "TENUTA 1", "TENUTA 2", "ALT. POLAR","PALLETTIZ." };
 
 	/**
 	 * @return the data_ultimo_aggiornamento
@@ -179,6 +180,8 @@ public class Setting {
 	}
 
 	public Setting() throws Exception {
+		
+		
 		// long adesso = System.nanoTime();
 		// if (((adesso - startTime)/1000000000) > 10) {
 		caricaConfigurazione();

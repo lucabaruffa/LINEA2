@@ -30,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -68,6 +69,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import DB.CaricaDatiFromDB;
+import DB.CaricaPostazioniFromDB;
 import DB.CheckControl;
 import DB.CheckControlCVS;
 import DB.DBCommand;
@@ -87,6 +89,8 @@ import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -262,6 +266,7 @@ public class main {
 	private JTextField textField_11;
 	private JTextField textField_12;
 	private JTextField textField_13;
+	private TableRowSorter<TableModel> sorter;
 
 	public void Visible(boolean visualizzare) {
 		frmPlc.setVisible(visualizzare);
@@ -392,9 +397,26 @@ public class main {
 
 		try {
 			setting = new Setting();
+			//inizializzo lo stato dei plc
+			for(int k=0;k<=21;k++) {
+				Setting.statiPLC[k] = new StatoPLC(true,true,true); 
+			}
 			System.out.println("Primo avvio setting");
 		} catch (Exception e4) {
 			log.write("Errore in main in avvio setting. Errore:" + e4.toString());
+		}
+		
+		
+		
+		
+		
+		try {
+			System.out.println("Carico postazioni............");
+			new CaricaPostazioniFromDB();
+			//Thread.sleep(5000);
+		} catch (Exception e4) {
+			System.out.println("Errore main caricapostazioni:" + e4.toString());
+			log.write("Errore in main aricaPostazioniFromDB. Errore:" + e4.toString());
 		}
 
 		// frmPlc.setVisible(true);
@@ -509,7 +531,7 @@ public class main {
 		lblUltimaLettura.setBounds(10, 187, 119, 14);
 		panel.add(lblUltimaLettura);
 
-		JLabel lblNewLabel = new JLabel("CON. CORTI 1");
+		JLabel lblNewLabel = new JLabel(Setting.nomiPostazioni[2]);
 		lblNewLabel.setFont(new Font("Arial", Font.BOLD, 14));
 		lblNewLabel.setForeground(new Color(0, 139, 139));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -561,7 +583,7 @@ public class main {
 		lblBatteriaInTransito_1.setBounds(139, 78, 119, 14);
 		panel.add(lblBatteriaInTransito_1);
 
-		JLabel lblPostazione = new JLabel("PUNTATRICE 1");
+		JLabel lblPostazione = new JLabel(Setting.nomiPostazioni[3]);
 		lblPostazione.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPostazione.setForeground(new Color(0, 139, 139));
 		lblPostazione.setFont(new Font("Arial", Font.BOLD, 14));
@@ -613,7 +635,7 @@ public class main {
 		lblBatteriaInTransito_2.setBounds(268, 78, 119, 14);
 		panel.add(lblBatteriaInTransito_2);
 
-		JLabel lblPostazione_1 = new JLabel("PUNTATRICE 2");
+		JLabel lblPostazione_1 = new JLabel(Setting.nomiPostazioni[4]);
 		lblPostazione_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPostazione_1.setForeground(new Color(0, 139, 139));
 		lblPostazione_1.setFont(new Font("Arial", Font.BOLD, 14));
@@ -665,7 +687,7 @@ public class main {
 		lblBatteriaInTransito_3.setBounds(397, 78, 119, 14);
 		panel.add(lblBatteriaInTransito_3);
 
-		JLabel lblPostazione_2 = new JLabel("CON. CORTI 2");
+		JLabel lblPostazione_2 = new JLabel(Setting.nomiPostazioni[5]);
 		lblPostazione_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPostazione_2.setForeground(new Color(0, 139, 139));
 		lblPostazione_2.setFont(new Font("Arial", Font.BOLD, 14));
@@ -717,7 +739,7 @@ public class main {
 		lblBatteriaInTransito_4.setBounds(526, 78, 119, 14);
 		panel.add(lblBatteriaInTransito_4);
 
-		JLabel lblPostazione_3 = new JLabel("PROVA TENUTA 1");
+		JLabel lblPostazione_3 = new JLabel(Setting.nomiPostazioni[6]);
 		lblPostazione_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPostazione_3.setForeground(new Color(0, 139, 139));
 		lblPostazione_3.setFont(new Font("Arial", Font.BOLD, 14));
@@ -769,7 +791,7 @@ public class main {
 		lblBatteriaInTransito_5.setBounds(655, 78, 119, 14);
 		panel.add(lblBatteriaInTransito_5);
 
-		JLabel lblPostazione_4 = new JLabel("PROVA TENUTA 2");
+		JLabel lblPostazione_4 = new JLabel(Setting.nomiPostazioni[7]);
 		lblPostazione_4.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPostazione_4.setForeground(new Color(0, 139, 139));
 		lblPostazione_4.setFont(new Font("Arial", Font.BOLD, 14));
@@ -821,7 +843,7 @@ public class main {
 		lblBatteriaInTransito_6.setBounds(784, 78, 119, 14);
 		panel.add(lblBatteriaInTransito_6);
 
-		JLabel lblPostazione_5 = new JLabel("ALT. POLARI");
+		JLabel lblPostazione_5 = new JLabel(Setting.nomiPostazioni[8]);
 		lblPostazione_5.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPostazione_5.setForeground(new Color(0, 139, 139));
 		lblPostazione_5.setFont(new Font("Arial", Font.BOLD, 14));
@@ -941,7 +963,7 @@ public class main {
 		mntmNewMenuItem_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				JOptionPane.showMessageDialog(frmPlc, "Ver. 2.01 - 2021-11-08", "INFO",
+				JOptionPane.showMessageDialog(frmPlc, "Ver. 2.08 - 2022-03-01", "INFO",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -1059,31 +1081,27 @@ public class main {
 		String[][] data = { { "11/11/2020 10:42:27", "0000125450534", "OK", "OK", "OK", "OK", "OK", "OK", "KO" } };
 
 		// Column Names
-		String[] columnNames = { "TIME P1", "COD. BATTERIA", "CORTI 1", "PUNTAT 1", "PUNTAT 2", "CORTI 2", "TENUTA 1",
-				"TENUTA 2", "ALT. POLAR" };
+		String[] columnNames = Setting.nomiPostazioni; 
 		model.setColumnIdentifiers(columnNames);
 
 		table = new JTable(data, columnNames);
 		table.setModel(model);
 
-		final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-
+		sorter = new TableRowSorter<TableModel>(model);
+		sorter.setSortsOnUpdates(true);
 		table.setRowSorter(sorter);
-
 		table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-		// table.setGridColor(Color.orange);
-
-		// table.addRowSelectionInterval(12, 12);
-
+		
 		scrollPane_1.setViewportView(table);
 
 		table.addMouseListener(new java.awt.event.MouseAdapter() { // row is clicked
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				int selectedRowIndex = table.getSelectedRow();
-				//int selectedColumnIndex = table.getSelectedColumn();
-				Object selectedObject = (Object) table.getModel().getValueAt(selectedRowIndex, 1);
-				//System.out.println(selectedObject);
-				search.setText(selectedObject.toString());
+				
+				TableModel tm = table.getModel();
+				Object value = tm.getValueAt(table.convertRowIndexToModel(table.getSelectedRow()),1);
+				
+				search.setText(value.toString());
 			}
 
 		});
@@ -1277,7 +1295,7 @@ public class main {
 		tabbedPane.setEnabledAt(0, true);
 		panel_1.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel("1 - CONTROLLO CORTI 1");
+		JLabel lblNewLabel_1 = new JLabel("1-"+Setting.nomiPostazioni[2]);
 		lblNewLabel_1.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1.setBounds(10, 11, 165, 14);
@@ -1302,7 +1320,7 @@ public class main {
 		panel_1.add(timestatoLinea1);
 		timestatoLinea1.setColumns(10);
 
-		JLabel lblNewLabel_1_1 = new JLabel("2 - PUNTATRICE 1");
+		JLabel lblNewLabel_1_1 = new JLabel("2-"+Setting.nomiPostazioni[3]);
 		lblNewLabel_1_1.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1.setBounds(10, 82, 165, 14);
@@ -1327,7 +1345,7 @@ public class main {
 		timestatoLinea2.setBounds(10, 122, 165, 20);
 		panel_1.add(timestatoLinea2);
 
-		JLabel lblNewLabel_1_1_1 = new JLabel("3 - PUNTATRICE 2");
+		JLabel lblNewLabel_1_1_1 = new JLabel("3-"+Setting.nomiPostazioni[4]);
 		lblNewLabel_1_1_1.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_1.setBounds(10, 153, 165, 14);
@@ -1352,7 +1370,7 @@ public class main {
 		timestatoLinea3.setBounds(10, 193, 165, 20);
 		panel_1.add(timestatoLinea3);
 
-		JLabel lblNewLabel_1_1_2 = new JLabel("4 - CONTROLLO CORTI 2");
+		JLabel lblNewLabel_1_1_2 = new JLabel("4-"+Setting.nomiPostazioni[5]);
 		lblNewLabel_1_1_2.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_2.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_2.setBounds(10, 225, 165, 14);
@@ -1377,7 +1395,7 @@ public class main {
 		timestatoLinea4.setBounds(10, 265, 165, 20);
 		panel_1.add(timestatoLinea4);
 
-		JLabel lblNewLabel_1_1_3 = new JLabel("5 - PROVA TENUTA 1");
+		JLabel lblNewLabel_1_1_3 = new JLabel("5-"+Setting.nomiPostazioni[6]);
 		lblNewLabel_1_1_3.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_3.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_3.setBounds(10, 296, 165, 14);
@@ -1402,7 +1420,7 @@ public class main {
 		timestatoLinea5.setBounds(10, 336, 165, 20);
 		panel_1.add(timestatoLinea5);
 
-		JLabel lblNewLabel_1_1_4 = new JLabel("6 - PROVA TENUTA 2");
+		JLabel lblNewLabel_1_1_4 = new JLabel("6-"+Setting.nomiPostazioni[7]);
 		lblNewLabel_1_1_4.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_4.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_4.setBounds(10, 367, 165, 14);
@@ -1427,7 +1445,7 @@ public class main {
 		timestatoLinea6.setBounds(10, 407, 165, 20);
 		panel_1.add(timestatoLinea6);
 
-		JLabel lblNewLabel_1_1_5 = new JLabel("7 - ALTEZZA POLARI");
+		JLabel lblNewLabel_1_1_5 = new JLabel("7-"+Setting.nomiPostazioni[8]);
 		lblNewLabel_1_1_5.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_5.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_5.setBounds(10, 438, 165, 14);
@@ -1458,13 +1476,13 @@ public class main {
 		tabbedPane.setEnabledAt(1, true);
 		panel_2.setLayout(null);
 
-		JLabel lblNewLabel_1_2 = new JLabel("1 - CONTROLLO CORTI 1");
+		JLabel lblNewLabel_1_2 = new JLabel("1-"+Setting.nomiPostazioni[2]);
 		lblNewLabel_1_2.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_2.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_2.setBounds(10, 21, 165, 14);
 		panel_2.add(lblNewLabel_1_2);
 
-		JLabel lblNewLabel_1_1_6 = new JLabel("2 - PUNTATRICE 1");
+		JLabel lblNewLabel_1_1_6 = new JLabel("2-"+Setting.nomiPostazioni[3]);
 		lblNewLabel_1_1_6.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_6.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_6.setBounds(10, 92, 165, 14);
@@ -1508,7 +1526,7 @@ public class main {
 		textField_3.setBounds(10, 132, 165, 20);
 		panel_2.add(textField_3);
 
-		JLabel lblNewLabel_1_1_1_1 = new JLabel("3 - PUNTATRICE 2");
+		JLabel lblNewLabel_1_1_1_1 = new JLabel("3-"+Setting.nomiPostazioni[4]);
 		lblNewLabel_1_1_1_1.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_1_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_1_1.setBounds(10, 163, 165, 14);
@@ -1533,7 +1551,7 @@ public class main {
 		textField_5.setBounds(10, 203, 165, 20);
 		panel_2.add(textField_5);
 
-		JLabel lblNewLabel_1_1_2_1 = new JLabel("4 - CONTROLLO CORTI 2");
+		JLabel lblNewLabel_1_1_2_1 = new JLabel("4-"+Setting.nomiPostazioni[5]);
 		lblNewLabel_1_1_2_1.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_2_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_2_1.setBounds(10, 235, 165, 14);
@@ -1558,7 +1576,7 @@ public class main {
 		textField_7.setBounds(10, 275, 165, 20);
 		panel_2.add(textField_7);
 
-		JLabel lblNewLabel_1_1_3_1 = new JLabel("5 - PROVA TENUTA 1");
+		JLabel lblNewLabel_1_1_3_1 = new JLabel("5-"+Setting.nomiPostazioni[6]);
 		lblNewLabel_1_1_3_1.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_3_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_3_1.setBounds(10, 306, 165, 14);
@@ -1583,7 +1601,7 @@ public class main {
 		textField_9.setBounds(10, 346, 165, 20);
 		panel_2.add(textField_9);
 
-		JLabel lblNewLabel_1_1_4_1 = new JLabel("6 - PROVA TENUTA 2");
+		JLabel lblNewLabel_1_1_4_1 = new JLabel("6-"+Setting.nomiPostazioni[7]);
 		lblNewLabel_1_1_4_1.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_4_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_4_1.setBounds(10, 377, 165, 14);
@@ -1608,7 +1626,7 @@ public class main {
 		textField_11.setBounds(10, 417, 165, 20);
 		panel_2.add(textField_11);
 
-		JLabel lblNewLabel_1_1_5_1 = new JLabel("7 - ALTEZZA POLARI");
+		JLabel lblNewLabel_1_1_5_1 = new JLabel("7-"+Setting.nomiPostazioni[8]);
 		lblNewLabel_1_1_5_1.setForeground(new Color(0, 128, 128));
 		lblNewLabel_1_1_5_1.setFont(new Font("Arial", Font.BOLD, 12));
 		lblNewLabel_1_1_5_1.setBounds(10, 448, 165, 14);
@@ -2408,7 +2426,7 @@ public class main {
 										ok[Integer.parseInt(batteria.getPostazione()) - 1] = "KO";
 																		
 									if (Integer.parseInt(batteria.getStatoBatteria()) == -2)
-											ok[Integer.parseInt(batteria.getPostazione()) - 1] = "BYPASS";
+										ok[Integer.parseInt(batteria.getPostazione()) - 1] = "BYPASS";
 									
 								} // fine if
 							} // fine for
@@ -2421,6 +2439,15 @@ public class main {
 							// table.getColumnCount(), true));
 
 						} // fine for
+						
+						
+						List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+						 
+						int columnIndexToSort = 1;
+						sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.DESCENDING));
+						 
+						sorter.setSortKeys(sortKeys);
+						sorter.sort();
 
 					} catch (Exception g) {
 						log.write("\nMain 2424. Errore ElaboraDati : " + g.toString() + "\n");
@@ -2560,7 +2587,7 @@ public class main {
 																													// 3
 			
 		plcStatus statiplc = new plcStatus();
-		scheduler.scheduleAtFixedRate(statiplc, 1, Setting.timeCheckControlplcStatus, TimeUnit.MINUTES); // ogni  minuto
+		scheduler.scheduleAtFixedRate(statiplc, 0, Setting.timeCheckControlplcStatus, TimeUnit.MINUTES); // ogni  minuto
 
 	}// fine metodo start
 }// fine classe main

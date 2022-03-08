@@ -810,6 +810,9 @@ public class readerPLC implements Runnable   {
 	    							
 	    						try {		
 		    						//scarto abilitato
+	    							
+	    							//MODIFICA DEL 02/03/2022
+	    							//if(Setting.statiPLC[nomeStazione].RUN) {
 		    						if ((configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0)||(configuratore.getListaAtomoConfigurazione()[nomeStazione-1].statoscanner>0)	){
 		    							//codice di ritorno dal controllo, codice batteria, postazione 
 		    							return segnala(tmp,batteria.getCodiceBatteria(),batteria.getPostazione());	//se la batteri non supera il testo, segnalo con    						

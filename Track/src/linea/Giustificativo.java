@@ -401,7 +401,7 @@ public class Giustificativo extends JDialog implements Runnable {
 				});
 				
 
-				JButton btnPausaPranzo = new JButton("PAUSA PRANZO");
+				JButton btnPausaPranzo = new JButton("PAUSA MENSA");
 				btnPausaPranzo.setFont(new Font("Tahoma", Font.BOLD, 11));
 				btnPausaPranzo.addMouseListener(new MouseAdapter() {
 					@Override
@@ -615,21 +615,33 @@ public class Giustificativo extends JDialog implements Runnable {
 			// verifico i dati di stop
 			ID = giustificativo_db.getFermata();
 			System.out.println("GIUSTIFICATIVO ID=" + ID);
+			
+			
 			if ((Setting.minuti_fermo_linea >= Setting.tempoMaxLineaFerma) && (ID > 0)) {
 
 				setFermo("La Linea e' ferma da " + Setting.minuti_fermo_linea + " minuti. Necessario giustificare",
 						Setting.data_fermo_linea);
 				
-				giustificativo.setSelectedIndex(-1);
-				giustificativo2.setSelectedIndex(-1);
-				giustificativo3.setSelectedIndex(-1);
-				giustificativo4.setSelectedIndex(-1);
-				giustificativo5.setSelectedIndex(-1);
-				giustificativo6.setSelectedIndex(-1);
-				txtNote.setText("");
-				txtCodiceFinale.setText("00000000000");
-				
-				this.setVisible(true);
+				if (!this.isVisible()) {
+					
+					giustificativo.setSelectedIndex(-1);
+					giustificativo2.setSelectedIndex(-1);
+					giustificativo3.setSelectedIndex(-1);
+					giustificativo4.setSelectedIndex(-1);
+					giustificativo5.setSelectedIndex(-1);
+					giustificativo6.setSelectedIndex(-1);
+					giustificativo7.setSelectedIndex(-1);
+					txtNote.setText("");
+					txtCodiceFinale.setText("00000000000");
+					
+					this.setAlwaysOnTop(true);
+					this.setVisible(true);
+				}else {
+					this.setAlwaysOnTop(true);
+					this.setVisible(true);
+					System.out.println("Giustificativo : finestra già visibile.");
+					
+				}
 			}
 
 		} catch (Exception e) {
