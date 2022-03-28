@@ -75,10 +75,11 @@ public class giustificativoDB {
 				    	  minutidifferenza = rs.getLong("minuti_differenza");
 				    	  giustificativo = rs.getString("motivo_fermo");
 				    	  String inizio_fermata = sdf2.format(rs.getTimestamp("start"));
-				    	  				    	  
+				    	  int turno = rs.getInt("turno");
+				    	  
 				    	  System.out.println("ID:"+ID+" - ORARIO ATTUALE : "+sdf.format(date) +"  --> differenza:" + minutidifferenza+" - GIUSTIFICATIVO='"+giustificativo+"'");
 							
-				    	  Setting.data_fermo_linea = inizio_fermata;
+				    	  Setting.data_fermo_linea = inizio_fermata + " TURNO " + turno;
 				    	  Setting.minuti_fermo_linea = minutidifferenza;
 				    	  
 						}//fine if

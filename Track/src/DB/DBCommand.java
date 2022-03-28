@@ -165,7 +165,7 @@ public boolean invia_segnalazione(String oggetto,String messaggio,String destina
 	return true;
 }//fine invia
 
-public boolean invia_segnalazione(String oggetto,int ID,String note, String badge) {
+public boolean invia_segnalazione(String oggetto,int ID,String note, String badge, String desc_fermo) {
 	
 	
 	 String codice_tesserino = "";
@@ -194,17 +194,13 @@ public boolean invia_segnalazione(String oggetto,int ID,String note, String badg
 		stmt_mysql = c_mysql.createStatement();
 		//log.write("Fatto giustificativo su ID=" + ID);
 	  } catch (Exception e) {
-       
+		  log.write("Errore statement :"+e.getMessage()+"   Modulo:DBCommand");
        System.out.println("Errore statement :"+e.getMessage()+"   Modulo:DBCommand");
     }//FINE CATCH
 
-	
-	 
-		
-		
 				            
 			try {   
-			      stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET motivo_fermo='"+oggetto+"', operatore='"+codice_tesserino+"', note='"+note+"' WHERE id="+ID);
+			      stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET motivo_fermo='"+oggetto+"', operatore='"+codice_tesserino+"', note='"+note+"', desc_motivo_fermo='"+desc_fermo+"' WHERE id="+ID);
 			      log.write("Fatto giustificativo su ID=" + ID);    
 				  System.out.println("fatto aggiornamento su ID=" + ID + " e operatore:" + codice_tesserino);          
 			 }catch(Exception h) {
@@ -218,6 +214,12 @@ public boolean invia_segnalazione(String oggetto,int ID,String note, String badg
 				
 	return true;
 }//fine invia
+
+
+private String calcola_motivo_fermo(String oggetto) {
+	
+	return "";
+}
 
 
 }//fine classe

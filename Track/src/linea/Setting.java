@@ -67,7 +67,8 @@ public class Setting {
 	public static String EMAIL_SISTEMISTA = "LUCA.BARUFFA@fiamm.com";
 	public static String EMAIL_ELETTRICISTA = "OSVALDO.LELLI@fiamm.com;LUCA.PAVONI@FIAMM.COM";
 	public static String EMAIL_ALLERTA = "Domenico.Cutillo@fiamm.com;Gianluca.Pupparo@fiamm.com;Cristian.Desiato@fiamm.com;Maurizio.Marinetti@fiamm.com;Agostino.Caldaroni@fiamm.com;antonio.roncone@fiamm.com;Ermanno.DeMeis@fiamm.com";
-
+	public static String EMAIL_FERMI = "capoturnoupi2@fiamm.com;LUCA.BARUFFA@FIAMM.COM;gianluca.pupparo@fiamm.com;domenico.cutillo@fiamm.com";
+	
 	// SEZIONE ERRORI
 	public static final int BATTERIA_OK = 0;
 	public static final int BATTERIA_GIA_PROCESSATA = 1;
@@ -141,6 +142,7 @@ public class Setting {
 	public static ElencoIndicatori elenco_indicatori = new ElencoIndicatori();
 	public static long minuti_fermo_linea = 0; // numero minuti di lineaferma
 	public static String data_fermo_linea = ""; // numero minuti di lineaferma
+	public static String turno_fermo_linea = ""; // numero minuti di lineaferma
 	public static int timeCheckControlGiustificativo = 5; // giustifificativo si aggiorna ogni 2 minuti;
 
 	// sezione BATABASE
@@ -165,6 +167,8 @@ public class Setting {
 	
 	public static String[] nomiPostazioni = { "TIME P1", "COD. BATTERIA", "CORTI 1", "PUNTAT 1", "PUNTAT 2", "CORTI 2", "TENUTA 1", "TENUTA 2", "ALT. POLAR","PALLETTIZ." };
 
+	public static boolean riazzera_invio_email = true;
+	
 	/**
 	 * @return the data_ultimo_aggiornamento
 	 */

@@ -18,7 +18,7 @@ public class plcStatus  implements Runnable  {
 	public int Rack = 0; 
 	public int Slot = 1; 
     public final S7Client Client = new S7Client();
-    public int DataToMove=72; // contiene la dimensione del DB connesso
+    public int DataToMove=160; // contiene la dimensione del DB connesso
     private int DB = 200; // db stati del plc
     private int CurrentStatus = S7.S7CpuStatusUnknown;
     private int sleep = Setting.TIMER_SLEEP_READERPLC;  //tempo di ciclo
@@ -288,13 +288,13 @@ public class plcStatus  implements Runnable  {
 	        
 	        Setting.statiPLC[21] = new StatoPLC(true,true,true);
 	        
-	        log.write("plcStatus -> Stato plc 1. RUN1 =" + RUN1 +"  MANUALE1:" + MANUALE1 + "   ALLARME1:" + ALLARME1);
+	        /*log.write("plcStatus -> Stato plc 1. RUN1 =" + RUN1 +"  MANUALE1:" + MANUALE1 + "   ALLARME1:" + ALLARME1);
 	        log.write("plcStatus -> Stato plc 1. RUN2 =" + RUN2 +"  MANUALE2:" + MANUALE2 + "   ALLARME2:" + ALLARME2);
 	        log.write("plcStatus -> Stato plc 1. RUN3 =" + RUN3 +"  MANUALE3:" + MANUALE3 + "   ALLARME3:" + ALLARME3);
 	        log.write("plcStatus -> Stato plc 1. RUN4 =" + RUN4 +"  MANUALE4:" + MANUALE4 + "   ALLARME4:" + ALLARME4);
 	        log.write("plcStatus -> Stato plc 1. RUN5 =" + RUN5 +"  MANUALE4:" + MANUALE5 + "   ALLARME4:" + ALLARME5);
 	        log.write("plcStatus -> Stato plc 1. RUN6 =" + RUN6 +"  MANUALE4:" + MANUALE6 + "   ALLARME4:" + ALLARME6);
-	        log.write("plcStatus -> Stato plc 1. RUN7 =" + RUN7 +"  MANUALE4:" + MANUALE7 + "   ALLARME4:" + ALLARME7);
+	        log.write("plcStatus -> Stato plc 1. RUN7 =" + RUN7 +"  MANUALE4:" + MANUALE7 + "   ALLARME4:" + ALLARME7);*/
 	        
 	        
 	    	

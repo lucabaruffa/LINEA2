@@ -410,6 +410,8 @@ public class readerPLC implements Runnable   {
 	        		
 	        		//controllo batteria in ingresso. POSIZIONE 0 DELLA PILA
 	        		if ((i==0) && (!codice_batteria_old.equals(cod_batteria) && cod_batteria != null)) {
+	        			//10_03_2022
+	        			//numero_di_cicli_senza_batterie = 0;
 	        			
 	        			 		//se il codice letto ha dimensioni maggiori di 20 (codice teoricamente valido)
 			        			 if (cod_batteria.length()>20) {
@@ -515,45 +517,7 @@ public class readerPLC implements Runnable   {
 					        	 }//fine else
 	        			
 	        			
-			        			 //---------------------------
-			        			 if ((numero_di_cicli_senza_batterie>NUMERO_CICLI_START_STOP)) {
-			        		        	
-			        		        	indicatore.statoLinea.setText("STOP");
-			        		        	indicatore.statoLinea.setBackground(Setting.rosso);
-			        		        	
-			        			        if (!stopped)  {
-			        			        	
-			        			        	//19-05-2021 set startstop non per la stazione 10 (che è solo un controller)
-			        			        	if (((nomeStazione!=Setting.STAZIONE_DI_CONTROLLO_2)))
-			        				        		setStartStop(false,batteria);
-			        				        
-			        				        segnalato = true;
-			        				        	        	
-			        		        		stopped = true;
-			        		        		segnalato = false;
-			        			        }
-			        		        	
-			        		        	//numero_di_cicli_senza_batterie = 0;
-			        		        }else {
-			        		        		
-			        		        		indicatore.statoLinea.setText("RUNNING");
-			        		        		indicatore.statoLinea.setBackground(Setting.verde);
-			        		        		indicatore.tempostatoLinea.setText("");
-			        		        	
-				        		        	if (!segnalato) {
-				        		        		setStartStop(true,batteria);
-				        		        		segnalato = true;
-				        		        		stopped = false;
-				        		        	}
-			        		        	
-			        		        }//FINE ELSE
-			        		        
-			        		        
-			        		        if (tempo_ultima_batteria.equals("01/01/1970 00:00:00"))
-			        		        	indicatore.tempostatoLinea.setText("-");
-			        		        else
-			        		        	indicatore.tempostatoLinea.setText(""+tempo_ultima_batteria);
-			        			 //--------------------------
+			        			
 			        			 
 			        			 	        		
 				     }//fine i==0	
@@ -677,13 +641,50 @@ public class readerPLC implements Runnable   {
 				riazzera_contatori = true;
 			}
 			
+			 //---------------------------
+			 if ((numero_di_cicli_senza_batterie>NUMERO_CICLI_START_STOP)) {
+		        	
+		        	indicatore.statoLinea.setText("STOP");
+		        	indicatore.statoLinea.setBackground(Setting.rosso);
+		        	
+			        if (!stopped)  {
+			        	
+			        	//19-05-2021 set startstop non per la stazione 10 (che è solo un controller)
+			        	if (((nomeStazione!=Setting.STAZIONE_DI_CONTROLLO_2)))
+				        		setStartStop(false,batteria);
+				        
+				        segnalato = true;
+				        	        	
+		        		stopped = true;
+		        		segnalato = false;
+			        }
+		        	
+		        	//numero_di_cicli_senza_batterie = 0;
+		      }else {
+		        		
+		        		indicatore.statoLinea.setText("RUNNING");
+		        		indicatore.statoLinea.setBackground(Setting.verde);
+		        		indicatore.tempostatoLinea.setText("");
+		        	
+   		        	if (!segnalato) {
+   		        		setStartStop(true,batteria);
+   		        		segnalato = true;
+   		        		stopped = false;
+   		        	}
+		        	
+		        }//FINE ELSE
+		        
+		        
+		        if (tempo_ultima_batteria.equals("01/01/1970 00:00:00"))
+		        	indicatore.tempostatoLinea.setText("-");
+		        else
+		        	indicatore.tempostatoLinea.setText(""+tempo_ultima_batteria);
+			 //--------------------------
+			
 	       
 	        
 	        numero_di_cicli_senza_batterie += 1;
-	        
-	        
-	        //indicatore.setConteggio(""+conteggio);
-	   
+	        	   
 		    bufferBatterie.setValue(ArrayBatteriePostazione.totaleBatterie);
 	        bufferBatterie.setString(""+ArrayBatteriePostazione.totaleBatterie+ " BATTERIE IN CODA");
 	        	
@@ -760,12 +761,7 @@ public class readerPLC implements Runnable   {
 	    }
 	    
 	    
-	   /* 
-	    private void log(String l) {
-	    	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	    	monitor.append(timestamp+" -> Stazione:"+nomeStazione + " - MSG:" + l + "   - modulo readerPLC\n");
-	    }
-	    */
+	 
 	    
 	    /*
 	     * @param batteria è la batteria da controllare
@@ -811,9 +807,9 @@ public class readerPLC implements Runnable   {
 	    						try {		
 		    						//scarto abilitato
 	    							
-	    							//MODIFICA DEL 02/03/2022
-	    							//if(Setting.statiPLC[nomeStazione].RUN) {
-		    						if ((configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0)||(configuratore.getListaAtomoConfigurazione()[nomeStazione-1].statoscanner>0)	){
+	    							//MODIFICA DEL 09/03/2022
+	    							if(Setting.statiPLC[nomeStazione].RUN) {
+		    						//if ((configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0)||(configuratore.getListaAtomoConfigurazione()[nomeStazione-1].statoscanner>0)	){
 		    							//codice di ritorno dal controllo, codice batteria, postazione 
 		    							return segnala(tmp,batteria.getCodiceBatteria(),batteria.getPostazione());	//se la batteri non supera il testo, segnalo con    						
 		    						}else
