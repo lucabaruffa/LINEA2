@@ -1,5 +1,7 @@
 package DB;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -23,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 import org.json.JSONObject;
 
@@ -41,6 +44,7 @@ public class DBCommand{
 	private Setting setting;
 	private DBConnectionPool pool;
 	private int timeout_query = 6000;
+	GregorianCalendar offset_data = new GregorianCalendar();
 	
 	private static LoggerFile log = new LoggerFile();
 	
@@ -214,6 +218,68 @@ public boolean invia_segnalazione(String oggetto,int ID,String note, String badg
 				
 	return true;
 }//fine invia
+
+
+
+//public void inserisciReport(int batt_lavorate,int batt_scartate, int ora) {
+public void inserisciReport() {
+	try {
+		 c_mysql = pool.getConnection();
+		 stmt_mysql = c_mysql.createStatement();
+	  } catch (Exception e) {
+		  log.write("DBCommand Errore getConnection in inserimento Report: " +  e.toString());
+		  if (c_mysql != null) {
+             pool.returnConnection(c_mysql);
+         }
+		  return;      
+     }
+	  
+    try {
+    	
+    	
+    	LocalDateTime now = LocalDateTime.now();
+    	SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");		
+    	SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");	
+    	int ora = offset_data.get(Calendar.HOUR_OF_DAY);
+		
+		
+		Date date = new Date(System.currentTimeMillis());
+		String tempo = (sdf3.format(date)); //data e ora corrente
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR, -8);
+		date = calendar.getTime();
+		
+		//System.out.println(sdf2.format(date));
+		
+		String oggi = (sdf3.format(date));
+		
+		int turno = -1;
+		if ((ora>=6) && (ora<14) ) turno=1;
+		if ((ora>=14) && (ora<22) ) turno=2;
+		if ((ora>=22) || (ora<6) ) 	turno=3;
+		
+		//log.write("DBCOMMAND . oggi = " + oggi);
+		
+		ResultSet rs = stmt_mysql.executeQuery("SELECT sum(minuti_differenza) as tempo FROM stop_linea"+Setting.DB_BATTERIE_NUM_LINEA+" where start>='"+oggi+"' AND turno="+turno);
+		
+		int minuti_fermo = 0;
+		if (rs.next()){
+			minuti_fermo = rs.getInt("tempo");
+		}	
+		
+		stmt_mysql.executeUpdate("INSERT INTO report_linea"+Setting.DB_BATTERIE_NUM_LINEA+" (data,turno,num_batterie,num_scarto,minuti_fermo) VALUES ('"+tempo+"',"+turno+","+Setting.PEZZI+","+Setting.totale_batterie_scartate[Setting.DB_BATTERIE_NUM_LINEA-1]+","+minuti_fermo+");");
+    	
+    }catch(Exception j) {
+    	log.write("DBCommand . Inserimento dati nel report. Errore: " + j.toString());
+    }
+    finally {
+		  pool.returnConnection(c_mysql);
+    }
+   
+}//fine inserisci report
+
 
 
 private String calcola_motivo_fermo(String oggetto) {

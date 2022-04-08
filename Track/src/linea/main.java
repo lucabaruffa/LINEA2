@@ -254,6 +254,7 @@ public class main {
 	private JTextField textField_12;
 	private JTextField textField_13;
 	private TableRowSorter<TableModel> sorter;
+	private JTextField txtContapezzi;
 
 	public void Visible(boolean visualizzare) {
 		frmPlc.setVisible(visualizzare);
@@ -2157,10 +2158,31 @@ public class main {
 		try {
 			setting.setLabelBatterieBuone(numeroBatterieBuone);
 			setting.setLabelBatterieScartate(numeroBatterieScarto);
+			
+			
 		} catch (Exception e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
+		
+		JLabel lblNewLabel_3_1_1 = new JLabel("CONTAPEZZI");
+		lblNewLabel_3_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_1_1.setFont(new Font("Arial", Font.BOLD, 14));
+		lblNewLabel_3_1_1.setBounds(10, 203, 177, 26);
+		panel_3.add(lblNewLabel_3_1_1);
+		
+		txtContapezzi = new JTextField();
+		txtContapezzi.setText("-- pz");
+		txtContapezzi.setHorizontalAlignment(SwingConstants.CENTER);
+		txtContapezzi.setForeground(new Color(250, 128, 114));
+		txtContapezzi.setFont(new Font("Arial", Font.BOLD, 24));
+		txtContapezzi.setEditable(false);
+		txtContapezzi.setColumns(10);
+		txtContapezzi.setBackground(Color.WHITE);
+		txtContapezzi.setBounds(10, 230, 177, 56);
+		panel_3.add(txtContapezzi);
+		
+		Setting.Contapezzi = txtContapezzi;
 
 		lblConfiguratorePlc = new JLabel("CONFIGURATORE PLC");
 		lblConfiguratorePlc.setFont(new Font("Arial", Font.BOLD, 11));

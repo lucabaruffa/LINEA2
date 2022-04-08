@@ -169,6 +169,13 @@ public class Setting {
 
 	public static boolean riazzera_invio_email = true;
 	
+	public static JTextField Contapezzi;
+	public static int POSTAZIONE_CONTATORE1 = 6;
+	public static int POSTAZIONE_CONTATORE2 = 7;
+	public static int PEZZI = 0;  //usato per contare i pezzi prodotti
+	
+	public static boolean riazzera_contatori = true;
+	
 	/**
 	 * @return the data_ultimo_aggiornamento
 	 */
@@ -243,7 +250,7 @@ public class Setting {
 	 * }//fine writeProperties
 	 */
 
-	public String ReadProperties(String var1, int postazione) {
+	public String ReadProperties(String var1) {
 
 		File configFile = new File("value.xml");
 
@@ -494,9 +501,12 @@ public class Setting {
 		props.setProperty("db_table_stop_linea", "" + DB_TABLE_STOP_LINEA);
 		props.setProperty("db_batterie_num_linea", "" + DB_BATTERIE_NUM_LINEA);
 		props.setProperty("tempoMaxLineaFerma", "" + tempoMaxLineaFerma);
-
 		props.setProperty("db_postazione_controllo", "" + DB_POSTAZIONE_CONTROLLO2);
 		props.setProperty("db_esito_postazione_controllo", "" + DB_ESITO_POSTAZIONE_CONTROLLO2);
+		props.setProperty("postazione_contatore1", "" + POSTAZIONE_CONTATORE1);
+		props.setProperty("postazione_contatore2", "" + POSTAZIONE_CONTATORE2);
+		
+		
 
 		arrayDB[0] = Integer.parseInt(DB);
 		arrayDB[1] = Integer.parseInt(DB2);
@@ -557,6 +567,8 @@ public class Setting {
 
 			DB_ESITO_POSTAZIONE_CONTROLLO2 = Integer.parseInt(props.getProperty("db_esito_postazione_controllo"));
 			DB_POSTAZIONE_CONTROLLO2 = Integer.parseInt(props.getProperty("db_postazione_controllo"));
+			POSTAZIONE_CONTATORE1 = Integer.parseInt(props.getProperty("postazione_contatore1"));
+			POSTAZIONE_CONTATORE2 = Integer.parseInt(props.getProperty("postazione_contatore2"));
 
 			arrayDB[0] = Integer.parseInt(DB);
 			arrayDB[1] = Integer.parseInt(DB2);

@@ -207,6 +207,8 @@ public class CheckControlCVS extends TimerTask{
 			
 			//verifico fermo linea
 			try {
+				
+				
 				String tempo_fermo = Setting.getData_aggiornamento();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 				LocalDateTime now = LocalDateTime.now();
@@ -216,17 +218,30 @@ public class CheckControlCVS extends TimerTask{
 				String dax2 = sdf2.format(date);
 			   
 			    long diff = second.until(now, ChronoUnit.MINUTES);
-			    
-			    
+			    			    
 			    if (diff>Setting.tempoMaxLineaFerma) {
 			    	
-			    	String motivo_fermo= CalcoloFermi.calcolaMotivoFermo(diff);// calcolaMotivoFermo(diff);
+			    	//calcolo giustificativo automatico
+			    	String giustificativo = CalcoloFermi.calcolaMotivoFermo(diff);
+			    	log.write("Checkcontrol csv motivazione evidon: "+giustificativo);
 			    	
-			    	//controllo se esiste ilrecord. Lo aggiorno in caso positivo, altrimenti lo inserisco
+			    	String fermo[]= giustificativo.split("@");
+			    	String fermi = fermo[0];
+			    	String descrizione_fermo = fermo[1];
+			    	
+			    	//log.write("Checkcontrol csv motivazione fermi: "+fermi+"   -> descrizione:"+descrizione_fermo);
+			    	
+			    	//controllo se esiste il record. Lo aggiorno in caso positivo, altrimenti lo inserisco
 			    	ResultSet rs = stmt_mysql.executeQuery("SELECT * FROM "+Setting.DB_TABLE_STOP_LINEA+" where start='"+tempo_fermo+"' AND linea="+Setting.DB_BATTERIE_NUM_LINEA+" limit 1");
 			    	if (rs.next()){
 			    		int ID = rs.getInt("ID");
-			    		stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET stop = '"+dax2+"', minuti_differenza="+diff+" WHERE ID="+ID+";");
+			    		String giustificativo_inserito = rs.getString("motivo_fermo");
+			    		
+			    		if (!giustificativo_inserito.equals("DA GIUSTIFICARE"))
+			    			stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET stop = '"+dax2+"', minuti_differenza="+diff+" WHERE ID="+ID+";");
+			    		else
+			    			stmt_mysql.executeUpdate("UPDATE "+Setting.DB_TABLE_STOP_LINEA+" SET stop = '"+dax2+"', minuti_differenza="+diff+",motivo_fermo='"+fermi+"',desc_motivo_fermo='"+descrizione_fermo+"' WHERE ID="+ID+";");
+			    		
 			    		rs.close();
 			    		
 			    		
@@ -240,11 +255,8 @@ public class CheckControlCVS extends TimerTask{
 				    	try {
 				    		
 					    		offset_data.setTime((sdf_solodata.parse(tempo_fermo)));
-					    		//Date date_calcolate = (offset_data.getTime());
-					    		
 					    	    ora = offset_data.get(Calendar.HOUR_OF_DAY);
-					    		//ora = date_calcolate.getHours();
-									
+					    			
 								if ((ora>=6) && (ora<14) ) turno=1;
 								if ((ora>=14) && (ora<22) ) turno=2;
 								if ((ora>=22) || (ora<6) ) 	turno=3;	
@@ -257,17 +269,26 @@ public class CheckControlCVS extends TimerTask{
 				   		log.write("CheckControll CSV. Calcolo del turno:" + turno + "  -> data di start:" + tempo_fermo + "  -> ora:" + ora );
 				   		System.out.println("CheckControll CSV. Calcolo del turno:" + turno);
 			    		
-			    		stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_STOP_LINEA+" (linea,start,stop,minuti_differenza,motivo_fermo,turno) VALUES ("+Setting.DB_BATTERIE_NUM_LINEA+",'"+tempo_fermo+"','"+dax2+"',"+diff+",'"+motivo_fermo+"',"+turno+");");
+			    		stmt_mysql.executeUpdate("INSERT INTO "+Setting.DB_TABLE_STOP_LINEA+" (linea,start,stop,minuti_differenza,motivo_fermo,desc_motivo_fermo,operatore,turno) VALUES ("+Setting.DB_BATTERIE_NUM_LINEA+",'"+tempo_fermo+"','"+dax2+"',"+diff+",'"+fermi+"','"+descrizione_fermo+"','EVIDON',"+turno+");");
 			    		
 			    	}//fine else
 			    	
-			    	log.write("CheckControll CSV. Linea ferma da più di " + diff + " minuti. Lo segnalo con motivo =" + motivo_fermo);
-			    	
-			    	
+			    	log.write("CheckControll CSV. Linea ferma da più di " + diff + " minuti. Lo segnalo con motivo =" + fermi);
 			    	
 			    	//stmt_mysql.executeUpdate("INSERT INTO stop_linea5 (linea,start,stop,minuti_differenza) VALUES (5,'"+tempo_fermo+"','"+dax2+"',"+diff+") ON DUPLICATE KEY UPDATE stop = '"+dax2+"', minuti_differenza="+diff+";");
 			    }//fine if segnalazione
-			   
+			    
+			    
+			    try {
+			    	//invio dati per conteggio batterie
+			    	new DBCommand().inserisciReport();
+			    } catch (Exception e) {
+					log.write("CheckControll CSV. Errore inserimento statistiche:" + e.toString());
+					System.out.println("CheckControll CSV. Calcolo del turno a error:" + e.toString());
+				}
+			    
+			    
+			 
 				
 			}catch(Exception j) {
 				log.write("CheckControll CSV. errore segnalazione linea in stop. Err:" + j.toString());
@@ -284,7 +305,6 @@ public class CheckControlCVS extends TimerTask{
 
 	
 	
-
 
 
 }//fine classe

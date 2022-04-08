@@ -65,11 +65,8 @@ public class DBConnectionPool {
 		}
     	
       //POOL CONNESSIONI DB
- 		setDBConnectionPool("jdbc:mysql://"+Setting.IPDB+"/"+Setting.DB_NAME, setting.getUSERNAMEDB(), setting.getPASSWORDDB());
+ 	  setDBConnectionPool("jdbc:mysql://"+Setting.IPDB+"/"+Setting.DB_NAME, setting.getUSERNAMEDB(), setting.getPASSWORDDB());
     	
- 		
- 		
- 		
  		
  		
     }

@@ -211,7 +211,7 @@ public class Giustificativo extends JDialog implements Runnable {
 		giustificativo3.setBounds(1039, 194, 491, 78);
 		contentPanel.add(giustificativo3);
 
-		JLabel lblNewLabel_1_1_1 = new JLabel("Tipologia");
+		JLabel lblNewLabel_1_1_1 = new JLabel("Componente");
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel_1_1_1.setBounds(1039, 172, 236, 14);
 		contentPanel.add(lblNewLabel_1_1_1);
@@ -231,10 +231,10 @@ public class Giustificativo extends JDialog implements Runnable {
 		});
 		giustificativo4.setModel(model4);
 		giustificativo4.setFont(new Font("Arial", Font.BOLD, 20));
-		giustificativo4.setBounds(10, 304, 838, 78);
+		giustificativo4.setBounds(10, 304, 682, 78);
 		contentPanel.add(giustificativo4);
 
-		JLabel lblNewLabel_1_1_1_1 = new JLabel("Componente");
+		JLabel lblNewLabel_1_1_1_1 = new JLabel("Tipologia");
 		lblNewLabel_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblNewLabel_1_1_1_1.setBounds(10, 283, 625, 14);
 		contentPanel.add(lblNewLabel_1_1_1_1);
@@ -254,12 +254,12 @@ public class Giustificativo extends JDialog implements Runnable {
 		});
 		giustificativo5.setModel(model5);
 		giustificativo5.setFont(new Font("Arial", Font.BOLD, 20));
-		giustificativo5.setBounds(858, 304, 384, 78);
+		giustificativo5.setBounds(702, 304, 540, 78);
 		contentPanel.add(giustificativo5);
 
 		JLabel lblNewLabel_1_1_1_1_1 = new JLabel("Stato Componente");
 		lblNewLabel_1_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1_1_1_1.setBounds(858, 283, 339, 14);
+		lblNewLabel_1_1_1_1_1.setBounds(702, 283, 339, 14);
 		contentPanel.add(lblNewLabel_1_1_1_1_1);
 
 		txtCodiceFinale = new JTextField();

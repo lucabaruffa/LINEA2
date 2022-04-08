@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import DB.CheckControl;
+import DB.DBCommand;
 import Moka7.IntByRef;
 import Moka7.S7;
 import Moka7.S7Client;
@@ -57,7 +58,6 @@ public class readerPLC implements Runnable   {
 	protected ArrayBatteriePostazione array;
 	private CheckControl check;
 	private int DIMENSIONI_BUFFER_PLC = Setting.DIMENSIONI_BUFFER_PLC; // buffer PLC
-	private boolean riazzera_contatori = false;
 	private int numero_di_cicli_senza_batterie = 0;
 	
 	private boolean segnalato = false, stopped = false; //setStartStop
@@ -79,6 +79,7 @@ public class readerPLC implements Runnable   {
 	private String stato_batteria_postazione_bilancia2 = "1";
 	
 	private String old_stato_batteria="-1";
+	
 	
 	
 	public readerPLC() {
@@ -169,6 +170,10 @@ public class readerPLC implements Runnable   {
 				indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
 			}
 			
+			if (nomeStazione == Setting.POSTAZIONE_CONTATORE1) {
+				Setting.PEZZI = Integer.parseInt(setting.ReadProperties("conteggio_finale"));
+			}
+			
 		}catch(Exception j) {
 			log.write("Errore reader PLC, impostazioni properties: "+j.toString() +" - REINIZIALIZZO PROPERTIES per postazione: " + nome);
 			//setting.WriteProperties("conteggio_finale", "0","numero_batterie_scartate", "0");
@@ -235,7 +240,7 @@ public class readerPLC implements Runnable   {
         	
         	DataToMove = SizeRead.Value; // memorizzo dimensioni del DB
         	//System.out.println("DB "+DB+" - Size read "+DataToMove+" bytes");
-        	log.write("DB "+DB+" - DIMENSIONI DB "+DataToMove+" bytes\n");
+        	//log.write("DB "+DB+" - DIMENSIONI DB "+DataToMove+" bytes\n");
         	HexDump(Buffer, DataToMove);
         	return true;
         }  else {
@@ -422,8 +427,10 @@ public class readerPLC implements Runnable   {
 				    	        			
 				    	        			//log.write("Reader PLc line421->   - POS:"+nomeStazione+"  LEGGO POSIZIONE ZERO. COD:" + cod_batteria + " -> data: " + batteria.gettimestamp());
 				    	        			
+				    	        			//--------- 29-03-2022 -------------------
+				    	        			if (!Setting.statiPLC[nomeStazione].RUN) {
 				    	        			//-------- 15/02/2022 -------------------- SE è DISABILITATA LA SEGNO COME BYPASS
-				    	        			if ((configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato==0)||(configuratore.getListaAtomoConfigurazione()[nomeStazione-1].statoscanner==0)	){
+				    	        			//if ((configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato==0)||(configuratore.getListaAtomoConfigurazione()[nomeStazione-1].statoscanner==0)	){
 				    							//codice di ritorno dal controllo, codice batteria, postazione 
 				    	        				
 				    	        				batteria.setStato("-2");
@@ -522,16 +529,42 @@ public class readerPLC implements Runnable   {
 			        			 	        		
 				     }//fine i==0	
 	        		
-	        		//22-02-2022 AGGIUNGO IL CONTROLLO SULLA POSTAZIONE ABILITATA . SE E' IN BYPASS QUI NON ENTRA
-	        		else if (data.after(dax) && (i>0) && (!isFinalController()) && (configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0) ){
-				    	 				    					    	
+	        		//29-03-2022 AGGIUNGO IL CONTROLLO SULLA POSTAZIONE ABILITATA automaticamente
+	        		else if (data.after(dax) && (i>0) && (!isFinalController()) ){
+	        			
+	        			if ((i==1)&&(stato.equals("1"))) {
+	        				//per la linea 1 la 6 è la prova tenuta
+	        				//se sono nella pila posizione 1 ed il risultato è OK
+	        				//posso pensare di contare
+	        				
+	        				if ((nomeStazione == Setting.POSTAZIONE_CONTATORE1) || (nomeStazione == Setting.POSTAZIONE_CONTATORE2)) {
+	        					Setting.PEZZI +=1;
+		        				Setting.Contapezzi.setText(""+Setting.PEZZI);
+		        				setting.WriteProperties("conteggio_finale", ""+	Setting.PEZZI,"numero_batterie_scartate", ""+Setting.totale_batterie_scartate[nomeStazione-1],nomeStazione);
+	        				}
+	        				
+	        			}
+	        			
+	        			try {
+    			        	//top = (array.getOnTop());
+    	        			dax.setTime((sdf.parse(timestamp)));  	
+    	        		}catch(Exception e){
+    	        			
+    	        		}
+	        			
+	        			//29-03-2022
+	        			if (Setting.statiPLC[nomeStazione].RUN) {
+	        			
+	        			//22-02-2022 AGGIUNGO IL CONTROLLO SULLA POSTAZIONE ABILITATA . SE E' IN BYPASS QUI NON ENTRA
+	        			//else if (data.after(dax) && (i>0) && (!isFinalController()) && (configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0) ){
+				    	 				    	/*				    	
 						    	 				try {
 						    			        	//top = (array.getOnTop());
 						    	        			dax.setTime((sdf.parse(timestamp)));  	
 						    	        		}catch(Exception e){
 						    	        			
 						    	        		}
-						    	 				
+						    	 				*/
 						    	 				numero_di_cicli_senza_batterie = 0; //resetto il contatore
 						    	 				
 						    	 				try {	
@@ -598,18 +631,21 @@ public class readerPLC implements Runnable   {
 							              
 					               		}//fine if check
 					               		
-							}catch(Exception j) {
-								log.write("Reader PLC. Stazione :"+nomeStazione +" - Errore lettura posizione buffer >0 : " + j.toString());
-							}
+								}catch(Exception j) {
+									log.write("Reader PLC. Stazione :"+nomeStazione +" - Errore lettura posizione buffer >0 : " + j.toString());
+								}
 
-					                			
+					          
+					    	        
+	        				}//fine Setting.RUN
+					    	        
 				         }//fine data after
 				     
-				     //fine data after
+	        		
 	        	 
 	        	}catch(Exception e) {
 	       		log.write("Reader PLC. Stazione :"+nomeStazione +" - Errore in data: " + e.toString());
-	            	}
+	            }
 	        	
 	        	
 	        	
@@ -617,9 +653,15 @@ public class readerPLC implements Runnable   {
 	        
 	        
 	        int ora = LocalDateTime.now().getHour();
-	        
-	       	        
-			if ((ora==22)||(ora==6)||(ora==14) && riazzera_contatori) {
+	              
+			if ((((ora==22)||(ora==6)||(ora==14)) && Setting.riazzera_contatori)) {
+				
+				Setting.riazzera_contatori = false;
+				
+				//new DBCommand().inserisciReport(Setting.PEZZI,Setting.totale_batterie_scartate[nomeStazione-1], ora);
+			
+				Setting.PEZZI = 0;
+				
 				numero_batterie_riprocessate = 0;
 				Setting.totale_batterie_scartate[nomeStazione-1] = 0;
 				Setting.totale_batterie_lavorate[nomeStazione-1] = 0; 
@@ -627,18 +669,14 @@ public class readerPLC implements Runnable   {
 				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
 				indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
 				
-				riazzera_contatori = false;
 				
-				try {
-					//15-02-2022----------------
-					//setting.WriteProperties("conteggio_finale", "0","numero_batterie_scartate", "0",nomeStazione);
-					
-				}catch(Exception h) {
-						
-				}
+				
 			}
+			
+			
+			
 			if ((ora==23)||(ora==15)||(ora==7)) {
-				riazzera_contatori = true;
+				Setting.riazzera_contatori = true;
 			}
 			
 			 //---------------------------
@@ -828,7 +866,7 @@ public class readerPLC implements Runnable   {
 		    					}
     		    				
 	    					
-	    					}//fine else prima lettura
+	    			}//fine else prima lettura
 	    					
 	    					
 	    					
@@ -1248,7 +1286,7 @@ public class readerPLC implements Runnable   {
 				//salvo permanentemente questi valori per tenerli in memoria in caso di chiusura
 				
 				try {
-					setting.WriteProperties("conteggio_finale", ""+	Setting.totale_batterie_lavorate[nomeStazione-1],"numero_batterie_scartate", ""+Setting.totale_batterie_scartate[nomeStazione-1],nomeStazione);
+					//setting.WriteProperties("conteggio_finale", ""+	Setting.totale_batterie_lavorate[nomeStazione-1],"numero_batterie_scartate", ""+Setting.totale_batterie_scartate[nomeStazione-1],nomeStazione);
 					
 				}catch(Exception kk) {
 					log.write("readerPLC line1244 -> errore scrivirisultato . err: "+ kk.toString());

@@ -32,5 +32,7 @@
 
 <entry key="db_postazione_controllo">5140</entry>
 <entry key="db_esito_postazione_controllo">5150</entry>
+<entry key="postazione_contatore1">6</entry>
+<entry key="postazione_contatore2">-1</entry>
 
 </properties>
