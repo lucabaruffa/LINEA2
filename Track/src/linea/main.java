@@ -389,6 +389,11 @@ public class main {
 			for(int k=0;k<=21;k++) {
 				Setting.statiPLC[k] = new StatoPLC(true,true,true); 
 			}
+			
+			//inizializzo tempo di RUN
+			Setting.resetDataAggiornamentoRun();
+			
+			
 			System.out.println("Primo avvio setting");
 		} catch (Exception e4) {
 			log.write("Errore in main in avvio setting. Errore:" + e4.toString());

@@ -10,7 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -128,6 +130,7 @@ public class Setting {
 
 	// vinene aggiornata ad ogni lavorazione di batteria. Da readerPLC.
 	public static String data_ultimo_aggiornamento = "";
+	public static String data_ultimo_aggiornamento_RUN = "";
 
 	public static int BTX12_min_acido = 782;
 	public static int BTX12_max_acido = 818;
@@ -176,18 +179,26 @@ public class Setting {
 	
 	public static boolean riazzera_contatori = true;
 	
-	/**
-	 * @return the data_ultimo_aggiornamento
-	 */
+	
 	public static synchronized String getData_aggiornamento() {
 		return data_ultimo_aggiornamento;
 	}
 
-	/**
-	 * @param data_ultimo_aggiornamento the data_ultimo_aggiornamento to set
-	 */
+	
 	public static synchronized void setData_aggiornamento(String data_ultimo_aggiornamento) {
 		Setting.data_ultimo_aggiornamento = data_ultimo_aggiornamento;
+	}
+	
+	public static synchronized String getData_aggiornamento_RUN() {
+		return data_ultimo_aggiornamento_RUN;
+	}
+
+	
+	public static synchronized void resetDataAggiornamentoRun() {
+		
+		SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date3 = new Date(System.currentTimeMillis());
+		data_ultimo_aggiornamento_RUN = sdf3.format(date3);
 	}
 
 	public Setting() throws Exception {
