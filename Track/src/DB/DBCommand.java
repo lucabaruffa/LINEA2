@@ -269,7 +269,7 @@ public void inserisciReport() {
 			minuti_fermo = rs.getInt("tempo");
 		}	
 		
-		stmt_mysql.executeUpdate("INSERT INTO report_linea"+Setting.DB_BATTERIE_NUM_LINEA+" (data,turno,num_batterie,num_scarto,minuti_fermo) VALUES ('"+tempo+"',"+turno+","+Setting.PEZZI+","+Setting.totale_batterie_scartate[Setting.DB_BATTERIE_NUM_LINEA-1]+","+minuti_fermo+");");
+		stmt_mysql.executeUpdate("INSERT INTO report_linea"+Setting.DB_BATTERIE_NUM_LINEA+" (data,turno,num_batterie,num_scarto,minuti_fermo) VALUES ('"+tempo+"',"+turno+","+Setting.PEZZI+","+Setting.SCARTI+","+minuti_fermo+");");
     	
     }catch(Exception j) {
     	log.write("DBCommand . Inserimento dati nel report. Errore: " + j.toString());

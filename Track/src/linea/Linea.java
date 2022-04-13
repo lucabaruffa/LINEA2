@@ -16,6 +16,8 @@ public class Linea {
 	private Setting setting;
 
 	ArrayBatterie arrayArrayBatterie = new ArrayBatterie();
+	ArrayBatterieScarto arrayArrayBatterieScarto = new ArrayBatterieScarto();
+	
 	private static LoggerFile log = new LoggerFile();
 
 	public Linea(JProgressBar bufferBatterie, ElencoIndicatori el, JTextField errore) throws InterruptedException {
@@ -42,14 +44,21 @@ public class Linea {
 			// CREO UN ARRAY DI BATTERIE PER OGNI POSTAZIONE
 			ArrayBatteriePostazione arrayBatteriePostazione = new ArrayBatteriePostazione();
 			arrayBatteriePostazione.nomeLista = "Lista Batterie Linea " + (i + 1);
+			
+			// CREO UN ARRAY DI BATTERIE DI SCARTO PER OGNI POSTAZIONE
+			ArrayBatteriePostazioneScarto arrayBatteriePostazioneScarto = new ArrayBatteriePostazioneScarto();
+			arrayBatteriePostazioneScarto.nomeLista = "Lista Batterie Linea " + (i + 1);
 
 			// CREO IL READER DEL PLC PER OGNI POSTAZIONE
-			readerPLC lettorePLC = new readerPLC(DB, bufferBatterie, (i + 1), indicatore, arrayBatteriePostazione);
+			readerPLC lettorePLC = new readerPLC(DB, bufferBatterie, (i + 1), indicatore, arrayBatteriePostazione,arrayBatteriePostazioneScarto);
 			lettorePLC.avvia();
 			this.addReader(lettorePLC);
 
 			// NELL'ARRAY DELL'ARRAY INSERISCO L'ARRAY DELLA POSTAZIONE
 			arrayArrayBatterie.addArray(arrayBatteriePostazione);
+			// NELL'ARRAY DELL'ARRAY INSERISCO L'ARRAY DEGLI SCARTI DELLA POSTAZIONE
+			arrayArrayBatterieScarto.addArray(arrayBatteriePostazioneScarto);
+			
 
 			// CREO IL THREAD E LO INSERISCO NELLA LISTA DEI THREAD
 			Thread t1 = new Thread(lettorePLC);
@@ -68,10 +77,14 @@ public class Linea {
 		// CREO UN ARRAY DI BATTERIE PER OGNI POSTAZIONE
 		ArrayBatteriePostazione arrayBatteriePostazione = new ArrayBatteriePostazione();
 		arrayBatteriePostazione.nomeLista = "Lista Batterie Linea " + (Setting.STAZIONE_DI_CONTROLLO_2);
+		
+		// CREO UN ARRAY DI BATTERIE PER OGNI POSTAZIONE
+		ArrayBatteriePostazioneScarto arrayBatteriePostazioneScarto = new ArrayBatteriePostazioneScarto();
+		arrayBatteriePostazioneScarto.nomeLista = "Lista Batterie Linea " + (Setting.STAZIONE_DI_CONTROLLO_2);
 
 		// CREO IL READER DEL PLC PER OGNI POSTAZIONE
 		readerPLC lettorePLC = new readerPLC(DB, bufferBatterie, Setting.STAZIONE_DI_CONTROLLO_2, indicatore,
-				arrayBatteriePostazione);
+				arrayBatteriePostazione,arrayBatteriePostazioneScarto);
 		lettorePLC.avvia();
 		this.addReader(lettorePLC);
 

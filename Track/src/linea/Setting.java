@@ -176,6 +176,7 @@ public class Setting {
 	public static int POSTAZIONE_CONTATORE1 = 6;
 	public static int POSTAZIONE_CONTATORE2 = 7;
 	public static int PEZZI = 0;  //usato per contare i pezzi prodotti
+	public static int SCARTI = 0;  //usato per contare i pezzi prodotti
 	
 	public static boolean riazzera_contatori = true;
 	
@@ -284,7 +285,7 @@ public class Setting {
 				output = new FileOutputStream(configFile);
 				Properties prop = new Properties();
 				prop.setProperty("conteggio_finale", "0");
-				prop.setProperty("numero_batterie_scartate", "0");
+				prop.setProperty("conteggio_scarti", "0");
 				prop.storeToXML(output, "LINEA");
 
 				output.close();

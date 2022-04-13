@@ -25,6 +25,8 @@ import Moka7.S7;
 import Moka7.S7Client;
 import View.Scarti;
 import linea.ArrayBatteriePostazione;
+import linea.ArrayBatteriePostazioneScarto;
+import linea.ArrayBatterieScarto;
 import linea.Batteria;
 import linea.ConfiguratoreLinea;
 import linea.Indicatore;
@@ -56,6 +58,7 @@ public class readerPLC implements Runnable   {
     public GregorianCalendar data = new GregorianCalendar(); 
 	public SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); 
 	protected ArrayBatteriePostazione array;
+	protected ArrayBatteriePostazioneScarto arrayScarto;
 	private CheckControl check;
 	private int DIMENSIONI_BUFFER_PLC = Setting.DIMENSIONI_BUFFER_PLC; // buffer PLC
 	private int numero_di_cicli_senza_batterie = 0;
@@ -112,13 +115,14 @@ public class readerPLC implements Runnable   {
 	
 	
 	
-	public readerPLC(int db, JProgressBar b, int nome, Indicatore ind, ArrayBatteriePostazione arrayBat) {
+	public readerPLC(int db, JProgressBar b, int nome, Indicatore ind, ArrayBatteriePostazione arrayBat, ArrayBatteriePostazioneScarto arrayBatScarto) {
 		
 		//monitor =g;
 		nomeStazione = nome;
 		DB = db;
 		indicatore = ind;
 		array = arrayBat;
+		arrayScarto = arrayBatScarto;
 		
 		check = new CheckControl();
 		
@@ -139,7 +143,6 @@ public class readerPLC implements Runnable   {
 		
 				
 		areaErrore = setting.getAreaError();
-		//monitor.append("costruttore");
 		bufferBatterie = b;
 			
 		Rack = Integer.parseInt(setting.getRACK());
@@ -155,23 +158,21 @@ public class readerPLC implements Runnable   {
 		}
 		
 		
-		//numero_batterie_scartate = Setting.totale_batterie_scartate[nomeStazione-1];
-		//conteggio = Setting.totale_batterie_lavorate[nomeStazione-1];
-		
 		
 		
 		//tento di caricare le informazione dell'ultima stazione
 		try {
 			if (nomeStazione==Setting.STAZIONE_DI_CONTROLLO_2){
-				//conteggio = Integer.parseInt(setting.ReadProperties("conteggio_finale",nome));
-				//numero_batterie_scartate = Integer.parseInt(setting.ReadProperties("numero_batterie_scartate",nome));
-				//log.write("\nCARICAMENTO PROPERTIES readerPLC. conteggio="+conteggio+" - Scartate="+numero_batterie_scartate+"\n");
 				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
 				indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
+				
 			}
 			
-			if (nomeStazione == Setting.POSTAZIONE_CONTATORE1) {
+			if (nomeStazione == 1) {
 				Setting.PEZZI = Integer.parseInt(setting.ReadProperties("conteggio_finale"));
+				Setting.SCARTI = Integer.parseInt(setting.ReadProperties("conteggio_scarti"));
+				ArrayBatteriePostazioneScarto.totaleBatterie = Setting.SCARTI;
+				log.write("ReaderPLC. Avvio read scarti :" + ArrayBatteriePostazioneScarto.totaleBatterie);
 			}
 			
 		}catch(Exception j) {
@@ -415,9 +416,7 @@ public class readerPLC implements Runnable   {
 	        		
 	        		//controllo batteria in ingresso. POSIZIONE 0 DELLA PILA
 	        		if ((i==0) && (!codice_batteria_old.equals(cod_batteria) && cod_batteria != null)) {
-	        			//10_03_2022
-	        			//numero_di_cicli_senza_batterie = 0;
-	        			
+	        				        			
 	        			 		//se il codice letto ha dimensioni maggiori di 20 (codice teoricamente valido)
 			        			 if (cod_batteria.length()>20) {
 				        				 try { 
@@ -425,15 +424,12 @@ public class readerPLC implements Runnable   {
 				    	        			indicatore.setBatteriaZero(cod_batteria);
 				    	        			numero_di_cicli_senza_batterie = 0;
 				    	        			
-				    	        			//log.write("Reader PLc line421->   - POS:"+nomeStazione+"  LEGGO POSIZIONE ZERO. COD:" + cod_batteria + " -> data: " + batteria.gettimestamp());
-				    	        			
+				    	        							    	        			
 				    	        			//--------- 29-03-2022 -------------------
 				    	        			if (!Setting.statiPLC[nomeStazione].RUN) {
 				    	        			//-------- 15/02/2022 -------------------- SE è DISABILITATA LA SEGNO COME BYPASS
-				    	        			//if ((configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato==0)||(configuratore.getListaAtomoConfigurazione()[nomeStazione-1].statoscanner==0)	){
-				    							//codice di ritorno dal controllo, codice batteria, postazione 
-				    	        				
-				    	        				batteria.setStato("-2");
+				    	        						    	        				
+				    	        				batteria.setStato("-2");  //LA SEGNO COME BYPASS 
 				    							segnala(9,batteria.getCodiceBatteria(),batteria.getPostazione());	//se la batteria non supera il testo, segnalo con  
 				    							 if (!array.contains(batteria)) {		
 									                	array.addBatteriaTop(batteria);
@@ -442,9 +438,7 @@ public class readerPLC implements Runnable   {
 				    							 indicatore.setTempo(timestamp);
 				    							 Setting.totale_batterie_lavorate[nomeStazione-1] += 1; 
 				    							 indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
-				    							 //indicatore.tempostatoLinea.setText(""+timestamp);
-				    						     //indicatore.statoLinea.setText("RUNNING");
-				    					         //indicatore.statoLinea.setBackground(Setting.verde);
+				    							
 				    						}
 				    	        			//--------------------------------
 				    	        			
@@ -493,8 +487,9 @@ public class readerPLC implements Runnable   {
 								    	        				setting.getLabelBatterieScartate().setText(""+df.format(fake_percent)+ " %");
 				    	        				//}//stazione di controllo 10
 				    	        			
+								    	        				
 				    	        			
-				    	        			}//fine if postazione 10 
+				    	        			}//fine if final controller 
 				    	        			
 				    	        			
 				    	        			
@@ -503,7 +498,7 @@ public class readerPLC implements Runnable   {
 					        			}
 			        			 			
 			    	        		
-			        			 }// fine if
+			        			 }// fine if codice letto correttamente
 			        			 
 			        			 
 			        			 //IN ATTESA DELLLA BATTERIA . POSTAZIONE DI CONTROLLO
@@ -524,26 +519,12 @@ public class readerPLC implements Runnable   {
 					        	 }//fine else
 	        			
 	        			
-			        			
 			        			 
 			        			 	        		
 				     }//fine i==0	
 	        		
 	        		//29-03-2022 AGGIUNGO IL CONTROLLO SULLA POSTAZIONE ABILITATA automaticamente
 	        		else if (data.after(dax) && (i>0) && (!isFinalController()) ){
-	        			
-	        			if ((i==1)&&(stato.equals("1"))) {
-	        				//per la linea 1 la 6 è la prova tenuta
-	        				//se sono nella pila posizione 1 ed il risultato è OK
-	        				//posso pensare di contare
-	        				
-	        				if ((nomeStazione == Setting.POSTAZIONE_CONTATORE1) || (nomeStazione == Setting.POSTAZIONE_CONTATORE2)) {
-	        					Setting.PEZZI +=1;
-		        				Setting.Contapezzi.setText(""+Setting.PEZZI);
-		        				setting.WriteProperties("conteggio_finale", ""+	Setting.PEZZI,"numero_batterie_scartate", ""+Setting.totale_batterie_scartate[nomeStazione-1],nomeStazione);
-	        				}
-	        				
-	        			}
 	        			
 	        			try {
     			        	//top = (array.getOnTop());
@@ -552,19 +533,49 @@ public class readerPLC implements Runnable   {
     	        			
     	        		}
 	        			
+	        			if ((i==1)&&(stato.equals("1"))) {
+	        				//per la linea 1 la 6 è la prova tenuta
+	        				//se sono nella pila posizione 1 ed il risultato è OK
+	        				//posso pensare di contare
+	        				//se invece è ok, vedo se è già inserita negli scarti.
+	        				//in caso la rimuovo tra gli scarti. Vedi:riprocessamento
+	        				if (arrayScarto.contains(batteria)&&(cod_batteria.length()>20)) {
+	        					arrayScarto.cancellaBatteria(batteria);
+	        					setting.WriteProperties("conteggio_finale", ""+	Setting.PEZZI,"conteggio_scarti", ""+Setting.SCARTI,nomeStazione);
+	        					log.write("ReaderPLC. RIMUOVO Scarto. Attuali dimensioni :" + ArrayBatteriePostazioneScarto.totaleBatterie +" -> batteria:" + batteria.getCodiceBatteria());
+	        				}	
+	        				
+	        				if ((nomeStazione == Setting.POSTAZIONE_CONTATORE1) || (nomeStazione == Setting.POSTAZIONE_CONTATORE2)) {
+	        					Setting.PEZZI +=1;
+		        				Setting.Contapezzi.setText(""+Setting.PEZZI);
+		        				
+	        				}
+	        			}
+	        			
+	        			
+	        			//12-04-2022
+	        			//se la batteria è KO ->scarto array
+	        			if ((i==1)&&(stato.equals("0"))) {
+	        				//se la batteria ha esito KO la inserisco nell'array delle batterie scartate
+	        				if (!arrayScarto.contains(batteria)&&(cod_batteria.length()>20)) {
+	        					arrayScarto.addBatteriaTop(batteria);
+	        					setting.WriteProperties("conteggio_finale", ""+	Setting.PEZZI,"conteggio_scarti", ""+Setting.SCARTI,nomeStazione);
+		        				log.write("ReaderPLC. Aggiungo Scarto. Attuali dimensioni :" + ArrayBatteriePostazioneScarto.totaleBatterie+" -> batteria:" + batteria.getCodiceBatteria());
+	        				}
+	        				
+	        			}
+	        				
+	        			
+	        			
+	        			
+	        			
+	        			
 	        			//29-03-2022
 	        			if (Setting.statiPLC[nomeStazione].RUN) {
 	        			
 	        			//22-02-2022 AGGIUNGO IL CONTROLLO SULLA POSTAZIONE ABILITATA . SE E' IN BYPASS QUI NON ENTRA
-	        			//else if (data.after(dax) && (i>0) && (!isFinalController()) && (configuratore.getListaAtomoConfigurazione()[nomeStazione-1].scartoabilitato>0) ){
-				    	 				    	/*				    	
-						    	 				try {
-						    			        	//top = (array.getOnTop());
-						    	        			dax.setTime((sdf.parse(timestamp)));  	
-						    	        		}catch(Exception e){
-						    	        			
-						    	        		}
-						    	 				*/
+	        			
+				    	 				    	
 						    	 				numero_di_cicli_senza_batterie = 0; //resetto il contatore
 						    	 				
 						    	 				try {	
@@ -578,9 +589,13 @@ public class readerPLC implements Runnable   {
 						    		        						    	 				
 						    	 				indicatore.setTempo(timestamp);
 					    	        			indicatore.setBatteria(cod_batteria);
-					    	        			//indicatore.riprocessato.setText(""+numero_batterie_riprocessate);
+					    	        			
 					    	        			indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
+					    	        			
+					    	        
 					    	        			tempo_ultima_batteria = timestamp;
+					    	        			
+					    	        			
 					    	        			
 					    	        try {	
 					               	
@@ -658,20 +673,21 @@ public class readerPLC implements Runnable   {
 				
 				Setting.riazzera_contatori = false;
 				
-				//new DBCommand().inserisciReport(Setting.PEZZI,Setting.totale_batterie_scartate[nomeStazione-1], ora);
-			
 				Setting.PEZZI = 0;
+				Setting.SCARTI = 0;
 				
 				numero_batterie_riprocessate = 0;
+				
 				Setting.totale_batterie_scartate[nomeStazione-1] = 0;
 				Setting.totale_batterie_lavorate[nomeStazione-1] = 0; 
 				
-				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
-				indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
+				indicatore.setConteggio("0");
+				//indicatore.scarto.setText(""+Setting.totale_batterie_scartate[nomeStazione-1]);
+				indicatore.scarto.setText(""+Setting.PEZZI);
 				
+				arrayScarto.cancellaTutto(); //cancello le batterie nel buffer di scarto
 				
-				
-			}
+			}//fine if
 			
 			
 			
@@ -719,7 +735,7 @@ public class readerPLC implements Runnable   {
 		        	indicatore.tempostatoLinea.setText(""+tempo_ultima_batteria);
 			 //--------------------------
 			
-	       
+		    Setting.SCARTI = arrayScarto.totaleBatterie;
 	        
 	        numero_di_cicli_senza_batterie += 1;
 	        	   
@@ -995,8 +1011,11 @@ public class readerPLC implements Runnable   {
 			    indicatore.setStato("ESITO KO");
 			    log.write("BATTERIA KO. POSTAZIONE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
-			    Setting.totale_batterie_scartate[nomeStazione-1] +=1;
-				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
+			    
+			    //Setting.totale_batterie_scartate[nomeStazione-1] +=1;
+				
+			    
+			    indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
 				//indicatore.setConteggio(""+conteggio);
 				ris = true;
 		  break;
@@ -1043,7 +1062,7 @@ public class readerPLC implements Runnable   {
 			    indicatore.setStato("ESITO KO");
 			    log.write("BATTERIA KO. POSTAZIONE N."+postazione+"    CODICE BATTERIA:" + codice_batt);
 				//conteggio +=1;
-			    Setting.totale_batterie_scartate[nomeStazione-1] +=1;
+			    //Setting.totale_batterie_scartate[nomeStazione-1] +=1;
 				indicatore.setConteggio(""+Setting.totale_batterie_lavorate[nomeStazione-1] );
 				//indicatore.setConteggio(""+conteggio);
 				stato_batteria_postazione_bilancia2 = "0";
